@@ -16,5 +16,30 @@ body {
     border-radius: 10px;
     background-color: black;
     padding: 10px;
+}
 
+.btn:hover {
+    cursor: pointer;
+}
+
+// Forms
+
+.styled-form {
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+
+    input {
+        border: 1px solid black;
+        border-radius: 3px;
+        margin: 5px 0;
+        padding: 10px;
+    }
+
+
+    * {
+        font-family: 'Montserrat';
+    }
 }
