@@ -92,5 +92,12 @@
     </div>
   </div>
 
-  <button type="submit" id="sign-up-btn" class="btn">Sign Up</button>
+  <button
+    [disabled]="signUpForm.invalid"
+    type="submit"
+    id="sign-up-btn"
+    class="btn"
+  >
+    Sign Up
+  </button>
 </form>
