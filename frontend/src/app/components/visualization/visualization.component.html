@@ -1,10 +1,19 @@
-<a-scene>
-  <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-  <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+<a-scene embedded (click)="startVisualization()">
+  <a-box
+    position="-1 0.5 -3"
+    rotation="0 45 0"
+    [attr.height]="boxHeight"
+    color="#4CC3D9"
+  ></a-box>
+  <a-sphere
+    position="0 1.25 -5"
+    [attr.radius]="sphereRadius"
+    color="#EF2D5E"
+  ></a-sphere>
   <a-cylinder
     position="1 0.75 -3"
     radius="0.5"
-    height="1.5"
+    [attr.height]="cylinderHeight"
     color="#FFC65D"
   ></a-cylinder>
   <a-plane
@@ -16,3 +25,9 @@
   ></a-plane>
   <a-sky color="#ECECEC"></a-sky>
 </a-scene>
+
+<audio
+  #audio
+  controls
+  src="../../../assets/Lunar-Beast-Theme-v7.2_Final.wav"
+></audio>
