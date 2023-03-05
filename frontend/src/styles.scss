@@ -10,6 +10,10 @@ body {
     padding: 0;
 }
 
+.hidden {
+    display: none !important;
+}
+
 .btn {
     text-decoration: none;
     color: white;
@@ -31,6 +35,10 @@ body {
     padding: 20px;
     align-items: center;
 
+    * {
+        font-family: 'Montserrat';
+    }
+
     input {
         border: 1px solid black;
         border-radius: 3px;
@@ -38,8 +46,21 @@ body {
         padding: 10px;
     }
 
+    .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
 
-    * {
-        font-family: 'Montserrat';
+    .error {
+        color: red;
+
+        * {
+            margin-bottom: 10px;
+        }
+    }
+
+    .errors-list-title {
+        text-align: center;
     }
 }
