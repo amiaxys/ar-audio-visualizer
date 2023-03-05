@@ -20,10 +20,19 @@ body {
     border-radius: 10px;
     background-color: black;
     padding: 10px;
+    border: none;
 }
 
 .btn:hover {
     cursor: pointer;
+}
+
+.btn:disabled {
+    background-color: gray;
+}
+
+.btn:disabled:hover {
+    cursor: auto;
 }
 
 // Forms

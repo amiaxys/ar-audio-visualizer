@@ -5,7 +5,6 @@
   [formGroup]="signInForm"
 >
   <h2 class="form-title">Sign In</h2>
-  <p>{{ error }}</p>
   <div class="input-wrapper">
     <label>Username</label>
     <input
@@ -16,7 +15,6 @@
       required
     />
   </div>
-
   <div class="input-wrapper">
     <label>Password</label>
     <input
@@ -27,6 +25,12 @@
       required
     />
   </div>
-
-  <button type="submit" id="sign-in-btn" class="btn">Sign In</button>
+  <button
+    [disabled]="signInForm.invalid"
+    type="submit"
+    id="sign-in-btn"
+    class="btn"
+  >
+    Sign In
+  </button>
 </form>

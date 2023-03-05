@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { EqualPasswordsDirective } from './directives/equal-passwords.directive';
+import { UniqueUsernameDirective } from './directives/unique-username.directive';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { EqualPasswordsDirective } from './directives/equal-passwords.directive'
     HeaderComponent,
     NewVisualizationComponent,
     SignUpComponent,
-    EqualPasswordsDirective
+    EqualPasswordsDirective,
+    UniqueUsernameDirective
   ],
   imports: [
     BrowserModule,

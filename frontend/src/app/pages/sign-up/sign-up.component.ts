@@ -10,7 +10,6 @@ import { equalPasswordsValidator } from 'src/app/directives/equal-passwords.dire
 })
 export class SignUpComponent {
   signUpForm: FormGroup;
-  error = '';
 
   constructor (private fb: FormBuilder, private router: Router) {
     this.signUpForm = this.fb.group({
