@@ -16,14 +16,14 @@
     [attr.height]="cylinderHeight"
     color="#FFC65D"
   ></a-cylinder>
-  <a-plane
-    position="0 0 -4"
-    rotation="-90 0 0"
-    width="4"
-    height="4"
-    color="#7BC8A4"
-  ></a-plane>
-  <a-sky color="#ECECEC"></a-sky>
+  <a-sphere
+    time-sphere
+    *ngFor="let sphere of timeSpheres"
+    [attr.position]="sphere.position"
+    [attr.radius]="sphere.radius"
+    [attr.color]="sphere.color"
+  ></a-sphere>
+  <a-sky [attr.color]="skyColor"></a-sky>
 </a-scene>
 
 <audio
