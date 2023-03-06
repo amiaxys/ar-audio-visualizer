@@ -33,4 +33,8 @@ export class ApiService {
   me(): Observable<User> {
     return this.http.get<User>(`${this.url}/api/users/me`);
   }
+
+  newVisualization(userId: string, title: string, audio: File) {
+    return this.http.post(`${this.url}/api/users/${userId}/visualizations`, {title, audio});
+  }
 }

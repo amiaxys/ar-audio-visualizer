@@ -1,12 +1,38 @@
-<form class="styled-form" id="new-visualization-form">
+<form
+  class="styled-form"
+  id="new-visualization-form"
+  (submit)="(onSubmit)"
+  [formGroup]="newVisForm"
+>
   <h2 class="form-title">New Visualization</h2>
   <div class="input-wrapper">
-    <label>Visualization Title</label><input type="text" placeholder="Title" />
+    <label>Visualization Title</label
+    ><input
+      type="text"
+      name="title"
+      formControlName="title"
+      placeholder="Title"
+      required
+    />
+  </div>
+  <div class="input-wrapper">
+    <label>Visualization Description</label
+    ><input
+      type="text"
+      name="description"
+      formControlName="description"
+      placeholder="Description"
+      required
+    />
   </div>
   <div class="input-wrapper">
     <label>Audio File</label>
-    <input type="file" />
+    <input
+      (change)="soundFileChanged($event)"
+      type="file"
+      name="soundFile"
+      required
+    />
   </div>
-
   <button type="submit" class="btn">Submit</button>
 </form>

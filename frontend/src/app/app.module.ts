@@ -17,6 +17,7 @@ import { ApiInterceptor } from './api.interceptor';
 import { VisualizationsComponent } from './pages/visualizations/visualizations.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CreateVisualizationComponent } from './pages/create-visualization/create-visualization.component';
+import { VisualizationCardComponent } from './components/visualization-card/visualization-card.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CreateVisualizationComponent } from './pages/create-visualization/creat
     VisualizationsComponent,
     FooterComponent,
     CreateVisualizationComponent,
+    VisualizationCardComponent,
   ],
   imports: [
     BrowserModule,
