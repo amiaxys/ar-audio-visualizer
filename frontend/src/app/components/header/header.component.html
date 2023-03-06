@@ -1,8 +1,8 @@
 <header>
   <a routerLink="/" id="title">AR Audio Visualizer</a>
   <div id="header-btns">
-    <a routerLink="/sign-up" class="btn">Sign Up</a>
-    <a routerLink="/sign-in" class="btn">Sign In</a>
-    <a routerLink="/sign-in" class="btn hidden">Sign Out</a>
+    <a routerLink="/sign-up" class="btn" *ngIf="!isAuth">Sign Up</a>
+    <a routerLink="/sign-in" class="btn" *ngIf="!isAuth">Sign In</a>
+    <a (click)="signOut()" class="btn" *ngIf="isAuth">Sign Out</a>
   </div>
 </header>
