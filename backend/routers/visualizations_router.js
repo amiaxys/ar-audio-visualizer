@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { User } from "../models/users.js";
-import { Visualization } from "../models/visualizations.js";
+import { Visualization } from "../models/visualization.js";
 import multer from "multer";
-import bcrypt from "bcrypt";
 import path from "path";
 import { isAuthenticated } from "../middleware/auth.js";
 
@@ -37,12 +35,13 @@ visualizationsRouter.post("/users/:UserId/visualizations", upload.single("audio"
     try {
         const visualization = await Visualization.create({
             title,
-            audio: req.audio,
+            audio: req.file,
             visual,
             UserId,
         });
         return res.json(visualization);
     } catch (error) {
+        console.log(error);
         return res.status(422).json({ error: "Invalid data" });
     }
 });
@@ -85,5 +84,5 @@ visualizationsRouter.delete("/users/:UserId/visualizations/:id", isAuthenticated
         return res.status(404).json({ error: "Visualization not found" });
     }
     await visualization.destroy();
-    return res.json({ message: "Visualization deleted" });
+    return res.json(visualization);
 });
