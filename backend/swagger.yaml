@@ -1,0 +1,53 @@
+// swagger file for all endpoints
+openapi: 3.0.0
+info:
+  title: "Audio Visualizer Backend"
+  version: "1.0.0"
+  description: "Backend for Audio Visualizer term project for the course CSCC09"
+
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user ID.
+        username:
+          type: string
+          description: The username of the user.
+        passwordHash:
+          type: string
+          description: The password hash of the user.
+        avatar:
+          type: object
+          description: The avatar of the user.
+          properties:
+        createdAt:
+          type: string
+          description: The date the user was created.
+      example:
+        id: 1
+        username: "test"
+        passwordHash: "test"
+        avatar: "test"
+        createdAt: "2020-11-30T00:00:00.000Z"
+
+paths:
+  /api/users
+    get:
+      summary: Get all users paginated
+      description: Get all users if no query parameters are provided. Otherwise, get all users that match the query parameters.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/schemas/User'
