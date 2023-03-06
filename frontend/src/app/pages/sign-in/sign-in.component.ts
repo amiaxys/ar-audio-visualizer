@@ -24,7 +24,7 @@ export class SignInComponent implements OnInit  {
   signIn() {
     this.api.signIn(this.signInForm.value.username, this.signInForm.value.password).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        this.router.navigate(['visualizations']);
         this.error = '';
       },
       error: (err) => {

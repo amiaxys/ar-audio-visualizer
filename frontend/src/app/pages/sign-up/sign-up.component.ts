@@ -28,7 +28,7 @@ export class SignUpComponent implements OnInit {
   signUp() {
     this.api.signUp(this.signUpForm.value.username, this.signUpForm.value.password).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        this.router.navigate(['visualizations']);
         this.api.signIn(this.signUpForm.value.username, this.signUpForm.value.password);
         this.error = '';
       },

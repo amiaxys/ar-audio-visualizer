@@ -3,6 +3,12 @@
   <div id="header-btns">
     <a routerLink="/sign-up" class="btn" *ngIf="!isAuth">Sign Up</a>
     <a routerLink="/sign-in" class="btn" *ngIf="!isAuth">Sign In</a>
+    <a routerLink="/visualizations" class="btn" *ngIf="isAuth"
+      >Visualizations</a
+    >
+    <a routerLink="/create-visualization" class="btn" *ngIf="isAuth"
+      >Create Visualization</a
+    >
     <a (click)="signOut()" class="btn" *ngIf="isAuth">Sign Out</a>
   </div>
 </header>

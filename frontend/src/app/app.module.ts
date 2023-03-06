@@ -14,6 +14,9 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { EqualPasswordsDirective } from './directives/equal-passwords.directive';
 import { UniqueUsernameDirective } from './directives/unique-username.directive';
 import { ApiInterceptor } from './api.interceptor';
+import { VisualizationsComponent } from './pages/visualizations/visualizations.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { CreateVisualizationComponent } from './pages/create-visualization/create-visualization.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { ApiInterceptor } from './api.interceptor';
     NewVisualizationComponent,
     SignUpComponent,
     EqualPasswordsDirective,
-    UniqueUsernameDirective
+    UniqueUsernameDirective,
+    VisualizationsComponent,
+    FooterComponent,
+    CreateVisualizationComponent
   ],
   imports: [
     BrowserModule,
