@@ -5,19 +5,25 @@ import { environment } from '../../environments/environment';
 import { User } from '../classes/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   url = environment.backendUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   signIn(username: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.url}/api/users/signin`, { username, password });
+    return this.http.post<User>(`${this.url}/api/users/signin`, {
+      username,
+      password,
+    });
   }
 
   signUp(username: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.url}/api/users/signup`, { username, password });
+    return this.http.post<User>(`${this.url}/api/users/signup`, {
+      username,
+      password,
+    });
   }
 
   signOut(): Observable<User> {

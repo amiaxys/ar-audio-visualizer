@@ -31,21 +31,22 @@ import { CreateVisualizationComponent } from './pages/create-visualization/creat
     UniqueUsernameDirective,
     VisualizationsComponent,
     FooterComponent,
-    CreateVisualizationComponent
+    CreateVisualizationComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     {
-    provide: HTTP_INTERCEPTORS,
-    useClass: ApiInterceptor,
-    multi: true,
-  },],
-  bootstrap: [AppComponent]
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

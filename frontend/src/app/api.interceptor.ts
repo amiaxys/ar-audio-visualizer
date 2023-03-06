@@ -8,8 +8,11 @@ import {
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class ApiInterceptor implements HttpInterceptor {  
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+export class ApiInterceptor implements HttpInterceptor {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     const newReq = req.clone({
       withCredentials: true,
     });

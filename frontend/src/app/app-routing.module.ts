@@ -10,31 +10,32 @@ import { VisualizationsComponent } from './pages/visualizations/visualizations.c
 const routes: Routes = [
   {
     path: '',
-    component: IndexComponent
+    component: IndexComponent,
   },
   {
     path: 'sign-in',
-    component: SignInComponent
+    component: SignInComponent,
   },
   {
     path: 'sign-up',
-    component: SignUpComponent
+    component: SignUpComponent,
   },
   {
     path: 'credits',
-    component: CreditsComponent
-  }, 
+    component: CreditsComponent,
+  },
   {
     path: 'visualizations',
-    component: VisualizationsComponent
+    component: VisualizationsComponent,
   },
   {
     path: 'create-visualization',
-    component: CreateVisualizationComponent
-  }];
+    component: CreateVisualizationComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -5,15 +5,14 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-
 export class HeaderComponent implements OnInit {
-  constructor (private api: ApiService, private router: Router) {}
-  
+  constructor(private api: ApiService, private router: Router) {}
+
   error: string = '';
   isAuth: boolean = false;
-  
+
   ngOnInit(): void {
     this.checkAuth();
   }
@@ -21,7 +20,7 @@ export class HeaderComponent implements OnInit {
   checkAuth() {
     this.api.me().subscribe((res) => {
       this.isAuth = res ? true : false;
-    })
+    });
   }
 
   signOut() {

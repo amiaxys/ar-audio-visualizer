@@ -1,5 +1,5 @@
 export interface Visualization {
-    title: string,
-    audio: JSON,
-    visual: JSON
+  title: string;
+  audio: JSON;
+  visual: JSON;
 }
