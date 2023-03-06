@@ -333,6 +333,42 @@ paths:
                     type: string
                     description: The error message.
 
+  /api/users/{userid}/visualizations/{id}/audio:
+    get: 
+      summary: Get the audio file for the visualization
+      description: Get the audio file for the visualization with the provided ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the visualization.
+          required: true
+          schema:
+            type: integer
+        - name: userid
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+
   /api/users/{userid}/visualizations/{id}:
     get:
       summary: Get a visualization
