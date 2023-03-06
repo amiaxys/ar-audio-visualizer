@@ -15,19 +15,22 @@ visualizationsRouter.get("/users/:UserId/visualizations", isAuthenticated, async
     if (req.user.id !== parseInt(UserId)) {
         return res.status(403).json({ error: "Not authorized" });
     }
-    const visualizations = await Visualization.findAndCountAll({
-        offset: (page - 1) * limit,
-        limit: parseInt(limit),
-        where: { UserId },
-
-    });
+    const query = {where: { UserId }};
+    if (page && limit) {
+        query = {
+            ...query,
+            offset: (page - 1) * limit,
+            limit: parseInt(limit),
+        };
+    }
+    const visualizations = await Visualization.findAndCountAll(query);
     return res.json(visualizations);
     }
 );
 
 // post a new visualization
 visualizationsRouter.post("/users/:UserId/visualizations", upload.single("audio"), isAuthenticated, async (req, res) => {
-    const { title, visual } = req.body;
+    const { title, metadata } = req.body;
     const { UserId } = req.params;
     if (req.user.id !== parseInt(UserId)) {
         return res.status(403).json({ error: "Not authorized" });
@@ -36,7 +39,7 @@ visualizationsRouter.post("/users/:UserId/visualizations", upload.single("audio"
         const visualization = await Visualization.create({
             title,
             audio: req.file,
-            visual,
+            metadata: JSON.parse(metadata),
             UserId,
         });
         return res.json(visualization);
