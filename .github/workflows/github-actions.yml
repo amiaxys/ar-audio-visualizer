@@ -28,7 +28,5 @@ jobs:
       - name: Install Node.js dependencies for backend
         run: cd backend && npm ci
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
-        with:
-          prettier: true
+      - name: Run prettier for backend
+        run: npx prettier --check .
