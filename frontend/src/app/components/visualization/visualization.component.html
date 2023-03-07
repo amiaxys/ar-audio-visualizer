@@ -1,21 +1,33 @@
 <a-scene embedded (click)="startVisualization()">
+  <a-cylinder
+    position="-2 0.75 -2.5"
+    radius="0.5"
+    [attr.height]="cylinderHeight"
+    [attr.color]="cylinderColor"
+  ></a-cylinder>
   <a-box
-    position="-1 0.5 -3"
+    position="-1 0.5 -3.2"
     rotation="0 45 0"
     [attr.height]="boxHeight"
-    color="#4CC3D9"
+    [attr.color]="boxColor"
   ></a-box>
   <a-sphere
     position="0 1.25 -5"
     [attr.radius]="sphereRadius"
-    color="#EF2D5E"
+    [attr.color]="sphereColor"
   ></a-sphere>
   <a-cylinder
     position="1 0.75 -3"
     radius="0.5"
     [attr.height]="cylinderHeight"
-    color="#FFC65D"
+    [attr.color]="cylinderColor"
   ></a-cylinder>
+  <a-box
+    position="2.2 0.5 -2.75"
+    rotation="0 45 0"
+    [attr.height]="boxHeight"
+    [attr.color]="boxColor"
+  ></a-box>
   <a-sphere
     time-sphere
     *ngFor="let sphere of timeSpheres"

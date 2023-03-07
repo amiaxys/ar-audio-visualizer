@@ -21,9 +21,16 @@ export class VisualizationComponent {
   timeDataArray: Uint8Array = new Uint8Array(this.timeBufferLength);
 
   boxHeight: number = 1;
+  boxColor: string = '#10FFBA';
+
   cylinderHeight: number = 1.5;
+  cylinderColor: string = '#FFBA10';
+
   sphereRadius: number = 1.25;
+  sphereColor: string = '#F62474';
+
   skyColor: string = '#000';
+
   timeSpheres: Sphere[] = [];
   //timeCounter: number = 0;
 
@@ -50,7 +57,7 @@ export class VisualizationComponent {
       this.timeSpheres[i] = {
         position: `${x} ${y} -3`,
         radius: `${sliceWidth * 0.4}`,
-        color: 'teal',
+        color: `hsl(${Math.min(180 + i * 5, 360)}, 100%, ${Math.min(30 + i * 2, 100)}%)`,
       };
 
       x += sliceWidth;
@@ -72,7 +79,7 @@ export class VisualizationComponent {
       }); */
     }
 
-    const sortedFreqArray = this.freqDataArray.slice(0).sort((a, b) => a - b);
+    const sortedFreqArray: Uint8Array = this.freqDataArray.slice(0).sort((a, b) => a - b);
     const avg = Math.floor(
       this.freqDataArray.reduce((a, b) => a + b) / this.freqDataArray.length
     );
@@ -83,15 +90,15 @@ export class VisualizationComponent {
     this.cylinderHeight = avg / 100;
     this.sphereRadius = sortedFreqArray[max] / 200;
 
-    const r = this.freqDataArray[med];
-    const g = this.freqDataArray[Math.max(med - 10, 0)];
-    const b = this.freqDataArray[0];
+    const r = Math.floor((this.freqDataArray[med] / 255.0) * 150);
+    const g = Math.floor((this.freqDataArray[Math.max(med - 5, 0)] / 255.0) * 150);
+    const b = Math.floor((this.freqDataArray[0] / 255.0) * 150);
     this.skyColor = `rgb(${r}, ${g}, ${b})`;
 
     const height = 4;
-    let y = (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
+    let y: number = (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
         (height / 2) + 1; /*(sortedFreqArray[Math.max(med + 10, 0)] / 255)*/
-    let tempPos;
+    let tempPos: string[];
     //const timeSlice = Math.floor(this.timeBufferLength / 20);
     for (let i = 0; i < this.timeSpheres.length; i++) {
       //const y = (this.timeDataArray[i * timeSlice] / 128.0) * (height / 2) + 1;
