@@ -1,0 +1,495 @@
+# swagger file for all endpoints
+openapi: 3.0.0
+info:
+  title: "Audio Visualizer Backend"
+  version: 1.0.1
+  description: "Backend for Audio Visualizer term project for the course CSCC09"
+
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user ID.
+        username:
+          type: string
+          description: The username of the user.
+        passwordHash:
+          type: string
+          description: The password hash of the user.
+        avatar:
+          type: object
+          description: The avatar of the user.
+        createdAt:
+          type: string
+          description: The date the user was created.
+        updatedAt:
+          type: string
+          description: The date the user was last updated.
+      example:
+        id: 1
+        username: "test"
+        passwordHash: "test"
+        avatar: null
+        createdAt: "2020-11-30T00:00:00.000Z"
+        updatedAt: "2020-11-30T00:00:00.000Z"
+    Visualization:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The visualization ID.
+        title:
+          type: string
+          description: The name of the visualization.
+        audio:
+          type: object
+          description: The audio file of the visualization.
+        metadata:
+          type: object
+          description: The metadata of the visualization.
+        createdAt:
+          type: string
+          description: The date the visualization was created.
+        updatedAt:
+          type: string
+          description: The date the visualization was last updated.
+        UserId:
+          type: integer
+          description: The ID of the user that created the visualization.
+      example:
+        id: 1
+        title: "test"
+        audio:
+          fieldname: "audio"
+          originalname: "sample.mp3"
+          encoding: "7bit"
+          mimetype: "audio/mpeg"
+          destination: "uploads/"
+          filename: "e7c3c8d1755645e5e9c5c04f11bb779b"
+          path: "uploads/e7c3c8d1755645e5e9c5c04f11bb779b"
+          size: 76417
+        metadata: null
+        createdAt: "2020-11-30T00:00:00.000Z"
+        updatedAt: "2020-11-30T00:00:00.000Z"
+        UserId: 1
+
+
+paths:
+  /api/users:
+    get:
+      summary: Get all users paginated
+      description: Get all users if no query parameters are provided. Otherwise, get all users that match the query parameters.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: The total number of users.
+                  rows:
+                    type: array
+                    description: The users returned.
+                    items:
+                      $ref: '#/components/schemas/User'
+
+  /api/users/sigup:
+    post:
+      summary: Create a new user
+      description: Create a new user with the provided username and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username of the user.
+                password:
+                  type: string
+                  description: The password of the user.
+              example:
+                username: "test"
+                password: "test"
+      responses:
+        200:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+
+  /api/users/signin:
+    post:
+      summary: Sign in a user
+      description: Sign in a user with the provided username and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username of the user.
+                password:
+                  type: string
+                  description: The password of the user.
+              example:
+                username: "test"
+                password: "test"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+
+  /api/users/{id}/avatar:
+    post:
+      summary: Get the avatar file for the user
+      description: Get the avatar file for the user with the provided ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+
+  /api/users/signout:
+    post:
+      summary: Sign out a user
+      description: Sign out a user with the provided username and password.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The success message.
+  
+  /api/users/me:
+    get:
+      summary: Get the current user
+      description: Get the current user thats logged in.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+
+# routes for visualizations
+  /api/users/{id}/visualizations:
+    get:
+      summary: Get all visualizations paginated
+      description: Get all visualizations if no query parameters are provided. Otherwise, get all visualizations that match the query parameters.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: The total number of visualizations.
+                  rows:
+                    type: array
+                    description: The visualizations returned.
+                    items:
+                      $ref: '#/components/schemas/Visualization'
+    post:
+      summary: Create a new visualization
+      description: Create a new visualization with the provided name, description, and audio file.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The name of the visualization.
+                audio:
+                  type: object
+                  description: The audio file of the visualization.
+                metadata:
+                  type: object
+                  description: The metadata of the visualization.
+              example:
+                name: "test"
+                description: "test"
+                audioFile: null
+      responses:
+        200:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Visualization'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+
+  /api/users/{userid}/visualizations/{id}/audio:
+    get: 
+      summary: Get the audio file for the visualization
+      description: Get the audio file for the visualization with the provided ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the visualization.
+          required: true
+          schema:
+            type: integer
+        - name: userid
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+
+  /api/users/{userid}/visualizations/{id}:
+    get:
+      summary: Get a visualization
+      description: Get a visualization with the provided ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the visualization.
+          required: true
+          schema:
+            type: integer
+        - name: userid
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Visualization'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+    put:
+      summary: Update a visualization
+      description: Update a visualization with the provided ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the visualization.
+          required: true
+          schema:
+            type: integer
+        - name: userid
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The name of the visualization.
+                audio:
+                  type: object
+                  description: The audio file of the visualization.
+                metadata:
+                  type: object
+                  description: The metadata of the visualization.
+              example:
+                name: "test"
+                description: "test"
+                audioFile: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Visualization'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
+    delete:
+      summary: Delete a visualization
+      description: Delete a visualization with the provided ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the visualization.
+          required: true
+          schema:
+            type: integer
+        - name: userid
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The success message.
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error message.
