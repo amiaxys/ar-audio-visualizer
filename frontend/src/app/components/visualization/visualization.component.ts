@@ -141,6 +141,11 @@ export class VisualizationComponent {
       this.freqEntities[i].color = `hsl(${freqHue}, 100%, ${Math.floor(
         30 + (freqAvg / 255) * 50
       )}%)`;
+
+      // uncomment the block below for rainbow entities
+      /* this.freqEntities[i].color = `hsl(${Math.ceil((freqAvg / 255) * 360)}, 100%, ${Math.floor(
+        30 + (freqAvg / 255) * 70
+      )}%)`; */
     }
 
     // change sky color
@@ -154,6 +159,9 @@ export class VisualizationComponent {
 
     // change time spheres (wave)
     const height = 4;
+    // when maxDiff is too big, wave animation gets too jitty
+    // best is actually 0.01, but not enough change
+    const maxDiff = 0.04;
     let y: number =
       (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
         (height / 2) +
@@ -168,11 +176,11 @@ export class VisualizationComponent {
       if (y > tempPosY) {
         tempy = y - tempPosY;
         y = tempPosY;
-        tempPos[1] = tempPosY + Math.min(tempy, 0.04) + '';
+        tempPos[1] = tempPosY + Math.min(tempy, maxDiff) + '';
       } else if (y < tempPosY) {
         tempy = tempPosY - y;
         y = tempPosY;
-        tempPos[1] = tempPosY - Math.min(tempy, 0.04) + '';
+        tempPos[1] = tempPosY - Math.min(tempy, maxDiff) + '';
       } else {
         y = tempPosY;
       }
