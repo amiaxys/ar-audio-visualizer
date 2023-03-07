@@ -1,0 +1,37 @@
+<app-header></app-header>
+<form
+  class="styled-form"
+  id="sign-in-form"
+  (submit)="signIn()"
+  [formGroup]="signInForm"
+>
+  <h2 class="form-title">Sign In</h2>
+  <div class="input-wrapper">
+    <label>Username</label>
+    <input
+      type="text"
+      name="username"
+      placeholder="Username"
+      formControlName="username"
+      required
+    />
+  </div>
+  <div class="input-wrapper">
+    <label>Password</label>
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      formControlName="password"
+      required
+    />
+  </div>
+  <button
+    [disabled]="signInForm.invalid"
+    type="submit"
+    id="sign-in-btn"
+    class="btn"
+  >
+    Sign In
+  </button>
+</form>

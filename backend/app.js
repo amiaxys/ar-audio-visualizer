@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-
+import session from "express-session";
 import { usersRouter } from "./routers/users_router.js";
 import { visualizationsRouter } from "./routers/visualizations_router.js";
 import { sequelize } from "./datasource.js";
@@ -29,10 +29,17 @@ try {
   console.error("Unable to connect to the database:", error);
 }
 
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 // Routers
 app.use("/api/users", usersRouter);
 app.use("/api", visualizationsRouter);
-
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);
