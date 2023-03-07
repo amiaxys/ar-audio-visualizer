@@ -1,7 +1,7 @@
 <form
   class="styled-form"
   id="new-visualization-form"
-  (submit)="(onSubmit)"
+  (submit)="onSubmit()"
   [formGroup]="newVisForm"
 >
   <h2 class="form-title">New Visualization</h2>
@@ -16,21 +16,11 @@
     />
   </div>
   <div class="input-wrapper">
-    <label>Visualization Description</label
-    ><input
-      type="text"
-      name="description"
-      formControlName="description"
-      placeholder="Description"
-      required
-    />
-  </div>
-  <div class="input-wrapper">
     <label>Audio File</label>
     <input
-      (change)="soundFileChanged($event)"
       type="file"
-      name="soundFile"
+      name="audio"
+      (change)="soundFileChanged($event)"
       required
     />
   </div>

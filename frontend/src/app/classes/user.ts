@@ -1,5 +1,5 @@
 export interface User {
   username: string;
-  passwordHash: string;
+  id: string;
   avatar: JSON;
 }
