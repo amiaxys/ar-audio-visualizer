@@ -1,3 +1,5 @@
+/* The below code was taken from CSCC09 Lab 8 */
+
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
