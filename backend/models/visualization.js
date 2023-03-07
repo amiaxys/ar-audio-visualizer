@@ -11,7 +11,7 @@ export const Visualization = sequelize.define("Visualization", {
     type: DataTypes.JSON,
     allowNull: false,
   },
-  visual: {
+  metadata: {
     type: DataTypes.JSON,
     allowNull: false,
   },
