@@ -35,13 +35,26 @@ export class ApiService {
     return this.http.get<User>(`${this.url}/api/users/me`);
   }
 
-  newVisualization(userId: string, title: string, audio: File): Observable<Visualization> {
+  newVisualization(
+    userId: string,
+    title: string,
+    audio: File
+  ): Observable<Visualization> {
     const formData = new FormData();
 
     formData.append('title', title);
     formData.append('audio', audio, audio.name);
-    formData.append('metadata', JSON.stringify({ attribute: "123" }));
+    formData.append('metadata', JSON.stringify({ attribute: '123' }));
 
-    return this.http.post<Visualization>(`${this.url}/api/users/${userId}/visualizations`, formData);
+    return this.http.post<Visualization>(
+      `${this.url}/api/users/${userId}/visualizations`,
+      formData
+    );
+  }
+
+  getVisualizations(userId: string, page: number, limit: number): Observable<{ count: number, rows: Visualization[] }> {
+    return this.http.get<{ count: number, rows: Visualization[] }>(
+      `${this.url}/api/users/${userId}/visualizations?page=${page}&limit=${limit}`
+    );
   }
 }
