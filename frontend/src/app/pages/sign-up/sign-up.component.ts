@@ -52,12 +52,17 @@ export class SignUpComponent implements OnInit {
       .signUp(this.signUpForm.value.username, this.signUpForm.value.password)
       .subscribe({
         next: () => {
-          this.router.navigate(['visualizations']);
           this.api.signIn(
             this.signUpForm.value.username,
             this.signUpForm.value.password
-          );
-          this.error = '';
+          ).subscribe({
+            next: () => {
+              this.router.navigate(['/visualizations']);
+            },
+            error: (err) => {
+              this.error = err.error.error;
+            }
+          })
         },
         error: (err) => {
           this.error = err.error.error;
