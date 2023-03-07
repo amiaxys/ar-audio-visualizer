@@ -10,6 +10,8 @@ import { Entity } from '../../classes/entity';
 })
 export class VisualizationComponent {
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
+  // change this to the path to visualization's audio file
+  audioSource: string = '../../../assets/Lunar-Beast-Theme-v7.2_Final.wav';
   audioCtx!: AudioContext;
 
   freqAnalyser!: AnalyserNode;
