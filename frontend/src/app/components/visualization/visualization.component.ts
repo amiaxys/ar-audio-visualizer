@@ -1,5 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Entity } from '../../classes/entity';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from '../../../environments/environment';
 //import { THREE } from 'aframe';
 //import * as AFRAME from 'aframe';
 
@@ -11,7 +13,7 @@ import { Entity } from '../../classes/entity';
 export class VisualizationComponent {
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
   displayPlayBtn: boolean = true;
-  // change this to the path to visualization's audio file
+  // default sound file if no user visualization audio is found
   audioSource: string = '../../../assets/Lunar-Beast-Theme-v7.2_Final.wav';
   audioCtx!: AudioContext;
 
@@ -35,12 +37,28 @@ export class VisualizationComponent {
   start: boolean = false;
 
   // testing variables
-  //logTime: number = 0;
-  //test: boolean = true;
+  logTime: number = 0;
+  test: boolean = true;
 
-  constructor() {}
+  constructor(private api: ApiService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.api.me().subscribe({
+      next: (user) => {
+        this.api.getVisualizations(user.id, 1, 1).subscribe({
+          next: (res) => {
+            this.audioSource = `${environment.backendUrl}/api/users/${user.id}/visualizations/${res.rows[0].id}/audio`;
+          },
+          error: (err) => {
+            console.log(`Get Visualization Error: ${err}`);
+          },
+        });
+      },
+      error: (err) => {
+        console.log(`Auth Error: ${err}`);
+      },
+    });
+  }
 
   ngAfterViewInit(): void {}
 
@@ -81,7 +99,6 @@ export class VisualizationComponent {
       }
       nextX += 1 + (freqEntNum - i) * 0.1;
     }
-    console.log(this.freqEntities);
   }
 
   initializeTimeSpheres(): void {
@@ -109,15 +126,13 @@ export class VisualizationComponent {
     window.requestAnimationFrame(this.draw.bind(this));
     // pause animation when audio is paused
     // may change this later
-    if (this.audioElmt.nativeElement.paused) {
-      this.displayPlayBtn = true;
-      return;
-    }
+    this.displayPlayBtn = this.audioElmt.nativeElement.paused;
+    if (this.audioElmt.nativeElement.paused) return;
 
     this.freqAnalyser.getByteFrequencyData(this.freqDataArray);
     this.timeAnalyser.getByteTimeDomainData(this.timeDataArray);
 
-    if (this.timeSpheres.length === 0) {
+    if (this.timeSpheres.length === 0 || this.freqEntities.length === 0) {
       this.initializeTimeSpheres();
       this.initializeFreqEntities();
       /* AFRAME.registerComponent('time-sphere', {
@@ -166,7 +181,9 @@ export class VisualizationComponent {
       (this.freqDataArray[this.freqDataArray.length / 2 - 1] / 255.0) * 150
     );
     const b = Math.floor((this.freqDataArray[0] / 255.0) * 150); */
-    const skyLight = Math.floor((this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 100);
+    const skyLight = Math.floor(
+      (this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 100
+    );
     this.skyColor = `hsl(0, 0%, ${skyLight}%)`;
 
     // change time spheres (wave)
@@ -248,6 +265,6 @@ export class VisualizationComponent {
     this.audioElmt.nativeElement.paused
       ? this.audioElmt.nativeElement.play()
       : this.audioElmt.nativeElement.pause();
-    this.displayPlayBtn = false;
+    this.displayPlayBtn = this.audioElmt.nativeElement.paused;
   }
 }
