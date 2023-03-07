@@ -15,7 +15,7 @@ visualizationsRouter.get("/users/:UserId/visualizations", isAuthenticated, async
     if (req.user.id !== parseInt(UserId)) {
         return res.status(403).json({ error: "Not authorized" });
     }
-    const query = {where: { UserId }};
+    let query = {where: { UserId }};
     if (page && limit) {
         query = {
             ...query,
