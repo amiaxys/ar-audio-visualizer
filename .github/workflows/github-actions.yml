@@ -29,9 +29,9 @@ jobs:
 
       - name: Run prettier for backend
         run: npx prettier --check .
-      
+
       - name: Install Node.js dependencies for frontend
         run: cd frontend && npm ci
-      
+
       - name: Run prettier for frontend
         run: npx prettier --check .
