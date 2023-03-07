@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { User } from "../models/users.js";
+import { User } from "../models/user.js";
 import multer from "multer";
 import bcrypt from "bcrypt";
 import path from "path";

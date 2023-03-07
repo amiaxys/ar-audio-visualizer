@@ -1,6 +1,6 @@
 import { sequelize } from "../datasource.js";
 import { DataTypes } from "sequelize";
-import { User } from "./users.js";
+import { User } from "./user.js";
 
 export const Visualization = sequelize.define("Visualization", {
   title: {
@@ -11,10 +11,10 @@ export const Visualization = sequelize.define("Visualization", {
     type: DataTypes.JSON,
     allowNull: false,
   },
-    visual: {
+  visual: {
     type: DataTypes.JSON,
     allowNull: false,
-    },
+  },
 });
 
 Visualization.belongsTo(User);
