@@ -1,0 +1,106 @@
+<app-header></app-header>
+<form
+  class="styled-form"
+  id="sign-up-form"
+  (submit)="signUp()"
+  [formGroup]="signUpForm"
+>
+  <h2 class="form-title">Sign Up</h2>
+  <div class="input-wrapper">
+    <label>Username</label>
+    <input
+      type="text"
+      name="username"
+      placeholder="Username"
+      formControlName="username"
+      required
+    />
+  </div>
+  <div
+    class="error"
+    *ngIf="
+      signUpForm.controls['username'].invalid &&
+      (signUpForm.controls['username'].dirty ||
+        signUpForm.controls['username'].touched)
+    "
+  >
+    <div *ngIf="signUpForm.controls['username'].errors?.['required']">
+      Username is required
+    </div>
+    <div *ngIf="signUpForm.controls['username'].errors?.['minlength']">
+      Username must be at least 3 characters
+    </div>
+    <div *ngIf="signUpForm.controls['username'].errors?.['pattern']">
+      Username must only contain alphanumeric characters
+    </div>
+  </div>
+  <div class="input-wrapper">
+    <label>Password</label>
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      formControlName="password"
+      required
+    />
+  </div>
+  <div
+    class="error"
+    *ngIf="
+      signUpForm.controls['password'].invalid &&
+      (signUpForm.controls['password'].dirty ||
+        signUpForm.controls['password'].touched)
+    "
+  >
+    <div *ngIf="signUpForm.controls['password'].errors?.['required']">
+      Password is required
+    </div>
+
+    <div *ngIf="signUpForm.controls['password'].errors?.['pattern']">
+      <p>Password must:</p>
+      <ul>
+        <li>be 8 characters long</li>
+        <li>contain at least one lowercase letter</li>
+        <li>contain at least one uppercase letter</li>
+        <li>contain at least one number</li>
+        <li>contain at least one special character [#?!@$%^&*-]</li>
+      </ul>
+    </div>
+  </div>
+  <div class="input-wrapper">
+    <label>Confirm Password</label>
+    <input
+      type="password"
+      name="confirmPassword"
+      placeholder="Confirm Password"
+      formControlName="confirmPassword"
+      required
+    />
+  </div>
+  <div
+    class="error"
+    *ngIf="
+      signUpForm.controls['confirmPassword'].dirty ||
+      signUpForm.controls['confirmPassword'].touched
+    "
+  >
+    <div
+      *ngIf="signUpForm.controls['confirmPassword'].invalid && signUpForm.controls['confirmPassword'].errors?.['required']"
+    >
+      You must confirm your password
+    </div>
+
+    <div *ngIf="signUpForm.errors?.['equalPasswords']">
+      Passwords must match
+    </div>
+  </div>
+
+  <button
+    [disabled]="signUpForm.invalid"
+    type="submit"
+    id="sign-up-btn"
+    class="btn"
+  >
+    Sign Up
+  </button>
+</form>
