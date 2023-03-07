@@ -28,10 +28,10 @@ jobs:
         run: cd backend && npm ci
 
       - name: Run prettier for backend
-        run: npx prettier --check .
+        run: npx prettier --check ./backend
 
       - name: Install Node.js dependencies for frontend
         run: cd frontend && npm ci
 
       - name: Run prettier for frontend
-        run: npx prettier --check .
+        run: npx prettier --check ./frontend
