@@ -1,5 +1,5 @@
 <div id="visualization-container">
-  <button id="play" *ngIf="displayPlayButton">Play</button>
+  <button id="play" class="btn" *ngIf="displayPlayButton">Play</button>
   <a-scene embedded (click)="startVisualization()">
     <ng-container *ngFor="let entity of freqEntities">
       <a-cylinder
