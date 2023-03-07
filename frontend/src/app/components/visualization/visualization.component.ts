@@ -10,7 +10,7 @@ import { Entity } from '../../classes/entity';
 })
 export class VisualizationComponent {
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
-  displayPlayButton: boolean = true;
+  displayPlayBtn: boolean = true;
   // change this to the path to visualization's audio file
   audioSource: string = '../../../assets/Lunar-Beast-Theme-v7.2_Final.wav';
   audioCtx!: AudioContext;
@@ -110,7 +110,7 @@ export class VisualizationComponent {
     // pause animation when audio is paused
     // may change this later
     if (this.audioElmt.nativeElement.paused) {
-      this.displayPlayButton = true;
+      this.displayPlayBtn = true;
       return;
     }
 
@@ -248,6 +248,6 @@ export class VisualizationComponent {
     this.audioElmt.nativeElement.paused
       ? this.audioElmt.nativeElement.play()
       : this.audioElmt.nativeElement.pause();
-    this.displayPlayButton = false;
+    this.displayPlayBtn = false;
   }
 }
