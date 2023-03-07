@@ -3,6 +3,7 @@ export interface Entity {
   position: string;
   rotation?: string;
   radius?: string;
+  width?: string;
   height?: string;
   color: string;
 }
