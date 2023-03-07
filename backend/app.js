@@ -5,6 +5,7 @@ import cors from "cors";
 import { usersRouter } from "./routers/users_router.js";
 import { visualizationsRouter } from "./routers/visualizations_router.js";
 import { sequelize } from "./datasource.js";
+import { sessionMiddleware } from "./middleware/auth.js";
 
 const PORT = 3000;
 export const app = express();
@@ -15,6 +16,8 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+app.use(sessionMiddleware);
 
 try {
   await sequelize.authenticate();
