@@ -14,6 +14,7 @@ export class NewVisualizationComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private api: ApiService) {
     this.newVisForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
+      // TODO: add further validation for audio file
       audio: ['', [Validators.required]]
     })
   }

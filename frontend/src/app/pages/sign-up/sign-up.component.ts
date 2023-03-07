@@ -25,7 +25,7 @@ export class SignUpComponent implements OnInit {
   ) {
     this.signUpForm = this.fb.group(
       {
-        username: ['', [Validators.required, Validators.minLength(3)]], // TODO: implement once uniqueUsernameValidator is working
+        username: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z0-9]*$")]], // TODO: implement once uniqueUsernameValidator is working
         password: [
           '',
           [

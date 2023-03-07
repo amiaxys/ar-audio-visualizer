@@ -15,6 +15,24 @@
       required
     />
   </div>
+
+  <div
+    class="error"
+    *ngIf="
+      newVisForm.controls['title'].invalid &&
+      (newVisForm.controls['title'].dirty ||
+        newVisForm.controls['title'].touched)
+    "
+  >
+    <div *ngIf="newVisForm.controls['title'].errors?.['required']">
+      Title is required
+    </div>
+
+    <div *ngIf="newVisForm.controls['title'].errors?.['minlength']">
+      Title must be at least 3 characters
+    </div>
+  </div>
+
   <div class="input-wrapper">
     <label>Audio File</label>
     <input
@@ -24,5 +42,7 @@
       required
     />
   </div>
-  <button type="submit" class="btn">Submit</button>
+  <button type="submit" class="btn" [disabled]="newVisForm.invalid">
+    Submit
+  </button>
 </form>

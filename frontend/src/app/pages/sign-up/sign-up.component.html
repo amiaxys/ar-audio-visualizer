@@ -30,6 +30,9 @@
     <div *ngIf="signUpForm.controls['username'].errors?.['minlength']">
       Username must be at least 3 characters
     </div>
+    <div *ngIf="signUpForm.controls['username'].errors?.['pattern']">
+      Username must only contain alphanumeric characters
+    </div>
   </div>
   <div class="input-wrapper">
     <label>Password</label>
