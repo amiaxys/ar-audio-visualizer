@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { VisualizationComponent } from './components/visualization/visualization.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IndexComponent } from './pages/index/index.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { CreditsComponent } from './pages/credits/credits.component';
@@ -22,6 +24,7 @@ import { VisualizationCardComponent } from './components/visualization-card/visu
 @NgModule({
   declarations: [
     AppComponent,
+    VisualizationComponent,
     IndexComponent,
     SignInComponent,
     CreditsComponent,
@@ -50,5 +53,6 @@ import { VisualizationCardComponent } from './components/visualization-card/visu
     },
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

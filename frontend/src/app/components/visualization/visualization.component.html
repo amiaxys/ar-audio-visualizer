@@ -1,0 +1,42 @@
+<div id="visualization-container">
+  <button id="play" class="btn" *ngIf="displayPlayBtn">Play</button>
+  <a-scene embedded (click)="startVisualization()">
+    <ng-container *ngFor="let entity of freqEntities">
+      <a-cylinder
+        *ngIf="entity.type === 'a-cylinder'"
+        [attr.position]="entity.position"
+        [attr.radius]="entity.radius"
+        [attr.height]="entity.height"
+        [attr.color]="entity.color"
+      ></a-cylinder>
+      <a-box
+        *ngIf="entity.type === 'a-box'"
+        [attr.position]="entity.position"
+        [attr.rotation]="entity.rotation"
+        [attr.width]="entity.width"
+        [attr.height]="entity.height"
+        [attr.color]="entity.color"
+      ></a-box>
+      <a-sphere
+        *ngIf="entity.type === 'a-sphere'"
+        [attr.position]="entity.position"
+        [attr.radius]="entity.radius"
+        [attr.color]="entity.color"
+      ></a-sphere>
+    </ng-container>
+    <a-sphere
+      *ngFor="let sphere of timeSpheres"
+      [attr.position]="sphere.position"
+      [attr.radius]="sphere.radius"
+      [attr.color]="sphere.color"
+    ></a-sphere>
+    <a-sky [attr.color]="skyColor"></a-sky>
+  </a-scene>
+</div>
+
+<audio
+  #audio
+  controls
+  crossorigin="use-credentials"
+  [attr.src]="audioSource"
+></audio>

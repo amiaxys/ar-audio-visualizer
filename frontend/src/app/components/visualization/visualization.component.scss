@@ -1,0 +1,33 @@
+#visualization-container {
+  position: relative;
+  margin: 20px auto;
+  max-width: 800px;
+  height: 500px;
+
+  #play {
+    $w: 300px;
+    $h: 100px;
+    position: absolute;
+    top: calc(50% - ($h / 2));
+    left: calc(50% - ($w / 2));
+    width: $w;
+    height: $h;
+    font-size: 2em;
+    box-shadow: 6px 6px 0 white;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  a-scene {
+    position: relative;
+    max-width: 800px;
+    height: 500px;
+    z-index: 0;
+  }
+}
+
+audio {
+  display: block;
+  margin: 20px auto;
+  filter: drop-shadow(6px 6px 0 black);
+}
