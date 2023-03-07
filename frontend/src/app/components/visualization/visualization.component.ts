@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Sphere } from '../../classes/sphere';
+import { Entity } from '../../classes/entity';
 //import { THREE } from 'aframe';
 //import * as AFRAME from 'aframe';
 
@@ -20,21 +20,53 @@ export class VisualizationComponent {
   timeBufferLength: number = 0;
   timeDataArray: Uint8Array = new Uint8Array(this.timeBufferLength);
 
-  boxHeight: number = 1;
-  boxColor: string = '#10FFBA';
+  freqEntities: Entity[] = [
+    {
+      type: 'a-cylinder',
+      position: '-2 0.75 -2.5',
+      radius: '0.5',
+      height: '1',
+      color: 'hsl(43, 100%, 53%)',
+    },
+    {
+      type: 'a-box',
+      position: '-1 0.5 -3.2',
+      rotation: '0 45 0',
+      height: '1.25',
+      color: 'hsl(163, 100%, 53%)',
+    },
+    {
+      type: 'a-sphere',
+      position: '0 1.25 -5',
+      radius: '1.5',
+      color: 'hsl(337, 92%, 55%)',
+    },
+    {
+      type: 'a-cylinder',
+      position: '1 0.75 -3',
+      radius: '0.5',
+      height: '1.75',
+      color: 'hsl(43, 100%, 53%)',
+    },
+    {
+      type: 'a-box',
+      position: '2.2 0.5 -2.75',
+      rotation: '0 45 0',
+      height: '1.75',
+      color: 'hsl(163, 100%, 53%)',
+    },
+  ];
 
-  cylinderHeight: number = 1.5;
-  cylinderColor: string = '#FFBA10';
-
-  sphereRadius: number = 1.25;
-  sphereColor: string = '#F62474';
+  hueRegex: RegExp = /(?<=hsl\()\d+(?=,)/g;
+  //lightRegex: RegExp = /(?<=,\s?)\d+(?=%\))/g;
 
   skyColor: string = '#000';
 
-  timeSpheres: Sphere[] = [];
-  //timeCounter: number = 0;
+  timeSpheres: Entity[] = [];
 
   start: boolean = false;
+
+  // testing variables
   //logTime: number = 0;
   //test: boolean = true;
 
@@ -55,9 +87,10 @@ export class VisualizationComponent {
       const y = v * (height / 2) + 1;
 
       this.timeSpheres[i] = {
+        type: 'a-sphere',
         position: `${x} ${y} -3`,
         radius: `${sliceWidth * 0.4}`,
-        color: `hsl(${Math.min(180 + i * 5, 360)}, 100%, ${Math.min(30 + i * 2, 100)}%)`,
+        color: `hsl(${i % 360}, 100%, ${Math.min(30 + i * 2, 100)}%)`,
       };
 
       x += sliceWidth;
@@ -66,6 +99,10 @@ export class VisualizationComponent {
 
   draw(): void {
     window.requestAnimationFrame(this.draw.bind(this));
+    // pause animation when audio is paused
+    // may change this later
+    if (this.audioElmt.nativeElement.paused) return;
+
     this.freqAnalyser.getByteFrequencyData(this.freqDataArray);
     this.timeAnalyser.getByteTimeDomainData(this.timeDataArray);
 
@@ -76,57 +113,86 @@ export class VisualizationComponent {
         tick: function () {
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
         },
-      }); */
+      });*/
     }
 
-    const sortedFreqArray: Uint8Array = this.freqDataArray.slice(0).sort((a, b) => a - b);
-    const avg = Math.floor(
-      this.freqDataArray.reduce((a, b) => a + b) / this.freqDataArray.length
+    // change frequency entities
+    const frac = Math.floor(
+      this.freqDataArray.length / this.freqEntities.length
     );
+
+    let freqAvg;
+    for (let i = 0; i < this.freqEntities.length; i++) {
+      // change frequency entity size (height/radius)
+      freqAvg =
+        this.freqDataArray
+          .slice(i * frac, (i + 1) * frac)
+          .reduce((a, b) => a + b) / frac;
+      if (this.freqEntities[i].type === 'a-sphere') {
+        this.freqEntities[i].radius = `${(freqAvg / 255) * 2}`;
+      } else {
+        this.freqEntities[i].height = `${(freqAvg / 255) * 2}`;
+      }
+
+      // change frequency entity color
+      let freqHue = this.freqEntities[i].color.match(this.hueRegex)![0];
+      this.freqEntities[i].color = `hsl(${freqHue}, 100%, ${Math.floor(
+        30 + (freqAvg / 255) * 50
+      )}%)`;
+    }
+
+    // change sky color
     const med = Math.floor(this.freqDataArray.length / 2);
-    const max = Math.max(this.freqDataArray.length - 1, 0);
-
-    this.boxHeight = sortedFreqArray[med] / 100;
-    this.cylinderHeight = avg / 100;
-    this.sphereRadius = sortedFreqArray[max] / 200;
-
     const r = Math.floor((this.freqDataArray[med] / 255.0) * 150);
-    const g = Math.floor((this.freqDataArray[Math.max(med - 5, 0)] / 255.0) * 150);
+    const g = Math.floor(
+      (this.freqDataArray[Math.max(med - 5, 0)] / 255.0) * 150
+    );
     const b = Math.floor((this.freqDataArray[0] / 255.0) * 150);
     this.skyColor = `rgb(${r}, ${g}, ${b})`;
 
+    // change time spheres (wave)
     const height = 4;
-    let y: number = (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
-        (height / 2) + 1; /*(sortedFreqArray[Math.max(med + 10, 0)] / 255)*/
+    let y: number =
+      (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
+        (height / 2) +
+      1;
     let tempPos: string[];
-    //const timeSlice = Math.floor(this.timeBufferLength / 20);
     for (let i = 0; i < this.timeSpheres.length; i++) {
-      //const y = (this.timeDataArray[i * timeSlice] / 128.0) * (height / 2) + 1;
+      // change y position of time sphere
       let tempy = y;
       tempPos = this.timeSpheres[i].position.split(' ');
       const tempPosY = parseFloat(tempPos[1]);
 
-      //if (this.timeCounter % (i + 1) === 0) {
-        if (y > tempPosY) {
-          tempy = y - tempPosY;
-          y = tempPosY;
-          tempPos[1] = tempPosY + Math.min(tempy, 0.04) + '';
-        } else if (y < tempPosY) {
-          tempy = tempPosY - y;
-          y = tempPosY;
-          tempPos[1] = tempPosY - Math.min(tempy, 0.04) + '';
-        } else {
-          y = tempPosY;
-        }
+      if (y > tempPosY) {
+        tempy = y - tempPosY;
+        y = tempPosY;
+        tempPos[1] = tempPosY + Math.min(tempy, 0.04) + '';
+      } else if (y < tempPosY) {
+        tempy = tempPosY - y;
+        y = tempPosY;
+        tempPos[1] = tempPosY - Math.min(tempy, 0.04) + '';
+      } else {
+        y = tempPosY;
+      }
       //}
       this.timeSpheres[i].position = tempPos.join(' ');
-    }
 
-    /* if (this.timeCounter === this.timeSpheres.length) {
-      this.timeCounter = 0;
-    } else {
-      this.timeCounter++;
-    } */
+      // change colour of time sphere
+      let timeHue;
+      if (i === 0) {
+        timeHue =
+          parseInt(this.timeSpheres[i].color.match(this.hueRegex)![0], 10) + 1;
+      } else {
+        timeHue = parseInt(
+          this.timeSpheres[i - 1].color.match(this.hueRegex)![0],
+          10
+        );
+      }
+      this.timeSpheres[i].color = `hsl(${timeHue % 360}, 100%, ${Math.min(
+        30 + i * 2,
+        100
+      )}%)`;
+    }
   }
 
   startVisualization(): void {
