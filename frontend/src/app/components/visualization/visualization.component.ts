@@ -10,6 +10,7 @@ import { Entity } from '../../classes/entity';
 })
 export class VisualizationComponent {
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
+  displayPlayButton: boolean = true;
   // change this to the path to visualization's audio file
   audioSource: string = '../../../assets/Lunar-Beast-Theme-v7.2_Final.wav';
   audioCtx!: AudioContext;
@@ -22,47 +23,12 @@ export class VisualizationComponent {
   timeBufferLength: number = 0;
   timeDataArray: Uint8Array = new Uint8Array(this.timeBufferLength);
 
-  freqEntities: Entity[] = [
-    {
-      type: 'a-cylinder',
-      position: '-2 0.75 -2.5',
-      radius: '0.5',
-      height: '1',
-      color: 'hsl(43, 100%, 53%)',
-    },
-    {
-      type: 'a-box',
-      position: '-1 0.5 -3.2',
-      rotation: '0 45 0',
-      height: '1.25',
-      color: 'hsl(163, 100%, 53%)',
-    },
-    {
-      type: 'a-sphere',
-      position: '0 1.25 -5',
-      radius: '1.5',
-      color: 'hsl(337, 92%, 55%)',
-    },
-    {
-      type: 'a-cylinder',
-      position: '1 0.75 -3',
-      radius: '0.5',
-      height: '1.75',
-      color: 'hsl(43, 100%, 53%)',
-    },
-    {
-      type: 'a-box',
-      position: '2.2 0.5 -2.75',
-      rotation: '0 45 0',
-      height: '1.75',
-      color: 'hsl(163, 100%, 53%)',
-    },
-  ];
+  freqEntities: Entity[] = [];
 
   hueRegex: RegExp = /(?<=hsl\()\d+(?=,)/g;
   //lightRegex: RegExp = /(?<=,\s?)\d+(?=%\))/g;
 
-  skyColor: string = '#000';
+  skyColor: string = 'hsl(0, 0%, 0%)';
 
   timeSpheres: Entity[] = [];
 
@@ -77,6 +43,46 @@ export class VisualizationComponent {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {}
+
+  initializeFreqEntities(): void {
+    let nextX = -4;
+    const freqEntNum = 5;
+    for (let i = 0; i < freqEntNum; i++) {
+      const col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
+      const z = -4 + i * 0.5;
+      switch (i % 3) {
+        case 0:
+          this.freqEntities[i] = {
+            type: 'a-cylinder',
+            position: `${nextX} 0.75 ${z}`,
+            radius: '0.5',
+            height: '1',
+            color: col,
+          };
+          break;
+        case 1:
+          this.freqEntities[i] = {
+            type: 'a-box',
+            position: `${nextX} 0.75 ${z}`,
+            rotation: '0 45 0',
+            width: '1',
+            height: '1.25',
+            color: col,
+          };
+          break;
+        case 2:
+          this.freqEntities[i] = {
+            type: 'a-sphere',
+            position: `${nextX} 1 ${z}`,
+            radius: '1',
+            color: col,
+          };
+          break;
+      }
+      nextX += 1 + (freqEntNum - i) * 0.1;
+    }
+    console.log(this.freqEntities);
+  }
 
   initializeTimeSpheres(): void {
     const width = 18;
@@ -103,13 +109,17 @@ export class VisualizationComponent {
     window.requestAnimationFrame(this.draw.bind(this));
     // pause animation when audio is paused
     // may change this later
-    if (this.audioElmt.nativeElement.paused) return;
+    if (this.audioElmt.nativeElement.paused) {
+      this.displayPlayButton = true;
+      return;
+    }
 
     this.freqAnalyser.getByteFrequencyData(this.freqDataArray);
     this.timeAnalyser.getByteTimeDomainData(this.timeDataArray);
 
     if (this.timeSpheres.length === 0) {
       this.initializeTimeSpheres();
+      this.initializeFreqEntities();
       /* AFRAME.registerComponent('time-sphere', {
         init: function () {},
         tick: function () {
@@ -131,16 +141,16 @@ export class VisualizationComponent {
           .slice(i * frac, (i + 1) * frac)
           .reduce((a, b) => a + b) / frac;
       if (this.freqEntities[i].type === 'a-sphere') {
-        this.freqEntities[i].radius = `${(freqAvg / 255) * 2}`;
+        this.freqEntities[i].radius = `${(freqAvg / 255) * 1.5}`;
       } else {
         this.freqEntities[i].height = `${(freqAvg / 255) * 2}`;
       }
 
       // change frequency entity color
       let freqHue = this.freqEntities[i].color.match(this.hueRegex)![0];
-      this.freqEntities[i].color = `hsl(${freqHue}, 100%, ${Math.floor(
+      this.freqEntities[i].color = `hsl(${freqHue}, ${Math.floor(
         30 + (freqAvg / 255) * 50
-      )}%)`;
+      )}%, 50%)`;
 
       // uncomment the block below for rainbow entities
       /* this.freqEntities[i].color = `hsl(${Math.ceil((freqAvg / 255) * 360)}, 100%, ${Math.floor(
@@ -149,13 +159,15 @@ export class VisualizationComponent {
     }
 
     // change sky color
-    const med = Math.floor(this.freqDataArray.length / 2);
-    const r = Math.floor((this.freqDataArray[med] / 255.0) * 150);
-    const g = Math.floor(
-      (this.freqDataArray[Math.max(med - 5, 0)] / 255.0) * 150
+    /* const r = Math.floor(
+      (this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 150
     );
-    const b = Math.floor((this.freqDataArray[0] / 255.0) * 150);
-    this.skyColor = `rgb(${r}, ${g}, ${b})`;
+    const g = Math.floor(
+      (this.freqDataArray[this.freqDataArray.length / 2 - 1] / 255.0) * 150
+    );
+    const b = Math.floor((this.freqDataArray[0] / 255.0) * 150); */
+    const skyLight = Math.floor((this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 100);
+    this.skyColor = `hsl(0, 0%, ${skyLight}%)`;
 
     // change time spheres (wave)
     const height = 4;
@@ -184,7 +196,6 @@ export class VisualizationComponent {
       } else {
         y = tempPosY;
       }
-      //}
       this.timeSpheres[i].position = tempPos.join(' ');
 
       // change colour of time sphere
@@ -234,6 +245,9 @@ export class VisualizationComponent {
     this.timeDataArray = new Uint8Array(this.timeBufferLength);
 
     this.draw();
-    this.audioElmt.nativeElement.play();
+    this.audioElmt.nativeElement.paused
+      ? this.audioElmt.nativeElement.play()
+      : this.audioElmt.nativeElement.pause();
+    this.displayPlayButton = false;
   }
 }
