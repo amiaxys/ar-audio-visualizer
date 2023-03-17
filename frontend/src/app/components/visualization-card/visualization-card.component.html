@@ -1,4 +1,18 @@
 <div class="card">
-  <h1>Title</h1>
-  <h2>User</h2>
+  <h1 class="vis-title">{{ visualization.title }}</h1>
+  <!-- <h2>By: {{ visualization.User.username }}</h2> -->
+  <div class="icons-container">
+    <fa-icon
+      class="edit-icon icon"
+      icon="pen-to-square"
+      size="2x"
+      (click)="editVisualization()"
+    ></fa-icon>
+    <fa-icon
+      class="delete-icon icon"
+      icon="trash"
+      size="2x"
+      (click)="deleteVisualization()"
+    ></fa-icon>
+  </div>
 </div>
