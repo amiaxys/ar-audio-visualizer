@@ -57,4 +57,8 @@ export class ApiService {
       `${this.url}/api/users/${userId}/visualizations?page=${page}&limit=${limit}`
     );
   }
+
+  deleteVisualization(userId: string, visualizationId: string): Observable<Visualization> {
+    return this.http.delete<Visualization>(`${this.url}/api/users/${userId}/visualizations/${visualizationId}`);
+  }
 }

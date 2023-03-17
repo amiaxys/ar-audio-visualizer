@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Visualization } from 'src/app/classes/visualization';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -22,6 +22,7 @@ export class VisualizationsComponent implements OnInit {
         this.api.getVisualizations(user.id, 1, 10).subscribe({
           next: (res) => {
             this.visualizations = res.rows;
+            console.log(this.visualizations.length)
           }
         })
       },
@@ -31,10 +32,27 @@ export class VisualizationsComponent implements OnInit {
     });
   }
 
-  editVisualizations(userId: number) {
+  editVisualizations(visualizationId: string) {
   }
 
-  deleteVisualizations(userId: number) {
-
+  deleteVisualizations(visualizationId: string) {
+    if (confirm(`Are you sure you want to delete this visualization?`)) {
+      this.api.me().subscribe({
+        next: (user) => {
+          this.api.deleteVisualization(user.id, visualizationId).subscribe({
+            next: () => {
+              this.getUserVisualizations();
+            },
+            error: (err) => {
+              console.log(`Deletion error: ${err}`);
+            }
+          });
+          
+        },
+        error: (err) => {
+          console.log(`Deletion error: ${err}`);
+        },
+      });
+    }
   }
 }

@@ -17,14 +17,14 @@ export class VisualizationCardComponent implements OnInit {
   ngOnInit(): void {}
   
   @Input() visualization!: Visualization;
-  @Output() edit = new EventEmitter<number>();
-  @Output() delete = new EventEmitter<number>();
+  @Output() edit = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
 
   editVisualization() {
-    this.edit.emit(parseInt(this.visualization.id));
+    this.edit.emit(this.visualization.id);
   }
 
   deleteVisualization() {
-    this.delete.emit(parseInt(this.visualization.id));
+    this.delete.emit(this.visualization.id);
   }
 }
