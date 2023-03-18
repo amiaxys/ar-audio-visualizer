@@ -5,4 +5,38 @@
     height: 300px;
     width: 300px;
     border: 1px black solid;
+    justify-content: space-between;
+
+    .vis-title {
+        margin: 10px;
+    }
+
+    .icons-container {
+        align-self: flex-end;
+        margin: 10px;
+
+        .icon {
+            cursor: pointer;
+            transition: 0.3s;
+            margin-left: 20px;
+        }
+        
+        .delete-icon:hover {
+            color: red;
+            transition: 0.3s;
+        }
+    
+        .edit-icon:hover {
+            color: gray;
+        }
+    }
+
+    .icons-container:hover {
+        cursor: auto;
+
+    }
+}
+
+.card:hover {
+    cursor: pointer;
 }

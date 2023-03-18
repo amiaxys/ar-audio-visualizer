@@ -20,6 +20,7 @@ import { VisualizationsComponent } from './pages/visualizations/visualizations.c
 import { FooterComponent } from './components/footer/footer.component';
 import { CreateVisualizationComponent } from './pages/create-visualization/create-visualization.component';
 import { VisualizationCardComponent } from './components/visualization-card/visualization-card.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { VisualizationCardComponent } from './components/visualization-card/visu
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   providers: [
     {
