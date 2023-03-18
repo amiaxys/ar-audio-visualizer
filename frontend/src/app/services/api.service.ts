@@ -52,8 +52,12 @@ export class ApiService {
     );
   }
 
-  getVisualizations(userId: string, page: number, limit: number): Observable<{ count: number, rows: Visualization[] }> {
-    return this.http.get<{ count: number, rows: Visualization[] }>(
+  getVisualizations(
+    userId: string,
+    page: number,
+    limit: number
+  ): Observable<{ count: number; rows: Visualization[] }> {
+    return this.http.get<{ count: number; rows: Visualization[] }>(
       `${this.url}/api/users/${userId}/visualizations?page=${page}&limit=${limit}`
     );
   }

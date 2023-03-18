@@ -11,7 +11,7 @@ const upload = multer({ dest: "uploads/" });
 // get users pangiated without passwordHash
 usersRouter.get("/", isAuthenticated, async (req, res) => {
   const { page, limit } = req.query;
-  let query = {attributes: { exclude: ["passwordHash"] }};
+  let query = { attributes: { exclude: ["passwordHash"] } };
   if (page && limit) {
     query.offset = (page - 1) * limit;
     query.limit = parseInt(limit);

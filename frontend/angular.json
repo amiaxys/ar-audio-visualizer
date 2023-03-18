@@ -20,10 +20,7 @@
             "outputPath": "dist/ar-audio-visualizer",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "aframe",
-              "zone.js"
-            ],
+            "polyfills": ["aframe", "zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
