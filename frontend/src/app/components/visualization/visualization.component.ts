@@ -37,8 +37,8 @@ export class VisualizationComponent {
   start: boolean = false;
 
   // testing variables
-  logTime: number = 0;
-  test: boolean = true;
+  //logTime: number = 0;
+  //test: boolean = true;
 
   constructor(private api: ApiService) {}
 
