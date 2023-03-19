@@ -13,8 +13,12 @@ import { environment } from '../../../environments/environment';
 })
 export class VisualizationComponent {
   visualization!: Visualization;
+
+  @ViewChild('a-marker-camera') marker!: ElementRef<HTMLElement>;
+
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
   displayPlayBtn: boolean = true;
+
   // default sound file if no user visualization audio is found
   audioSource: string = '../../../assets/Lunar-Beast-Theme-v7.2_Final.wav';
   audioCtx!: AudioContext;
@@ -135,9 +139,16 @@ export class VisualizationComponent {
 
     if (this.timeSpheres.length === 0 || this.freqEntities.length === 0) {
       this.initializeTimeSpheres();
-      this.initializeFreqEntities();
+      AFRAME.registerComponent('freq-entity', {
+        init: function () {
+          //this.marker.nativeElement.appendChild(this.el);
+        }
+      });
+      this.initializeFreqEntities()
       AFRAME.registerComponent('time-sphere', {
-        init: function () {},
+        init: function () {
+          //this.marker.nativeElement.appendChild(this.el);
+        },
         tick: function () {
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
         },
