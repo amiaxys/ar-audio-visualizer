@@ -1,5 +1,7 @@
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Entity } from '../../classes/entity';
+import { Visualization } from '../../classes/visualization';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from '../../../environments/environment';
 //import { THREE } from 'aframe';
@@ -10,6 +12,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./visualization.component.scss'],
 })
 export class VisualizationComponent {
+  visualization!: Visualization;
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
   displayPlayBtn: boolean = true;
   // default sound file if no user visualization audio is found
@@ -39,14 +42,20 @@ export class VisualizationComponent {
   //logTime: number = 0;
   //test: boolean = true;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.api.me().subscribe({
       next: (user) => {
-        this.api.getVisualizations(user.id, 1, 1).subscribe({
-          next: (res) => {
-            this.audioSource = `${environment.backendUrl}/api/users/${user.id}/visualizations/${res.rows[0].id}/audio`;
+        const id = this.route.snapshot.paramMap.get("id");
+        if (!id) {
+          console.log("No Visualization Id Found");
+          return;
+        }
+        this.api.getVisualization(user.id, id).subscribe({
+          next: (visualization) => {
+            this.visualization = visualization;
+            this.audioSource = `${environment.backendUrl}/api/users/${user.id}/visualizations/${visualization.id}/audio`;
           },
           error: (err) => {
             console.log(`Get Visualization Error: ${err}`);

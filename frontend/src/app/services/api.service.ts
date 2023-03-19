@@ -62,6 +62,12 @@ export class ApiService {
     );
   }
 
+  getVisualization(userId: string, visualizationId: string): Observable<Visualization> {
+    return this.http.get<Visualization>(
+      `${this.url}/api/users/${userId}/visualizations/${visualizationId}`
+    );
+  }
+
   deleteVisualization(
     userId: string,
     visualizationId: string

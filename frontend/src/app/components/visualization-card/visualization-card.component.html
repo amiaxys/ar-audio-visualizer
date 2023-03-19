@@ -1,5 +1,12 @@
 <div class="card">
-  <h2 class="vis-title">{{ visualization.title }}</h2>
+  <h2
+    class="vis-title"
+    routerLink="/visualizations/{{ visualization.UserId }}/{{
+      visualization.id
+    }}"
+  >
+    {{ visualization.title }}
+  </h2>
   <div class="icons-container">
     <fa-icon
       class="edit-icon icon"

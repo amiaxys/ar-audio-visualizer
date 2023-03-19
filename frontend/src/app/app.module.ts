@@ -35,6 +35,7 @@ import { VisualizationCardComponent } from './components/visualization-card/visu
 import { AFrame } from 'aframe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VisualizationDisplayComponent } from './pages/visualization-display/visualization-display.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FooterComponent,
     CreateVisualizationComponent,
     VisualizationCardComponent,
+    VisualizationDisplayComponent,
   ],
   imports: [
     BrowserModule,

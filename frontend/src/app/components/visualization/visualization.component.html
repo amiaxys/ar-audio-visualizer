@@ -1,6 +1,7 @@
+<h1 id="title">{{ visualization.title }}</h1>
 <div id="visualization-container">
   <button id="play" class="ar-btn" *ngIf="displayPlayBtn">Play</button>
-  <a-scene embedded arjs (click)="startVisualization()">
+  <a-scene embedded (click)="startVisualization()">
     <ng-container *ngFor="let entity of freqEntities">
       <a-cylinder
         *ngIf="entity.type === 'a-cylinder'"
