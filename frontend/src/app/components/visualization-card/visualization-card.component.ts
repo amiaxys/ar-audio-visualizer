@@ -8,7 +8,7 @@ import { Visualization } from 'src/app/classes/visualization';
 @Component({
   selector: 'app-visualization-card',
   templateUrl: './visualization-card.component.html',
-  styleUrls: ['./visualization-card.component.scss']
+  styleUrls: ['./visualization-card.component.scss'],
 })
 export class VisualizationCardComponent implements OnInit {
   modalRef?: BsModalRef;
