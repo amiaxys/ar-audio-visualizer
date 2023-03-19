@@ -76,10 +76,6 @@ export class ApiService {
     visualizationId: string,
     newTitle: string
   ): Observable<Visualization> {
-    console.log(
-      `${this.url}/api/users/${userId}/visualizations/${visualizationId}`,
-      { title: newTitle }
-    );
     return this.http.put<Visualization>(
       `${this.url}/api/users/${userId}/visualizations/${visualizationId}`,
       { title: newTitle, metadata: '123' }

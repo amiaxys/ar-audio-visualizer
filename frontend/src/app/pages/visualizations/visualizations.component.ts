@@ -22,7 +22,6 @@ export class VisualizationsComponent implements OnInit {
         this.api.getVisualizations(user.id, 1, 10).subscribe({
           next: (res) => {
             this.visualizations = res.rows;
-            console.log(this.visualizations.length);
           },
         });
       },
