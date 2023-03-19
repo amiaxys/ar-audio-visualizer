@@ -43,14 +43,14 @@ export class VisualizationComponent {
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-        this.api.getVisualizations(1, 1).subscribe({
-          next: (res) => {
-            this.audioSource = `${environment.backendUrl}/api/visualizations/${res.rows[0].id}/audio`;
-          },
-          error: (err) => {
-            console.log(`Get Visualization Error: ${err}`);
-          },
-        });
+    this.api.getVisualizations(1, 1).subscribe({
+      next: (res) => {
+        this.audioSource = `${environment.backendUrl}/api/visualizations/${res.rows[0].id}/audio`;
+      },
+      error: (err) => {
+        console.log(`Get Visualization Error: ${err}`);
+      },
+    });
   }
 
   ngAfterViewInit(): void {}

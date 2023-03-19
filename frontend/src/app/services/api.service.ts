@@ -35,10 +35,7 @@ export class ApiService {
     return this.http.get<User>(`${this.url}/api/users/me`);
   }
 
-  newVisualization(
-    title: string,
-    audio: File
-  ): Observable<Visualization> {
+  newVisualization(title: string, audio: File): Observable<Visualization> {
     const formData = new FormData();
 
     formData.append('title', title);
@@ -60,9 +57,7 @@ export class ApiService {
     );
   }
 
-  deleteVisualization(
-    visualizationId: string
-  ): Observable<Visualization> {
+  deleteVisualization(visualizationId: string): Observable<Visualization> {
     return this.http.delete<Visualization>(
       `${this.url}/api/visualizations/${visualizationId}`
     );
