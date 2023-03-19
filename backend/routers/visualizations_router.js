@@ -108,7 +108,7 @@ visualizationsRouter.patch(
 visualizationsRouter.delete("/:id", isAuthenticated, async (req, res) => {
   const { id } = req.params;
   const visualization = await Visualization.findOne({
-    where: { id, UserId },
+    where: { id },
   });
   if (!visualization) {
     return res.status(404).json({ error: "Visualization not found" });
