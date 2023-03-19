@@ -61,4 +61,9 @@ export class ApiService {
   deleteVisualization(userId: string, visualizationId: string): Observable<Visualization> {
     return this.http.delete<Visualization>(`${this.url}/api/users/${userId}/visualizations/${visualizationId}`);
   }
+
+  editVisualization(userId: string, visualizationId: string, newTitle: string): Observable<Visualization> {
+    console.log(`${this.url}/api/users/${userId}/visualizations/${visualizationId}`, {title: newTitle})
+    return this.http.put<Visualization>(`${this.url}/api/users/${userId}/visualizations/${visualizationId}`, {title: newTitle, metadata: "123"});
+  }
 }

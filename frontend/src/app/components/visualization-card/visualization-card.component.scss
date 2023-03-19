@@ -14,6 +14,9 @@
     .icons-container {
         align-self: flex-end;
         margin: 10px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.1s linear;
 
         .icon {
             cursor: pointer;
@@ -39,4 +42,21 @@
 
 .card:hover {
     cursor: pointer;
+
+    .icons-container {
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s, opacity 0.1s linear;
+    }
+}
+
+#edit-vis-form {
+    .input-wrapper {
+        margin: 10px 0;
+    }
+    
+}
+
+.btn-container > button {
+    margin-right: 10px;
 }

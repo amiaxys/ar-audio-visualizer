@@ -4,8 +4,11 @@
   src: url("assets/font/Montserrat.ttf");
 }
 
-body {
+* {
   font-family: "Montserrat";
+}
+
+body {
   margin: 0;
   padding: 0;
   display: flex;
@@ -36,24 +39,33 @@ body {
   display: none !important;
 }
 
-.btn {
+.ar-btn {
   text-decoration: none;
   color: white;
   border-radius: 10px;
   background-color: black;
   padding: 10px;
   border: none;
+  transition: 0.3s;
 }
 
-.btn:hover {
+.green-hover-btn:hover {
+  background-color: green;
+}
+
+.red-hover-btn:hover {
+  background-color: red;
+}
+
+.ar-btn:hover {
   cursor: pointer;
 }
 
-.btn:disabled {
+.ar-btn:disabled {
   background-color: gray;
 }
 
-.btn:disabled:hover {
+.ar-btn:disabled:hover {
   cursor: auto;
 }
 
@@ -92,3 +104,9 @@ body {
     }
   }
 }
+
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";

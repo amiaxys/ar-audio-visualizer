@@ -1,18 +1,78 @@
 <div class="card">
-  <h1 class="vis-title">{{ visualization.title }}</h1>
-  <!-- <h2>By: {{ visualization.User.username }}</h2> -->
+  <h2 class="vis-title">{{ visualization.title }}</h2>
   <div class="icons-container">
     <fa-icon
       class="edit-icon icon"
       icon="pen-to-square"
       size="2x"
-      (click)="editVisualization()"
+      (click)="editVisualization(editTemplate)"
     ></fa-icon>
     <fa-icon
       class="delete-icon icon"
       icon="trash"
       size="2x"
-      (click)="deleteVisualization()"
+      (click)="deleteVisualization(deleteTemplate)"
     ></fa-icon>
   </div>
 </div>
+
+<ng-template #deleteTemplate>
+  <form class="styled-form">
+    <h2>Are you sure you want to delete "{{ visualization.title }}"?</h2>
+    <div class="btn-container">
+      <button type="button" class="ar-btn" (click)="modalRef?.hide()">
+        Cancel
+      </button>
+      <button type="submit" class="ar-btn red-hover-btn" (click)="onDelete()">
+        Delete
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #editTemplate>
+  <form class="styled-form" id="edit-vis-form" [formGroup]="editForm">
+    <h2>Editing "{{ visualization.title }}"</h2>
+    <div class="input-wrapper">
+      <label>Title</label>
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        formControlName="title"
+        required
+      />
+    </div>
+    <div
+      class="error"
+      *ngIf="
+        editForm.controls['title'].invalid &&
+        (editForm.controls['title'].dirty || editForm.controls['title'].touched)
+      "
+    >
+      <div *ngIf="editForm.controls['title'].errors?.['required']">
+        Title is required
+      </div>
+      <div *ngIf="editForm.controls['title'].errors?.['minlength']">
+        Title must be at least 3 characters
+      </div>
+    </div>
+    <div class="btn-container">
+      <button
+        type="button"
+        class="ar-btn red-hover-btn"
+        (click)="modalRef?.hide()"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        [disabled]="editForm.invalid"
+        class="ar-btn green-hover-btn"
+        (click)="onEdit()"
+      >
+        Edit
+      </button>
+    </div>
+  </form>
+</ng-template>

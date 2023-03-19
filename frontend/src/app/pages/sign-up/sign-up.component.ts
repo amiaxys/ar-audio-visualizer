@@ -43,10 +43,6 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  get username() {
-    return this.signUpForm.get('username');
-  }
-
   signUp() {
     this.api
       .signUp(this.signUpForm.value.username, this.signUpForm.value.password)

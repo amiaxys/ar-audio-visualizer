@@ -32,11 +32,25 @@ export class VisualizationsComponent implements OnInit {
     });
   }
 
-  editVisualizations(visualizationId: string) {
+  editVisualizations(visualization: { visualizationId: string, newTitle: string }) {
+    this.api.me().subscribe({
+      next: (user) => {
+        this.api.editVisualization(user.id, visualization.visualizationId, visualization.newTitle).subscribe({
+          next: () => {
+            this.getUserVisualizations();
+          },
+          error: (err) => {
+            console.log(`Edit error: ${err}`);
+          }
+        });
+      },
+      error: (err) => {
+        console.log(`Auth error: ${err}`)
+      } 
+    })
   }
 
   deleteVisualizations(visualizationId: string) {
-    if (confirm(`Are you sure you want to delete this visualization?`)) {
       this.api.me().subscribe({
         next: (user) => {
           this.api.deleteVisualization(user.id, visualizationId).subscribe({
@@ -50,9 +64,8 @@ export class VisualizationsComponent implements OnInit {
           
         },
         error: (err) => {
-          console.log(`Deletion error: ${err}`);
+          console.log(`Auth error: ${err}`);
         },
       });
-    }
   }
 }
