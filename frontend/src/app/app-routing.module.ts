@@ -30,7 +30,7 @@ const routes: Routes = [
     component: VisualizationsComponent,
   },
   {
-    path: 'visualizations/:UserId/:id',
+    path: 'visualizations/:id',
     component: VisualizationDisplayComponent,
   },
   {

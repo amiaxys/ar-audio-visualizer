@@ -45,22 +45,15 @@ export class VisualizationComponent {
   constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.api.me().subscribe({
-      next: (user) => {
-        const id = this.route.snapshot.paramMap.get("id");
-        if (!id) {
-          console.log("No Visualization Id Found");
-          return;
-        }
-        this.api.getVisualization(user.id, id).subscribe({
-          next: (visualization) => {
-            this.visualization = visualization;
-            this.audioSource = `${environment.backendUrl}/api/users/${user.id}/visualizations/${visualization.id}/audio`;
-          },
-          error: (err) => {
-            console.log(`Get Visualization Error: ${err}`);
-          },
-        });
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      console.log('No Visualization Id Found');
+      return;
+    }
+    this.api.getVisualization(id).subscribe({
+      next: (visualization) => {
+        this.visualization = visualization;
+        this.audioSource = `${environment.backendUrl}/api/visualizations/${visualization.id}/audio`;
       },
       error: (err) => {
         console.log(`Get Visualization Error: ${err}`);
