@@ -142,9 +142,9 @@ export class VisualizationComponent {
       AFRAME.registerComponent('freq-entity', {
         init: function () {
           //this.marker.nativeElement.appendChild(this.el);
-        }
+        },
       });
-      this.initializeFreqEntities()
+      this.initializeFreqEntities();
       AFRAME.registerComponent('time-sphere', {
         init: function () {
           //this.marker.nativeElement.appendChild(this.el);
