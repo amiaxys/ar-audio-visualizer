@@ -3,7 +3,6 @@ import { Entity } from '../../classes/entity';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from '../../../environments/environment';
 //import { THREE } from 'aframe';
-//import * as AFRAME from 'aframe';
 
 @Component({
   selector: 'app-visualization',
@@ -135,12 +134,12 @@ export class VisualizationComponent {
     if (this.timeSpheres.length === 0 || this.freqEntities.length === 0) {
       this.initializeTimeSpheres();
       this.initializeFreqEntities();
-      /* AFRAME.registerComponent('time-sphere', {
+      AFRAME.registerComponent('time-sphere', {
         init: function () {},
         tick: function () {
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
         },
-      });*/
+      });
     }
 
     // change frequency entities
@@ -190,7 +189,7 @@ export class VisualizationComponent {
     const height = 4;
     // when maxDiff is too big, wave animation gets too jitty
     // best is actually 0.01, but not enough change
-    const maxDiff = 0.04;
+    const maxDiff = 0.08;
     let y: number =
       (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
         (height / 2) +

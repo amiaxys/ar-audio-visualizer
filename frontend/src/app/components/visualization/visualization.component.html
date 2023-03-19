@@ -1,6 +1,6 @@
 <div id="visualization-container">
   <button id="play" class="btn" *ngIf="displayPlayBtn">Play</button>
-  <a-scene embedded (click)="startVisualization()">
+  <a-scene embedded arjs (click)="startVisualization()">
     <ng-container *ngFor="let entity of freqEntities">
       <a-cylinder
         *ngIf="entity.type === 'a-cylinder'"
@@ -25,12 +25,14 @@
       ></a-sphere>
     </ng-container>
     <a-sphere
+      time-sphere
       *ngFor="let sphere of timeSpheres"
       [attr.position]="sphere.position"
       [attr.radius]="sphere.radius"
       [attr.color]="sphere.color"
     ></a-sphere>
     <a-sky [attr.color]="skyColor"></a-sky>
+    <a-marker-camera preset="hiro"></a-marker-camera>
   </a-scene>
 </div>
 
