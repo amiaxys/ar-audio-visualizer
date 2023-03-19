@@ -63,7 +63,7 @@ export class VisualizationComponent {
         });
       },
       error: (err) => {
-        console.log(`Auth Error: ${err}`);
+        console.log(`Get Visualization Error: ${err}`);
       },
     });
   }
