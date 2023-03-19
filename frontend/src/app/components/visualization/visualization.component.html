@@ -1,10 +1,12 @@
+<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 <h1 id="title">{{ visualization.title }}</h1>
 <div id="visualization-container">
   <button id="play" class="ar-btn" *ngIf="displayPlayBtn">Play</button>
-  <a-scene embedded (click)="startVisualization()">
+  <a-scene embedded arjs (click)="startVisualization()">
     <ng-container *ngFor="let entity of freqEntities">
       <a-cylinder
         *ngIf="entity.type === 'a-cylinder'"
+        freq-entity
         [attr.position]="entity.position"
         [attr.radius]="entity.radius"
         [attr.height]="entity.height"
@@ -12,6 +14,7 @@
       ></a-cylinder>
       <a-box
         *ngIf="entity.type === 'a-box'"
+        freq-entity
         [attr.position]="entity.position"
         [attr.rotation]="entity.rotation"
         [attr.width]="entity.width"
@@ -20,6 +23,7 @@
       ></a-box>
       <a-sphere
         *ngIf="entity.type === 'a-sphere'"
+        freq-entity
         [attr.position]="entity.position"
         [attr.radius]="entity.radius"
         [attr.color]="entity.color"
