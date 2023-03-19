@@ -3,5 +3,4 @@ export interface Visualization {
   title: string;
   audio: JSON;
   metadata: JSON;
-  User: { id: string };
 }
