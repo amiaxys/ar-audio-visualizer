@@ -20,6 +20,7 @@ import { VisualizationsComponent } from './pages/visualizations/visualizations.c
 import { FooterComponent } from './components/footer/footer.component';
 import { CreateVisualizationComponent } from './pages/create-visualization/create-visualization.component';
 import { VisualizationCardComponent } from './components/visualization-card/visualization-card.component';
+import { AFrame } from 'aframe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
