@@ -1,5 +1,5 @@
 <div id="visualization-container">
-  <button id="play" class="btn" *ngIf="displayPlayBtn">Play</button>
+  <button id="play" class="ar-btn" *ngIf="displayPlayBtn">Play</button>
   <a-scene embedded arjs (click)="startVisualization()">
     <ng-container *ngFor="let entity of freqEntities">
       <a-cylinder

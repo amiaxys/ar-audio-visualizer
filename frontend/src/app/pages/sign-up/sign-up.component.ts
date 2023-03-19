@@ -25,7 +25,14 @@ export class SignUpComponent implements OnInit {
   ) {
     this.signUpForm = this.fb.group(
       {
-        username: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z0-9]*$")]], // TODO: implement once uniqueUsernameValidator is working
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern('^[a-zA-Z0-9]*$'),
+          ],
+        ], // TODO: implement once uniqueUsernameValidator is working
         password: [
           '',
           [
@@ -43,26 +50,24 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  get username() {
-    return this.signUpForm.get('username');
-  }
-
   signUp() {
     this.api
       .signUp(this.signUpForm.value.username, this.signUpForm.value.password)
       .subscribe({
         next: () => {
-          this.api.signIn(
-            this.signUpForm.value.username,
-            this.signUpForm.value.password
-          ).subscribe({
-            next: () => {
-              this.router.navigate(['/visualizations']);
-            },
-            error: (err) => {
-              this.error = err.error.error;
-            }
-          })
+          this.api
+            .signIn(
+              this.signUpForm.value.username,
+              this.signUpForm.value.password
+            )
+            .subscribe({
+              next: () => {
+                this.router.navigate(['/visualizations']);
+              },
+              error: (err) => {
+                this.error = err.error.error;
+              },
+            });
         },
         error: (err) => {
           this.error = err.error.error;

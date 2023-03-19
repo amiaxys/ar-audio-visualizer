@@ -80,7 +80,6 @@ components:
         updatedAt: "2020-11-30T00:00:00.000Z"
         UserId: 1
 
-
 paths:
   /api/users:
     get:
@@ -101,7 +100,7 @@ paths:
                     type: array
                     description: The users returned.
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: "#/components/schemas/User"
 
   /api/users/sigup:
     post:
@@ -129,7 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
         422:
           description: Unprocessable Entity
           content:
@@ -167,7 +166,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
         401:
           description: Unauthorized
           content:
@@ -234,7 +233,7 @@ paths:
                   message:
                     type: string
                     description: The success message.
-  
+
   /api/users/me:
     get:
       summary: Get the current user
@@ -245,7 +244,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
         401:
           description: Unauthorized
           content:
@@ -257,7 +256,7 @@ paths:
                     type: string
                     description: The error message.
 
-# routes for visualizations
+  # routes for visualizations
   /api/users/{id}/visualizations:
     get:
       summary: Get all visualizations paginated
@@ -284,7 +283,7 @@ paths:
                     type: array
                     description: The visualizations returned.
                     items:
-                      $ref: '#/components/schemas/Visualization'
+                      $ref: "#/components/schemas/Visualization"
     post:
       summary: Create a new visualization
       description: Create a new visualization with the provided name, description, and audio file.
@@ -321,7 +320,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visualization'
+                $ref: "#/components/schemas/Visualization"
         422:
           description: Unprocessable Entity
           content:
@@ -334,7 +333,7 @@ paths:
                     description: The error message.
 
   /api/users/{userid}/visualizations/{id}/audio:
-    get: 
+    get:
       summary: Get the audio file for the visualization
       description: Get the audio file for the visualization with the provided ID.
       parameters:
@@ -392,7 +391,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visualization'
+                $ref: "#/components/schemas/Visualization"
         404:
           description: Not Found
           content:
@@ -445,7 +444,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visualization'
+                $ref: "#/components/schemas/Visualization"
         404:
           description: Not Found
           content:
