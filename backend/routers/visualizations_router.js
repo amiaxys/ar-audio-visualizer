@@ -97,7 +97,7 @@ visualizationsRouter.get(
 );
 
 // update a visualization by id
-visualizationsRouter.put(
+visualizationsRouter.patch(
   "/users/:UserId/visualizations/:id",
   upload.single("audio"),
   isAuthenticated,

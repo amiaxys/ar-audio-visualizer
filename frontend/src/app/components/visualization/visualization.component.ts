@@ -43,21 +43,14 @@ export class VisualizationComponent {
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    this.api.me().subscribe({
-      next: (user) => {
-        this.api.getVisualizations(user.id, 1, 1).subscribe({
+        this.api.getVisualizations(1, 1).subscribe({
           next: (res) => {
-            this.audioSource = `${environment.backendUrl}/api/users/${user.id}/visualizations/${res.rows[0].id}/audio`;
+            this.audioSource = `${environment.backendUrl}/api/visualizations/${res.rows[0].id}/audio`;
           },
           error: (err) => {
             console.log(`Get Visualization Error: ${err}`);
           },
         });
-      },
-      error: (err) => {
-        console.log(`Auth Error: ${err}`);
-      },
-    });
   }
 
   ngAfterViewInit(): void {}

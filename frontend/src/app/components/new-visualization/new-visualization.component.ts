@@ -34,11 +34,8 @@ export class NewVisualizationComponent implements OnInit {
   }
 
   onSubmit() {
-    this.api.me().subscribe({
-      next: (res) => {
         this.api
           .newVisualization(
-            res.id,
             this.newVisForm.value.title,
             this.newVisForm.value.audio
           )
@@ -50,10 +47,5 @@ export class NewVisualizationComponent implements OnInit {
               console.log(`File error: ${err}`);
             },
           });
-      },
-      error: (err) => {
-        console.log(`Auth error: ${err}`);
-      },
-    });
   }
 }
