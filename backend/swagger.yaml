@@ -259,15 +259,8 @@ paths:
   # routes for visualizations
   /api/visualizations:
     get:
-      summary: Get all visualizations paginated
+      summary: Get all visualizations paginated for the logged in user
       description: Get all visualizations if no query parameters are provided. Otherwise, get all visualizations that match the query parameters.
-      parameters:
-        - name: id
-          in: path
-          description: The ID of the user.
-          required: true
-          schema:
-            type: integer
       responses:
         200:
           description: OK
@@ -287,13 +280,6 @@ paths:
     post:
       summary: Create a new visualization
       description: Create a new visualization with the provided name, description, and audio file.
-      parameters:
-        - name: id
-          in: path
-          description: The ID of the user.
-          required: true
-          schema:
-            type: integer
       requestBody:
         required: true
         content:
