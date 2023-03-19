@@ -1,14 +1,17 @@
 .card {
   background-color: white;
   display: flex;
-  flex-direction: column;
-  height: 300px;
-  width: 300px;
-  border: 1px black solid;
+  flex-direction: column;  
+  border: 3px black solid;
   justify-content: space-between;
+  width: 300px;
+  height: 300px;
+  max-width: 100%;
+  margin: 0 auto;
 
   .vis-title {
-    margin: 10px;
+    margin: 20px;
+    text-align: center;
   }
 
   .icons-container {

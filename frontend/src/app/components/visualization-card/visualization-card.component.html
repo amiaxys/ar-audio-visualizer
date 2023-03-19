@@ -16,11 +16,17 @@
   </div>
 </div>
 
+<!-- Templates -->
+
 <ng-template #deleteTemplate>
   <form class="styled-form">
     <h2>Are you sure you want to delete "{{ visualization.title }}"?</h2>
     <div class="btn-container">
-      <button type="button" class="ar-btn" (click)="modalRef?.hide()">
+      <button
+        type="button"
+        class="ar-btn white-hover-btn"
+        (click)="modalRef?.hide()"
+      >
         Cancel
       </button>
       <button type="submit" class="ar-btn red-hover-btn" (click)="onDelete()">
@@ -60,7 +66,7 @@
     <div class="btn-container">
       <button
         type="button"
-        class="ar-btn red-hover-btn"
+        class="ar-btn white-hover-btn"
         (click)="modalRef?.hide()"
       >
         Cancel

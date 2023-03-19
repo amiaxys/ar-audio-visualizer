@@ -1,10 +1,12 @@
 <app-header></app-header>
 <h1 id="title">Visualizations</h1>
 <!-- <app-visualization></app-visualization> -->
-<div id="cards-container" *ngFor="let visualization of visualizations">
-  <app-visualization-card
-    [visualization]="visualization"
-    (edit)="editVisualizations($event)"
-    (delete)="deleteVisualizations($event)"
-  ></app-visualization-card>
+<div id="cards-container" class="row">
+  <div class="vis-card col-4" *ngFor="let visualization of visualizations">
+    <app-visualization-card
+      [visualization]="visualization"
+      (edit)="editVisualizations($event)"
+      (delete)="deleteVisualizations($event)"
+    ></app-visualization-card>
+  </div>
 </div>
