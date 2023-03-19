@@ -17,16 +17,9 @@ export class VisualizationsComponent implements OnInit {
   }
 
   getUserVisualizations() {
-    this.api.me().subscribe({
-      next: (user) => {
-        this.api.getVisualizations(user.id, 1, 10).subscribe({
-          next: (res) => {
-            this.visualizations = res.rows;
-          },
-        });
-      },
-      error: (err) => {
-        console.log(`Auth error: ${err}`);
+    this.api.getVisualizations(1, 10).subscribe({
+      next: (res) => {
+        this.visualizations = res.rows;
       },
     });
   }
@@ -35,43 +28,25 @@ export class VisualizationsComponent implements OnInit {
     visualizationId: string;
     newTitle: string;
   }) {
-    this.api.me().subscribe({
-      next: (user) => {
-        this.api
-          .editVisualization(
-            user.id,
-            visualization.visualizationId,
-            visualization.newTitle
-          )
-          .subscribe({
-            next: () => {
-              this.getUserVisualizations();
-            },
-            error: (err) => {
-              console.log(`Edit error: ${err}`);
-            },
-          });
-      },
-      error: (err) => {
-        console.log(`Auth error: ${err}`);
-      },
-    });
+    this.api
+      .editVisualization(visualization.visualizationId, visualization.newTitle)
+      .subscribe({
+        next: () => {
+          this.getUserVisualizations();
+        },
+        error: (err) => {
+          console.log(`Edit error: ${err}`);
+        },
+      });
   }
 
   deleteVisualizations(visualizationId: string) {
-    this.api.me().subscribe({
-      next: (user) => {
-        this.api.deleteVisualization(user.id, visualizationId).subscribe({
-          next: () => {
-            this.getUserVisualizations();
-          },
-          error: (err) => {
-            console.log(`Deletion error: ${err}`);
-          },
-        });
+    this.api.deleteVisualization(visualizationId).subscribe({
+      next: () => {
+        this.getUserVisualizations();
       },
       error: (err) => {
-        console.log(`Auth error: ${err}`);
+        console.log(`Deletion error: ${err}`);
       },
     });
   }

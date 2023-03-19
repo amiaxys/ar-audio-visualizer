@@ -35,11 +35,7 @@ export class ApiService {
     return this.http.get<User>(`${this.url}/api/users/me`);
   }
 
-  newVisualization(
-    userId: string,
-    title: string,
-    audio: File
-  ): Observable<Visualization> {
+  newVisualization(title: string, audio: File): Observable<Visualization> {
     const formData = new FormData();
 
     formData.append('title', title);
@@ -47,38 +43,39 @@ export class ApiService {
     formData.append('metadata', JSON.stringify({ attribute: '123' }));
 
     return this.http.post<Visualization>(
-      `${this.url}/api/users/${userId}/visualizations`,
+      `${this.url}/api/visualizations`,
       formData
     );
   }
 
   getVisualizations(
-    userId: string,
     page: number,
     limit: number
   ): Observable<{ count: number; rows: Visualization[] }> {
     return this.http.get<{ count: number; rows: Visualization[] }>(
-      `${this.url}/api/users/${userId}/visualizations?page=${page}&limit=${limit}`
+      `${this.url}/api/visualizations?page=${page}&limit=${limit}`
     );
   }
 
-  deleteVisualization(
-    userId: string,
-    visualizationId: string
-  ): Observable<Visualization> {
+  deleteVisualization(visualizationId: string): Observable<Visualization> {
     return this.http.delete<Visualization>(
-      `${this.url}/api/users/${userId}/visualizations/${visualizationId}`
+      `${this.url}/api/visualizations/${visualizationId}`
     );
   }
 
   editVisualization(
-    userId: string,
     visualizationId: string,
     newTitle: string
   ): Observable<Visualization> {
-    return this.http.put<Visualization>(
-      `${this.url}/api/users/${userId}/visualizations/${visualizationId}`,
+    return this.http.patch<Visualization>(
+      `${this.url}/api/visualizations/${visualizationId}`,
       { title: newTitle, metadata: '123' }
+    );
+  }
+
+  getVisualization(visualizationId: string): Observable<Visualization> {
+    return this.http.get<Visualization>(
+      `${this.url}/api/visualizations/${visualizationId}`
     );
   }
 }

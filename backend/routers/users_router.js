@@ -39,6 +39,8 @@ usersRouter.post("/signup", upload.single("avatar"), async (req, res) => {
       error: "Username already exists. Please choose a different one.",
     });
   }
+  // remove passwordHash from response
+  user.passwordHash = undefined;
   return res.json(user);
 });
 
@@ -56,8 +58,9 @@ usersRouter.post("/signin", async (req, res) => {
   if (!passwordCorrect) {
     return res.status(401).json({ error: "Password incorrect." });
   }
+  // remove passwordHash from response
+  user.passwordHash = undefined;
   req.session.user = user;
-
   return res.json(user);
 });
 

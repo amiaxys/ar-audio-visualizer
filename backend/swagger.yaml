@@ -257,17 +257,10 @@ paths:
                     description: The error message.
 
   # routes for visualizations
-  /api/users/{id}/visualizations:
+  /api/visualizations:
     get:
-      summary: Get all visualizations paginated
+      summary: Get all visualizations paginated for the logged in user
       description: Get all visualizations if no query parameters are provided. Otherwise, get all visualizations that match the query parameters.
-      parameters:
-        - name: id
-          in: path
-          description: The ID of the user.
-          required: true
-          schema:
-            type: integer
       responses:
         200:
           description: OK
@@ -287,13 +280,6 @@ paths:
     post:
       summary: Create a new visualization
       description: Create a new visualization with the provided name, description, and audio file.
-      parameters:
-        - name: id
-          in: path
-          description: The ID of the user.
-          required: true
-          schema:
-            type: integer
       requestBody:
         required: true
         content:
@@ -332,7 +318,7 @@ paths:
                     type: string
                     description: The error message.
 
-  /api/users/{userid}/visualizations/{id}/audio:
+  /api/visualizations/{id}/audio:
     get:
       summary: Get the audio file for the visualization
       description: Get the audio file for the visualization with the provided ID.
@@ -340,12 +326,6 @@ paths:
         - name: id
           in: path
           description: The ID of the visualization.
-          required: true
-          schema:
-            type: integer
-        - name: userid
-          in: path
-          description: The ID of the user.
           required: true
           schema:
             type: integer
@@ -368,7 +348,7 @@ paths:
                     type: string
                     description: The error message.
 
-  /api/users/{userid}/visualizations/{id}:
+  /api/visualizations/{id}:
     get:
       summary: Get a visualization
       description: Get a visualization with the provided ID.
@@ -376,12 +356,6 @@ paths:
         - name: id
           in: path
           description: The ID of the visualization.
-          required: true
-          schema:
-            type: integer
-        - name: userid
-          in: path
-          description: The ID of the user.
           required: true
           schema:
             type: integer
@@ -402,19 +376,13 @@ paths:
                   error:
                     type: string
                     description: The error message.
-    put:
+    patch:
       summary: Update a visualization
       description: Update a visualization with the provided ID.
       parameters:
         - name: id
           in: path
           description: The ID of the visualization.
-          required: true
-          schema:
-            type: integer
-        - name: userid
-          in: path
-          description: The ID of the user.
           required: true
           schema:
             type: integer
@@ -462,12 +430,6 @@ paths:
         - name: id
           in: path
           description: The ID of the visualization.
-          required: true
-          schema:
-            type: integer
-        - name: userid
-          in: path
-          description: The ID of the user.
           required: true
           schema:
             type: integer

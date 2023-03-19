@@ -1,9 +1,10 @@
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Entity } from '../../classes/entity';
+import { Visualization } from '../../classes/visualization';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from '../../../environments/environment';
 //import { THREE } from 'aframe';
-//import * as AFRAME from 'aframe';
 
 @Component({
   selector: 'app-visualization',
@@ -11,8 +12,13 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./visualization.component.scss'],
 })
 export class VisualizationComponent {
+  visualization!: Visualization;
+
+  @ViewChild('a-marker-camera') marker!: ElementRef<HTMLElement>;
+
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
   displayPlayBtn: boolean = true;
+
   // default sound file if no user visualization audio is found
   audioSource: string = '../../../assets/Lunar-Beast-Theme-v7.2_Final.wav';
   audioCtx!: AudioContext;
@@ -37,25 +43,24 @@ export class VisualizationComponent {
   start: boolean = false;
 
   // testing variables
-  logTime: number = 0;
-  test: boolean = true;
+  //logTime: number = 0;
+  //test: boolean = true;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.api.me().subscribe({
-      next: (user) => {
-        this.api.getVisualizations(user.id, 1, 1).subscribe({
-          next: (res) => {
-            this.audioSource = `${environment.backendUrl}/api/users/${user.id}/visualizations/${res.rows[0].id}/audio`;
-          },
-          error: (err) => {
-            console.log(`Get Visualization Error: ${err}`);
-          },
-        });
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      console.log('No Visualization Id Found');
+      return;
+    }
+    this.api.getVisualization(id).subscribe({
+      next: (visualization) => {
+        this.visualization = visualization;
+        this.audioSource = `${environment.backendUrl}/api/visualizations/${visualization.id}/audio`;
       },
       error: (err) => {
-        console.log(`Auth Error: ${err}`);
+        console.log(`Get Visualization Error: ${err}`);
       },
     });
   }
@@ -134,13 +139,20 @@ export class VisualizationComponent {
 
     if (this.timeSpheres.length === 0 || this.freqEntities.length === 0) {
       this.initializeTimeSpheres();
+      AFRAME.registerComponent('freq-entity', {
+        init: function () {
+          //this.marker.nativeElement.appendChild(this.el);
+        },
+      });
       this.initializeFreqEntities();
-      /* AFRAME.registerComponent('time-sphere', {
-        init: function () {},
+      AFRAME.registerComponent('time-sphere', {
+        init: function () {
+          //this.marker.nativeElement.appendChild(this.el);
+        },
         tick: function () {
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
         },
-      });*/
+      });
     }
 
     // change frequency entities
@@ -190,7 +202,7 @@ export class VisualizationComponent {
     const height = 4;
     // when maxDiff is too big, wave animation gets too jitty
     // best is actually 0.01, but not enough change
-    const maxDiff = 0.04;
+    const maxDiff = 0.08;
     let y: number =
       (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
         (height / 2) +
