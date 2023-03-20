@@ -14,8 +14,6 @@ import { environment } from '../../../environments/environment';
 export class VisualizationComponent {
   visualization!: Visualization;
 
-  @ViewChild('a-marker-camera') marker!: ElementRef<HTMLElement>;
-
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
   displayPlayBtn: boolean = true;
 
@@ -36,7 +34,7 @@ export class VisualizationComponent {
   hueRegex: RegExp = /(?<=hsl\()\d+(?=,)/g;
   //lightRegex: RegExp = /(?<=,\s?)\d+(?=%\))/g;
 
-  skyColor: string = 'hsl(0, 0%, 0%)';
+  planeColor: string = 'hsl(0, 0%, 0%)';
 
   timeSpheres: Entity[] = [];
 
@@ -49,6 +47,12 @@ export class VisualizationComponent {
   constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    AFRAME.registerComponent('time-sphere', {
+      init: function () {},
+      tick: function () {
+        this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
+      },
+    });
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       console.log('No Visualization Id Found');
@@ -72,7 +76,7 @@ export class VisualizationComponent {
     const freqEntNum = 5;
     for (let i = 0; i < freqEntNum; i++) {
       const col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
-      const z = -4 + i * 0.5;
+      const z = 0 + i * 0.5;
       switch (i % 3) {
         case 0:
           this.freqEntities[i] = {
@@ -118,7 +122,7 @@ export class VisualizationComponent {
 
       this.timeSpheres[i] = {
         type: 'a-sphere',
-        position: `${x} ${y} -3`,
+        position: `${x} ${y} 0`,
         radius: `${sliceWidth * 0.4}`,
         color: `hsl(${i % 360}, 100%, ${Math.min(30 + i * 2, 100)}%)`,
       };
@@ -139,20 +143,7 @@ export class VisualizationComponent {
 
     if (this.timeSpheres.length === 0 || this.freqEntities.length === 0) {
       this.initializeTimeSpheres();
-      AFRAME.registerComponent('freq-entity', {
-        init: function () {
-          //this.marker.nativeElement.appendChild(this.el);
-        },
-      });
       this.initializeFreqEntities();
-      AFRAME.registerComponent('time-sphere', {
-        init: function () {
-          //this.marker.nativeElement.appendChild(this.el);
-        },
-        tick: function () {
-          this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
-        },
-      });
     }
 
     // change frequency entities
@@ -185,7 +176,7 @@ export class VisualizationComponent {
       )}%)`; */
     }
 
-    // change sky color
+    // change plane color
     /* const r = Math.floor(
       (this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 150
     );
@@ -193,16 +184,16 @@ export class VisualizationComponent {
       (this.freqDataArray[this.freqDataArray.length / 2 - 1] / 255.0) * 150
     );
     const b = Math.floor((this.freqDataArray[0] / 255.0) * 150); */
-    const skyLight = Math.floor(
+    const planeLight = Math.floor(
       (this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 100
     );
-    this.skyColor = `hsl(0, 0%, ${skyLight}%)`;
+    this.planeColor = `hsl(0, 0%, ${planeLight}%)`;
 
     // change time spheres (wave)
     const height = 4;
     // when maxDiff is too big, wave animation gets too jitty
     // best is actually 0.01, but not enough change
-    const maxDiff = 0.08;
+    const maxDiff = 0.05;
     let y: number =
       (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *
         (height / 2) +
