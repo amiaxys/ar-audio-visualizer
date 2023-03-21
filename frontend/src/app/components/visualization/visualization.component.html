@@ -1,7 +1,12 @@
-<h2 id="title">{{ visualization.title }}</h2>
+<h2 *ngIf="visualizationFetched" id="title">{{ visualization.title }}</h2>
 <div id="visualization-container">
   <button id="play" class="ar-btn" *ngIf="displayPlayBtn">Play</button>
-  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;" (click)="startVisualization()">
+  <a-scene
+    embedded
+    vr-mode-ui="enabled: false"
+    arjs="sourceType: webcam; debugUIEnabled: false;"
+    (click)="startVisualization()"
+  >
     <a-marker preset="hiro">
       <ng-container *ngFor="let entity of freqEntities">
         <a-cylinder
