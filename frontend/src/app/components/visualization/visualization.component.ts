@@ -13,6 +13,7 @@ import { environment } from '../../../environments/environment';
 })
 export class VisualizationComponent {
   visualization!: Visualization;
+  visualizationFetched: boolean = false;
 
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
   displayPlayBtn: boolean = true;
@@ -47,12 +48,14 @@ export class VisualizationComponent {
   constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    AFRAME.registerComponent('time-sphere', {
-      init: function () {},
-      tick: function () {
-        this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
-      },
-    });
+    if (!AFRAME.components['time-sphere']) {
+      AFRAME.registerComponent('time-sphere', {
+        init: function () {},
+        tick: function () {
+          this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
+        },
+      });
+    }
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       console.log('No Visualization Id Found');
@@ -61,6 +64,7 @@ export class VisualizationComponent {
     this.api.getVisualization(id).subscribe({
       next: (visualization) => {
         this.visualization = visualization;
+        this.visualizationFetched = true;
         this.audioSource = `${environment.backendUrl}/api/visualizations/${visualization.id}/audio`;
       },
       error: (err) => {
