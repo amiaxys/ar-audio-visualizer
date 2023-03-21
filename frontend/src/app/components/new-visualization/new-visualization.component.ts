@@ -37,7 +37,14 @@ export class NewVisualizationComponent implements OnInit {
     this.api
       .newVisualization(
         this.newVisForm.value.title,
-        this.newVisForm.value.audio
+        this.newVisForm.value.audio,
+        {
+          type: 'basic-shapes',
+          options: {
+            timeEntities: ['sphere'],
+            freqEntities: ['cylinder', 'box', 'sphere'],
+          },
+        }
       )
       .subscribe({
         next: () => {

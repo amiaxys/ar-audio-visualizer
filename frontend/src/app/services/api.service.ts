@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../classes/user';
 import { Visualization } from '../classes/visualization';
+import { Metadata } from '../classes/metadata';
 
 @Injectable({
   providedIn: 'root',
@@ -35,12 +36,12 @@ export class ApiService {
     return this.http.get<User>(`${this.url}/api/users/me`);
   }
 
-  newVisualization(title: string, audio: File): Observable<Visualization> {
+  newVisualization(title: string, audio: File, metadata: Metadata): Observable<Visualization> {
     const formData = new FormData();
 
     formData.append('title', title);
     formData.append('audio', audio, audio.name);
-    formData.append('metadata', JSON.stringify({ attribute: '123' }));
+    formData.append('metadata', JSON.stringify(metadata));
 
     return this.http.post<Visualization>(
       `${this.url}/api/visualizations`,
@@ -65,11 +66,12 @@ export class ApiService {
 
   editVisualization(
     visualizationId: string,
-    newTitle: string
+    newTitle: string,
+    newMetadata: Object
   ): Observable<Visualization> {
     return this.http.patch<Visualization>(
       `${this.url}/api/visualizations/${visualizationId}`,
-      { title: newTitle, metadata: '123' }
+      { title: newTitle, metadata: JSON.stringify(newMetadata) }
     );
   }
 

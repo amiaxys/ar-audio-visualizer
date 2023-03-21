@@ -1,7 +1,9 @@
+import { Metadata } from "./metadata";
+
 export interface Visualization {
   id: string;
   title: string;
   audio: JSON;
-  metadata: JSON;
+  metadata: Metadata;
   UserId: string;
 }

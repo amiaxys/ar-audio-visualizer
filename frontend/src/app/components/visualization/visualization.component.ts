@@ -37,7 +37,7 @@ export class VisualizationComponent {
 
   planeColor: string = 'hsl(0, 0%, 0%)';
 
-  timeSpheres: Entity[] = [];
+  timeEntities: Entity[] = [];
 
   start: boolean = false;
 
@@ -48,10 +48,11 @@ export class VisualizationComponent {
   constructor(private api: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    if (!AFRAME.components['time-sphere']) {
-      AFRAME.registerComponent('time-sphere', {
+    if (!AFRAME.components['time-entity']) {
+      AFRAME.registerComponent('time-entity', {
         init: function () {},
         tick: function () {
+          // I'm not actually sure if this smooths the movement
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
         },
       });
@@ -65,6 +66,7 @@ export class VisualizationComponent {
       next: (visualization) => {
         this.visualization = visualization;
         this.visualizationFetched = true;
+        console.log('visualization', visualization);
         this.audioSource = `${environment.backendUrl}/api/visualizations/${visualization.id}/audio`;
       },
       error: (err) => {
@@ -76,6 +78,18 @@ export class VisualizationComponent {
   ngAfterViewInit(): void {}
 
   initializeFreqEntities(): void {
+    const metaFreqTypes = this.visualization.metadata.options.freqEntities;
+    const freqTypes = ['cylinder', 'box', 'sphere'];
+    for (let i = 0; i < 3; i++) {
+      if (
+        metaFreqTypes[i] === 'cylinder' ||
+        metaFreqTypes[i] === 'box' ||
+        metaFreqTypes[i] === 'sphere'
+      ) {
+        freqTypes[i] = metaFreqTypes[i];
+      }
+    }
+
     let nextX = -4;
     const freqEntNum = 5;
     for (let i = 0; i < freqEntNum; i++) {
@@ -83,8 +97,9 @@ export class VisualizationComponent {
       const z = 0 + i * 0.5;
       switch (i % 3) {
         case 0:
+          metaFreqTypes[0];
           this.freqEntities[i] = {
-            type: 'a-cylinder',
+            type: `a-${freqTypes[0]}`,
             position: `${nextX} 0.75 ${z}`,
             radius: '0.5',
             height: '1',
@@ -93,7 +108,7 @@ export class VisualizationComponent {
           break;
         case 1:
           this.freqEntities[i] = {
-            type: 'a-box',
+            type: `a-${freqTypes[1]}`,
             position: `${nextX} 0.75 ${z}`,
             rotation: '0 45 0',
             width: '1',
@@ -103,7 +118,7 @@ export class VisualizationComponent {
           break;
         case 2:
           this.freqEntities[i] = {
-            type: 'a-sphere',
+            type: `a-${freqTypes[2]}`,
             position: `${nextX} 1 ${z}`,
             radius: '1',
             color: col,
@@ -114,7 +129,8 @@ export class VisualizationComponent {
     }
   }
 
-  initializeTimeSpheres(): void {
+  initializeTimeEntities(): void {
+    const metaTimeTypes = this.visualization.metadata.options.timeEntities;
     const width = 18;
     const height = 4;
     const timeSlice = Math.floor(this.timeBufferLength / 20);
@@ -124,10 +140,17 @@ export class VisualizationComponent {
       const v = this.timeDataArray[i * timeSlice] / 128.0;
       const y = v * (height / 2) + 1;
 
-      this.timeSpheres[i] = {
-        type: 'a-sphere',
+      let timeType = 'a-sphere';
+      if (metaTimeTypes[0] === 'cylinder' || metaTimeTypes[0] === 'box') {
+        timeType = 'a-' + metaTimeTypes[0];
+      }
+
+      this.timeEntities[i] = {
+        type: timeType,
         position: `${x} ${y} 0`,
         radius: `${sliceWidth * 0.4}`,
+        width: `${sliceWidth * 0.4 * 2}`,
+        height: `${sliceWidth * 0.4 * 2}`,
         color: `hsl(${i % 360}, 100%, ${Math.min(30 + i * 2, 100)}%)`,
       };
 
@@ -138,15 +161,14 @@ export class VisualizationComponent {
   draw(): void {
     window.requestAnimationFrame(this.draw.bind(this));
     // pause animation when audio is paused
-    // may change this later
     this.displayPlayBtn = this.audioElmt.nativeElement.paused;
     if (this.audioElmt.nativeElement.paused) return;
 
     this.freqAnalyser.getByteFrequencyData(this.freqDataArray);
     this.timeAnalyser.getByteTimeDomainData(this.timeDataArray);
 
-    if (this.timeSpheres.length === 0 || this.freqEntities.length === 0) {
-      this.initializeTimeSpheres();
+    if (this.timeEntities.length === 0 || this.freqEntities.length === 0) {
+      this.initializeTimeEntities();
       this.initializeFreqEntities();
     }
 
@@ -203,10 +225,10 @@ export class VisualizationComponent {
         (height / 2) +
       1;
     let tempPos: string[];
-    for (let i = 0; i < this.timeSpheres.length; i++) {
-      // change y position of time sphere
+    for (let i = 0; i < this.timeEntities.length; i++) {
+      // change y position of time entity
       let tempy = y;
-      tempPos = this.timeSpheres[i].position.split(' ');
+      tempPos = this.timeEntities[i].position.split(' ');
       const tempPosY = parseFloat(tempPos[1]);
 
       if (y > tempPosY) {
@@ -220,20 +242,20 @@ export class VisualizationComponent {
       } else {
         y = tempPosY;
       }
-      this.timeSpheres[i].position = tempPos.join(' ');
+      this.timeEntities[i].position = tempPos.join(' ');
 
-      // change colour of time sphere
+      // change colour of time entity
       let timeHue;
       if (i === 0) {
         timeHue =
-          parseInt(this.timeSpheres[i].color.match(this.hueRegex)![0], 10) + 1;
+          parseInt(this.timeEntities[i].color.match(this.hueRegex)![0], 10) + 1;
       } else {
         timeHue = parseInt(
-          this.timeSpheres[i - 1].color.match(this.hueRegex)![0],
+          this.timeEntities[i - 1].color.match(this.hueRegex)![0],
           10
         );
       }
-      this.timeSpheres[i].color = `hsl(${timeHue % 360}, 100%, ${Math.min(
+      this.timeEntities[i].color = `hsl(${timeHue % 360}, 100%, ${Math.min(
         30 + i * 2,
         100
       )}%)`;

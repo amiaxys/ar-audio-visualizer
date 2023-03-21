@@ -14,6 +14,7 @@ import {
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Visualization } from 'src/app/classes/visualization';
+import { Metadata } from 'src/app/classes/metadata';
 
 @Component({
   selector: 'app-visualization-card',
@@ -28,6 +29,7 @@ export class VisualizationCardComponent implements OnInit {
   @Output() edit = new EventEmitter<{
     visualizationId: string;
     newTitle: string;
+    newMetadata: Metadata;
   }>();
   @Output() delete = new EventEmitter<string>();
 
@@ -55,6 +57,7 @@ export class VisualizationCardComponent implements OnInit {
     this.edit.emit({
       visualizationId: this.visualization.id,
       newTitle: this.editForm.controls['title'].value,
+      newMetadata: this.visualization.metadata
     });
     this.modalRef?.hide();
   }
