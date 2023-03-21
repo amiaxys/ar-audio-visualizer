@@ -15,7 +15,7 @@ export class VisualizationDisplayComponent {
 
     });
   }
-  removeStream(): void {
+  /* removeStream(): void {
     // not the best way to do this, but it works, kind of
     // body still being sus and header is getting hidden when going to another page
     // could probably hack a fix for that, but I want to find a better way
@@ -29,5 +29,5 @@ export class VisualizationDisplayComponent {
       // doesn't work
       //document.body.removeAttribute('style');
     }
-  }
+  } */
 }
