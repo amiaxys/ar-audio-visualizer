@@ -13,6 +13,8 @@ body {
   padding: 0;
   display: flex;
   min-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 
   /* The following snippet of code was taken from Manuel Pinto at https://codepen.io/P1N2O/pen/pyBNzX */
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
@@ -74,6 +76,22 @@ body {
 
 .ar-btn:disabled:hover {
   cursor: auto;
+}
+
+.link {
+  color:black;
+  transition: 0.3s;
+}
+
+.link:hover {
+  color:white;
+}
+
+.error-component {
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 // Forms
