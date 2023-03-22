@@ -8,9 +8,8 @@ describe('NotAuthenticatedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NotAuthenticatedComponent ]
-    })
-    .compileComponents();
+      declarations: [NotAuthenticatedComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NotAuthenticatedComponent);
     component = fixture.componentInstance;

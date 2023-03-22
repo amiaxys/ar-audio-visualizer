@@ -79,12 +79,12 @@ body {
 }
 
 .link {
-  color:black;
+  color: black;
   transition: 0.3s;
 }
 
 .link:hover {
-  color:white;
+  color: white;
 }
 
 .error-component {
@@ -96,7 +96,8 @@ body {
 
 // Forms
 
-.styled-form, .styled-modal {
+.styled-form,
+.styled-modal {
   border: 2px solid black;
   background-color: white;
   display: flex;
