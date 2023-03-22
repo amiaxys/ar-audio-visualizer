@@ -78,7 +78,7 @@ body {
 
 // Forms
 
-.styled-form {
+.styled-form, .styled-modal {
   border: 2px solid black;
   background-color: white;
   display: flex;
@@ -95,6 +95,10 @@ body {
     border-radius: 3px;
     margin: 5px 0;
     padding: 10px;
+  }
+
+  .modal-title {
+    margin: 0;
   }
 
   .input-wrapper {
