@@ -1,9 +1,19 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faMicrophone, faCircleStop, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMicrophone,
+  faCircleStop,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/services/api.service';
 
 declare var MediaRecorder: any;
@@ -13,14 +23,13 @@ declare var MediaRecorder: any;
   templateUrl: './new-visualization.component.html',
   styleUrls: ['./new-visualization.component.scss'],
 })
-
 export class NewVisualizationComponent implements OnInit {
   newVisForm: FormGroup;
 
   isAuth!: boolean;
 
-  mediaRecorder!: MediaRecorder;  
-  isRecording : boolean = false;
+  mediaRecorder!: MediaRecorder;
+  isRecording: boolean = false;
   chunks: BlobPart[] = [];
   audioSrc: any;
 
@@ -34,7 +43,6 @@ export class NewVisualizationComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private cdRef: ChangeDetectorRef
   ) {
-    
     library.addIcons(faMicrophone, faCircleStop, faTrash);
 
     this.newVisForm = this.fb.group({
@@ -48,21 +56,22 @@ export class NewVisualizationComponent implements OnInit {
       this.isAuth = res ? true : false;
     });
 
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-      
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       this.mediaRecorder = new MediaRecorder(stream);
-      
+
       this.mediaRecorder.onstop = () => {
-        const blob = new Blob(this.chunks, { type: "audio/ogg; codecs=opus" });
+        const blob = new Blob(this.chunks, { type: 'audio/ogg; codecs=opus' });
         this.chunks = [];
-        this.audioSrc = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
+        this.audioSrc = this.domSanitizer.bypassSecurityTrustUrl(
+          URL.createObjectURL(blob)
+        );
         this.newVisForm.patchValue({
-          audio: new File([blob], "Microphone Recording"),
+          audio: new File([blob], 'Microphone Recording'),
         });
         this.cdRef.detectChanges();
-      }
-      
-      this.mediaRecorder.ondataavailable = e => {
+      };
+
+      this.mediaRecorder.ondataavailable = (e) => {
         this.chunks.push(e.data);
       };
     });
@@ -79,8 +88,8 @@ export class NewVisualizationComponent implements OnInit {
   }
 
   onDelete() {
-    this.audioSrc = "";
-    this.fileInputVar.nativeElement.value = "";
+    this.audioSrc = '';
+    this.fileInputVar.nativeElement.value = '';
 
     this.newVisForm.patchValue({
       audio: null,
@@ -96,7 +105,9 @@ export class NewVisualizationComponent implements OnInit {
       audio: file,
     });
 
-    this.audioSrc = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file));
+    this.audioSrc = this.domSanitizer.bypassSecurityTrustUrl(
+      URL.createObjectURL(file)
+    );
   }
 
   onSubmit() {
