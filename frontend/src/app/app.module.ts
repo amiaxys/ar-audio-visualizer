@@ -36,6 +36,7 @@ import { AFrame } from 'aframe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationDisplayComponent } from './pages/visualization-display/visualization-display.component';
+import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { VisualizationDisplayComponent } from './pages/visualization-display/vis
     CreateVisualizationComponent,
     VisualizationCardComponent,
     VisualizationDisplayComponent,
+    ClickStopPropagationDirective,
   ],
   imports: [
     BrowserModule,
