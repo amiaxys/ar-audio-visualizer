@@ -24,6 +24,8 @@ export class NewVisualizationComponent implements OnInit {
   chunks: BlobPart[] = [];
   audioSrc: any;
 
+  @ViewChild('fileInput') fileInputVar!: ElementRef;
+
   constructor(
     private library: FaIconLibrary,
     private fb: FormBuilder,
@@ -78,6 +80,7 @@ export class NewVisualizationComponent implements OnInit {
 
   onDelete() {
     this.audioSrc = "";
+    this.fileInputVar.nativeElement.value = "";
 
     this.newVisForm.patchValue({
       audio: null,
