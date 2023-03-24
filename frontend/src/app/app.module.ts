@@ -37,6 +37,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationDisplayComponent } from './pages/visualization-display/visualization-display.component';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
+import { NotAuthenticatedComponent } from './components/not-authenticated/not-authenticated.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ClickStopPropagationDirective } from './directives/click-stop-propagati
     VisualizationCardComponent,
     VisualizationDisplayComponent,
     ClickStopPropagationDirective,
+    NotAuthenticatedComponent,
   ],
   imports: [
     BrowserModule,
