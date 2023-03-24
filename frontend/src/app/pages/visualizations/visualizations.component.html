@@ -1,11 +1,18 @@
 <app-header></app-header>
-<h1 id="title">Visualizations</h1>
-<div id="cards-container" class="row">
-  <div class="vis-card col-4" *ngFor="let visualization of visualizations">
-    <app-visualization-card
-      [visualization]="visualization"
-      (edit)="editVisualizations($event)"
-      (delete)="deleteVisualizations($event)"
-    ></app-visualization-card>
+
+<div class="error-component" *ngIf="!isAuth">
+  <app-not-authenticated></app-not-authenticated>
+</div>
+
+<div *ngIf="isAuth">
+  <h1 id="title">Visualizations</h1>
+  <div id="cards-container" class="row">
+    <div class="vis-card col-4" *ngFor="let visualization of visualizations">
+      <app-visualization-card
+        [visualization]="visualization"
+        (edit)="editVisualizations($event)"
+        (delete)="deleteVisualizations($event)"
+      ></app-visualization-card>
+    </div>
   </div>
 </div>
