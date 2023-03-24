@@ -1,16 +1,13 @@
 import { Directive, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appClickStopPropagation]'
+  selector: '[appClickStopPropagation]',
 })
 export class ClickStopPropagationDirective {
+  constructor() {}
 
-  constructor() { }
-
-  @HostListener("click", ["$event"])
-    public onClick(event: any): void
-    {
-        event.stopPropagation();
-    }
-
+  @HostListener('click', ['$event'])
+  public onClick(event: any): void {
+    event.stopPropagation();
+  }
 }
