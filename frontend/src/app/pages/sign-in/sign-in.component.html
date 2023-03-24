@@ -26,6 +26,9 @@
       required
     />
   </div>
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+
   <button
     [disabled]="signInForm.invalid"
     type="submit"

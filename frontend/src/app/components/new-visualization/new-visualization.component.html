@@ -1,8 +1,13 @@
+<div class="error-component" *ngIf="!isAuth">
+  <app-not-authenticated></app-not-authenticated>
+</div>
+
 <form
   class="styled-form"
   id="new-visualization-form"
   (submit)="onSubmit()"
   [formGroup]="newVisForm"
+  *ngIf="isAuth"
 >
   <h2 class="form-title">New Visualization</h2>
   <div class="input-wrapper">

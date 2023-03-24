@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -8,10 +9,16 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private api: ApiService, private router: Router) {}
+  modalRef?: BsModalRef;
 
   error: string = '';
   isAuth: boolean = false;
+
+  constructor(
+    private modalService: BsModalService,
+    private api: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.checkAuth();
@@ -23,9 +30,11 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  signOut() {
+  signOut(template: TemplateRef<any>) {
     this.api.signOut().subscribe({
       next: () => {
+        this.isAuth = false;
+        this.modalRef = this.modalService.show(template);
         this.router.navigate(['/']);
       },
       error: (err) => {
