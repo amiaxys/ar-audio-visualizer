@@ -17,6 +17,8 @@ declare var MediaRecorder: any;
 export class NewVisualizationComponent implements OnInit {
   newVisForm: FormGroup;
 
+  isAuth!: boolean;
+
   mediaRecorder!: MediaRecorder;  
   isRecording : boolean = false;
   chunks: BlobPart[] = [];
@@ -40,6 +42,10 @@ export class NewVisualizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.api.me().subscribe((res) => {
+      this.isAuth = res ? true : false;
+    });
+
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       
       this.mediaRecorder = new MediaRecorder(stream);
