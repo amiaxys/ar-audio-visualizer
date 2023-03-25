@@ -80,7 +80,7 @@ export class VisualizationComponent {
     const freqEntNum = 5;
     for (let i = 0; i < freqEntNum; i++) {
       const col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
-      const z = 0 + i * 0.5;
+      const z = -4 + i * 0.5;
       switch (i % 3) {
         case 0:
           this.freqEntities[i] = {
@@ -126,7 +126,7 @@ export class VisualizationComponent {
 
       this.timeSpheres[i] = {
         type: 'a-sphere',
-        position: `${x} ${y} 0`,
+        position: `${x} ${y} -4`,
         radius: `${sliceWidth * 0.4}`,
         color: `hsl(${i % 360}, 100%, ${Math.min(30 + i * 2, 100)}%)`,
       };
