@@ -25,24 +25,24 @@
         [attr.color]="entity.color"
       ></a-sphere>
     </ng-container>
-      <ng-container *ngFor="let entity of timeEntities">
-        <a-cylinder
-          time-entity
-          *ngIf="entity.type === 'a-cylinder'"
-          [attr.position]="entity.position"
-          [attr.radius]="entity.radius"
-          [attr.height]="entity.height"
-          [attr.color]="entity.color"
-        ></a-cylinder>
-        <a-box
-          time-entity
-          *ngIf="entity.type === 'a-box'"
-          [attr.position]="entity.position"
-          [attr.rotation]="entity.rotation"
-          [attr.width]="entity.width"
-          [attr.height]="entity.height"
-          [attr.color]="entity.color"
-        ></a-box>
+    <ng-container *ngFor="let entity of timeEntities">
+      <a-cylinder
+        time-entity
+        *ngIf="entity.type === 'a-cylinder'"
+        [attr.position]="entity.position"
+        [attr.radius]="entity.radius"
+        [attr.height]="entity.height"
+        [attr.color]="entity.color"
+      ></a-cylinder>
+      <a-box
+        time-entity
+        *ngIf="entity.type === 'a-box'"
+        [attr.position]="entity.position"
+        [attr.rotation]="entity.rotation"
+        [attr.width]="entity.width"
+        [attr.height]="entity.height"
+        [attr.color]="entity.color"
+      ></a-box>
       <a-sphere
         time-entity
         *ngIf="entity.type === 'a-sphere'"
@@ -50,7 +50,7 @@
         [attr.radius]="entity.radius"
         [attr.color]="entity.color"
       ></a-sphere>
-      </ng-container>
+    </ng-container>
     <a-plane
       position="0 0 -4"
       rotation="-90 0 0"

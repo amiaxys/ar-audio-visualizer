@@ -57,7 +57,7 @@ export class VisualizationCardComponent implements OnInit {
     this.edit.emit({
       visualizationId: this.visualization.id,
       newTitle: this.editForm.controls['title'].value,
-      newMetadata: this.visualization.metadata
+      newMetadata: this.visualization.metadata,
     });
     this.modalRef?.hide();
   }

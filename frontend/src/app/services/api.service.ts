@@ -36,7 +36,11 @@ export class ApiService {
     return this.http.get<User>(`${this.url}/api/users/me`);
   }
 
-  newVisualization(title: string, audio: File, metadata: Metadata): Observable<Visualization> {
+  newVisualization(
+    title: string,
+    audio: File,
+    metadata: Metadata
+  ): Observable<Visualization> {
     const formData = new FormData();
 
     formData.append('title', title);

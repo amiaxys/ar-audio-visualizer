@@ -36,7 +36,11 @@ export class VisualizationsComponent implements OnInit {
     newMetadata: Metadata;
   }) {
     this.api
-      .editVisualization(visualization.visualizationId, visualization.newTitle, visualization.newMetadata)
+      .editVisualization(
+        visualization.visualizationId,
+        visualization.newTitle,
+        visualization.newMetadata
+      )
       .subscribe({
         next: () => {
           this.getUserVisualizations();
