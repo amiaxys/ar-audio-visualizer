@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class NewVisualizationComponent implements OnInit {
   newVisForm: FormGroup;
+  isAuth!: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -23,7 +24,11 @@ export class NewVisualizationComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.api.me().subscribe((res) => {
+      this.isAuth = res ? true : false;
+    });
+  }
 
   soundFileChanged(event: any) {
     const file = event.target.files[0];

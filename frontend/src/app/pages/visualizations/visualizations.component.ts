@@ -10,11 +10,16 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class VisualizationsComponent implements OnInit {
   visualizations: Visualization[] = [];
+  isAuth!: boolean;
 
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
     this.getUserVisualizations();
+
+    this.api.me().subscribe((res) => {
+      this.isAuth = res ? true : false;
+    });
   }
 
   getUserVisualizations() {
