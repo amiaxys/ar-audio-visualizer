@@ -66,7 +66,6 @@ export class VisualizationComponent {
       next: (visualization) => {
         this.visualization = visualization;
         this.visualizationFetched = true;
-        console.log('visualization', visualization);
         this.audioSource = `${environment.backendUrl}/api/visualizations/${visualization.id}/audio`;
       },
       error: (err) => {
@@ -78,9 +77,12 @@ export class VisualizationComponent {
   ngAfterViewInit(): void {}
 
   initializeFreqEntities(): void {
-    const metaFreqTypes = this.visualization.metadata.options.freqEntities;
+    let metaFreqTypes = [''];
+    if (this.visualization.metadata.options) {
+      metaFreqTypes = this.visualization.metadata?.options?.freqEntities;
+    }
     const freqTypes = ['cylinder', 'box', 'sphere'];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < Math.min(3, metaFreqTypes.length); i++) {
       if (
         metaFreqTypes[i] === 'cylinder' ||
         metaFreqTypes[i] === 'box' ||
@@ -94,7 +96,7 @@ export class VisualizationComponent {
     const freqEntNum = 5;
     for (let i = 0; i < freqEntNum; i++) {
       const col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
-      const z = 0 + i * 0.5;
+      const z = -4 + i * 0.5;
       switch (i % 3) {
         case 0:
           metaFreqTypes[0];
@@ -130,7 +132,10 @@ export class VisualizationComponent {
   }
 
   initializeTimeEntities(): void {
-    const metaTimeTypes = this.visualization.metadata.options.timeEntities;
+    let metaTimeTypes = [''];
+    if (this.visualization.metadata.options) {
+      metaTimeTypes = this.visualization.metadata?.options?.timeEntities;
+    }
     const width = 18;
     const height = 4;
     const timeSlice = Math.floor(this.timeBufferLength / 20);
@@ -147,7 +152,7 @@ export class VisualizationComponent {
 
       this.timeEntities[i] = {
         type: timeType,
-        position: `${x} ${y} 0`,
+        position: `${x} ${y} -4`,
         radius: `${sliceWidth * 0.4}`,
         width: `${sliceWidth * 0.4 * 2}`,
         height: `${sliceWidth * 0.4 * 2}`,

@@ -38,6 +38,8 @@ export class NewVisualizationComponent implements OnInit {
       .newVisualization(
         this.newVisForm.value.title,
         this.newVisForm.value.audio,
+        // default metadata visualization
+        // add choices to form later
         {
           type: 'basic-shapes',
           options: {

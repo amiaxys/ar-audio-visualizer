@@ -32,17 +32,6 @@ const routes: Routes = [
   {
     path: 'visualizations/:id',
     component: VisualizationDisplayComponent,
-    canDeactivate: [
-      () => {
-        // this is a hacky/non-angular way to remove the stream
-        // but it works, kind of
-        // see issues in visualization-display.component.ts
-        const arjsVideo = document.getElementById('arjs-video');
-        if (arjsVideo) {
-          arjsVideo.remove();
-        }
-      },
-    ],
   },
   {
     path: 'create-visualization',
