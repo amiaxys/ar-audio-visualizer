@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -12,7 +14,7 @@ export const app = express();
 app.use(bodyParser.json());
 
 const corsOptions = {
-  origin: "http://localhost:4200",
+  origin: [process.env.AR_FRONTEND_URL, process.env.ANGULAR_FRONTEND_URL],
   credentials: true,
 };
 app.use(cors(corsOptions));
