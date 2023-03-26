@@ -1,15 +1,17 @@
-<div class="card">
-  <h2 class="vis-title" routerLink="/visualizations/{{ visualization.id }}">
+<div class="card" routerLink="/visualizations/{{ visualization.id }}">
+  <h2 class="vis-title">
     {{ visualization.title }}
   </h2>
   <div class="icons-container">
     <fa-icon
+      appClickStopPropagation
       class="edit-icon icon"
       icon="pen-to-square"
       size="2x"
       (click)="editVisualization(editTemplate)"
     ></fa-icon>
     <fa-icon
+      appClickStopPropagation
       class="delete-icon icon"
       icon="trash"
       size="2x"
