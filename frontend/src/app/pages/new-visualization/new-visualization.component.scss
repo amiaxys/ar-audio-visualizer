@@ -1,0 +1,40 @@
+#new-visualization-form {
+  margin: 20px auto;
+  width: 40%;
+
+  .ar-btn {
+    margin-top: 20px;
+  }
+
+  #audio-inputs {
+    display: flex;
+    align-items: center;
+  }
+
+  #audio-inputs > *,
+  #audio-wrapper > * {
+    margin-right: 20px;
+  }
+
+  #microphone-icon:hover {
+    color: gray;
+  }
+
+  #stop-icon {
+    color: red;
+  }
+
+  #recording {
+    color: red;
+    margin: 0;
+  }
+
+  #audio-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  #trash-icon:hover {
+    color: red;
+  }
+}
