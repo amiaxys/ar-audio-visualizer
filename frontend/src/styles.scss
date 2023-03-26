@@ -109,6 +109,10 @@ body {
     font-family: "Montserrat";
   }
 
+  .form-title {
+    margin: 20px 0;
+  }
+
   input {
     border: 1px solid black;
     border-radius: 3px;
@@ -133,6 +137,11 @@ body {
       margin-bottom: 10px;
     }
   }
+}
+
+.icon {
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 // Columns

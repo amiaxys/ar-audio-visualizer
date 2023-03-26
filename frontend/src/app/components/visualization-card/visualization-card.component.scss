@@ -27,14 +27,11 @@
     transition: visibility 0s, opacity 0.1s linear;
 
     .icon {
-      cursor: pointer;
-      transition: 0.3s;
       margin-left: 20px;
     }
 
     .delete-icon:hover {
       color: red;
-      transition: 0.3s;
     }
 
     .edit-icon:hover {

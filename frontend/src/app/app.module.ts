@@ -21,7 +21,7 @@ import { IndexComponent } from './pages/index/index.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { CreditsComponent } from './pages/credits/credits.component';
 import { HeaderComponent } from './components/header/header.component';
-import { NewVisualizationComponent } from './components/new-visualization/new-visualization.component';
+import { NewVisualizationComponent } from './pages/new-visualization/new-visualization.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
@@ -30,7 +30,6 @@ import { UniqueUsernameDirective } from './directives/unique-username.directive'
 import { ApiInterceptor } from './api.interceptor';
 import { VisualizationsComponent } from './pages/visualizations/visualizations.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { CreateVisualizationComponent } from './pages/create-visualization/create-visualization.component';
 import { VisualizationCardComponent } from './components/visualization-card/visualization-card.component';
 import { AFrame } from 'aframe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -53,7 +52,6 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
     UniqueUsernameDirective,
     VisualizationsComponent,
     FooterComponent,
-    CreateVisualizationComponent,
     VisualizationCardComponent,
     VisualizationDisplayComponent,
     ClickStopPropagationDirective,
