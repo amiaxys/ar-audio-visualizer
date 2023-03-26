@@ -17,6 +17,8 @@ header {
   #header-btns {
     margin-right: 10px;
     .ar-btn {
+      display: inline-block;
+      line-height: 1.2;
       margin: 0 10px;
       background-color: white;
       color: black;

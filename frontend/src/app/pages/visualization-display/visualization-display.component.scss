@@ -1,0 +1,14 @@
+app-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+app-visualization {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+}
