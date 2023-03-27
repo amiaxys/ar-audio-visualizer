@@ -96,7 +96,7 @@ export class VisualizationComponent {
     const freqEntNum = 5;
     for (let i = 0; i < freqEntNum; i++) {
       const col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
-      const z = -4 + i * 0.5;
+      const z = i * 0.5;
       switch (i % 3) {
         case 0:
           metaFreqTypes[0];
@@ -152,7 +152,7 @@ export class VisualizationComponent {
 
       this.timeEntities[i] = {
         type: timeType,
-        position: `${x} ${y} -4`,
+        position: `${x} ${y} 0`,
         radius: `${sliceWidth * 0.4}`,
         width: `${sliceWidth * 0.4 * 2}`,
         height: `${sliceWidth * 0.4 * 2}`,

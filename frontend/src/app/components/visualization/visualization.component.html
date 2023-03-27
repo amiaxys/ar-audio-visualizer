@@ -1,64 +1,72 @@
 <h2 *ngIf="visualizationFetched" id="title">{{ visualization.title }}</h2>
 <div id="visualization-container">
   <button id="play" class="ar-btn" *ngIf="displayPlayBtn">Play</button>
-  <a-scene embedded (click)="startVisualization()">
-    <ng-container *ngFor="let entity of freqEntities">
-      <a-cylinder
-        *ngIf="entity.type === 'a-cylinder'"
-        [attr.position]="entity.position"
-        [attr.radius]="entity.radius"
-        [attr.height]="entity.height"
-        [attr.color]="entity.color"
-      ></a-cylinder>
-      <a-box
-        *ngIf="entity.type === 'a-box'"
-        [attr.position]="entity.position"
-        [attr.rotation]="entity.rotation"
-        [attr.width]="entity.width"
-        [attr.height]="entity.height"
-        [attr.color]="entity.color"
-      ></a-box>
-      <a-sphere
-        *ngIf="entity.type === 'a-sphere'"
-        [attr.position]="entity.position"
-        [attr.radius]="entity.radius"
-        [attr.color]="entity.color"
-      ></a-sphere>
-    </ng-container>
-    <ng-container *ngFor="let entity of timeEntities">
-      <a-cylinder
-        time-entity
-        *ngIf="entity.type === 'a-cylinder'"
-        [attr.position]="entity.position"
-        [attr.radius]="entity.radius"
-        [attr.height]="entity.height"
-        [attr.color]="entity.color"
-      ></a-cylinder>
-      <a-box
-        time-entity
-        *ngIf="entity.type === 'a-box'"
-        [attr.position]="entity.position"
-        [attr.rotation]="entity.rotation"
-        [attr.width]="entity.width"
-        [attr.height]="entity.height"
-        [attr.color]="entity.color"
-      ></a-box>
-      <a-sphere
-        time-entity
-        *ngIf="entity.type === 'a-sphere'"
-        [attr.position]="entity.position"
-        [attr.radius]="entity.radius"
-        [attr.color]="entity.color"
-      ></a-sphere>
-    </ng-container>
-    <a-plane
-      position="0 0 -4"
-      rotation="-90 0 0"
-      width="4"
-      height="4"
-      [attr.color]="planeColor"
-    ></a-plane>
-    <a-sky color="skyblue"></a-sky>
+  <a-scene
+    embedded
+    vr-mode-ui="enabled: false"
+    arjs="sourceType: webcam; debugUIEnabled: false;"
+    (click)="startVisualization()"
+  >
+    <a-marker preset="hiro">
+      <ng-container *ngFor="let entity of freqEntities">
+        <a-cylinder
+          *ngIf="entity.type === 'a-cylinder'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-cylinder>
+        <a-box
+          *ngIf="entity.type === 'a-box'"
+          [attr.position]="entity.position"
+          [attr.rotation]="entity.rotation"
+          [attr.width]="entity.width"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-box>
+        <a-sphere
+          *ngIf="entity.type === 'a-sphere'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.color]="entity.color"
+        ></a-sphere>
+      </ng-container>
+      <ng-container *ngFor="let entity of timeEntities">
+        <a-cylinder
+          time-entity
+          *ngIf="entity.type === 'a-cylinder'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-cylinder>
+        <a-box
+          time-entity
+          *ngIf="entity.type === 'a-box'"
+          [attr.position]="entity.position"
+          [attr.rotation]="entity.rotation"
+          [attr.width]="entity.width"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-box>
+        <a-sphere
+          time-entity
+          *ngIf="entity.type === 'a-sphere'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.color]="entity.color"
+        ></a-sphere>
+      </ng-container>
+      <a-plane
+        position="0 0 0"
+        rotation="-90 0 0"
+        width="4"
+        height="4"
+        [attr.color]="planeColor"
+      ></a-plane>
+      <a-sky color="blue"></a-sky>
+    </a-marker>
+    <a-entity camera></a-entity>
   </a-scene>
 </div>
 
