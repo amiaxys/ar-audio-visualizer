@@ -8,7 +8,7 @@ import { isAuthenticated } from "../middleware/auth.js";
 export const usersRouter = Router();
 const upload = multer({ dest: "uploads/" });
 
-// get users pangiated without passwordHash
+// get users paginated without passwordHash
 usersRouter.get("/", isAuthenticated, async (req, res) => {
   const { page, limit } = req.query;
   let query = { attributes: { exclude: ["passwordHash"] } };

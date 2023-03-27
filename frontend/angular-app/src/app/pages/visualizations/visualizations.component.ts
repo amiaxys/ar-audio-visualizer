@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Visualization } from 'src/app/classes/visualization';
+import { Metadata } from 'src/app/classes/metadata';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -32,9 +33,14 @@ export class VisualizationsComponent implements OnInit {
   editVisualizations(visualization: {
     visualizationId: string;
     newTitle: string;
+    newMetadata: Metadata;
   }) {
     this.api
-      .editVisualization(visualization.visualizationId, visualization.newTitle)
+      .editVisualization(
+        visualization.visualizationId,
+        visualization.newTitle,
+        visualization.newMetadata
+      )
       .subscribe({
         next: () => {
           this.getUserVisualizations();

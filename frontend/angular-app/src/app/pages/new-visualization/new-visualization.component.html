@@ -1,0 +1,95 @@
+<app-header></app-header>
+<div class="error-component" *ngIf="!isAuth">
+  <app-not-authenticated></app-not-authenticated>
+</div>
+<form
+  class="styled-form"
+  id="new-visualization-form"
+  (submit)="onSubmit()"
+  [formGroup]="newVisForm"
+  *ngIf="isAuth"
+>
+  <h2 class="form-title">New Visualization</h2>
+  <div class="input-wrapper">
+    <label>Visualization Title</label
+    ><input
+      type="text"
+      name="title"
+      formControlName="title"
+      placeholder="Title"
+      required
+    />
+  </div>
+
+  <div
+    class="error"
+    *ngIf="
+      newVisForm.controls['title'].invalid &&
+      (newVisForm.controls['title'].dirty ||
+        newVisForm.controls['title'].touched)
+    "
+  >
+    <div *ngIf="newVisForm.controls['title'].errors?.['required']">
+      Title is required
+    </div>
+
+    <div *ngIf="newVisForm.controls['title'].errors?.['minlength']">
+      Title must be at least 3 characters
+    </div>
+  </div>
+
+  <div class="input-wrapper">
+    <label>Audio File</label>
+    <div id="audio-inputs">
+      <input
+        #fileInput
+        type="file"
+        name="audio"
+        accept="audio/*"
+        (change)="soundFileChanged($event)"
+        required
+      />
+
+      <fa-icon
+        class="icon"
+        id="microphone-icon"
+        icon="microphone"
+        size="2x"
+        *ngIf="!isRecording"
+        (click)="startRecording()"
+      ></fa-icon>
+
+      <fa-icon
+        class="icon"
+        id="stop-icon"
+        icon="circle-stop"
+        size="2x"
+        *ngIf="isRecording"
+        (click)="stopRecording()"
+      ></fa-icon>
+
+      <p id="recording" *ngIf="isRecording">Recording...</p>
+    </div>
+  </div>
+
+  <div id="audio-wrapper">
+    <audio
+      controls
+      id="audioPlayback"
+      *ngIf="audioSrc"
+      [attr.src]="audioSrc"
+    ></audio>
+    <fa-icon
+      icon="trash"
+      size="2x"
+      *ngIf="audioSrc"
+      class="icon"
+      id="trash-icon"
+      (click)="onDelete()"
+    ></fa-icon>
+  </div>
+
+  <button type="submit" class="ar-btn" [disabled]="newVisForm.invalid">
+    Submit
+  </button>
+</form>
