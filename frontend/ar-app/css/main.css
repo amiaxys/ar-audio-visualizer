@@ -1,0 +1,16 @@
+html {
+  overflow: -moz-scrollbars-vertical;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  text-align: left;
+  max-width: 60%; /* set the body to be 60% of the screen width */
+  margin: auto !important; /* center the app in the middle of the browser window */
+}
+
+#audio-container {
+  display: flex;
+  justify-content: center;
+}

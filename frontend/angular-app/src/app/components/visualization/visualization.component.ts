@@ -13,6 +13,7 @@ import { environment } from '../../../environments/environment';
 })
 export class VisualizationComponent {
   visualization!: Visualization;
+  visualizationUrl: string = '';
 
   @ViewChild('a-marker-camera') marker!: ElementRef<HTMLElement>;
 
@@ -46,7 +47,9 @@ export class VisualizationComponent {
   //logTime: number = 0;
   //test: boolean = true;
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {}
+  constructor(private api: ApiService, private route: ActivatedRoute) {
+    this.visualizationUrl = `${environment.arFrontendUrl}?id=${this.route.snapshot.paramMap.get('id')}`;
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

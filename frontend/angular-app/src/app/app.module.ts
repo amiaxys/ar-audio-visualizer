@@ -37,6 +37,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationDisplayComponent } from './pages/visualization-display/visualization-display.component';
 import { NotAuthenticatedComponent } from './components/not-authenticated/not-authenticated.component';
+import { SafePipe } from './pipes/safe.pipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
     VisualizationCardComponent,
     VisualizationDisplayComponent,
     NotAuthenticatedComponent,
+    SafePipe,
   ],
   imports: [
     BrowserModule,

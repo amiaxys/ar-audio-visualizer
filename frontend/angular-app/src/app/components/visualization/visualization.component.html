@@ -1,5 +1,6 @@
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 <h1 id="title">{{ visualization.title }}</h1>
+<iframe [src]="visualizationUrl | safe" id="visualization"></iframe>
 <div id="visualization-container">
   <button id="play" class="ar-btn" *ngIf="displayPlayBtn">Play</button>
   <a-scene embedded arjs (click)="startVisualization()">
