@@ -12,6 +12,11 @@
   box-shadow: 6px 6px 0 black;
 }
 
+iframe {
+  width: 100%;
+  height: 800px;
+}
+
 #visualization-container {
   position: relative;
   margin: 20px auto;

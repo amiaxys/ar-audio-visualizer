@@ -131,25 +131,53 @@
   }
 
   function renderEntities(freqEntities, timeEntities) {
-    let freqEntitiesHTML = "";
+    let freqEntitiesElmt;
     for (let i = 0; i < freqEntities.length; i++) {
-      freqEntitiesHTML += `<${freqEntities[i].type} position="${freqEntities[i].position}" radius="${freqEntities[i].radius}" height="${freqEntities[i].height}" width="${freqEntities[i].width}" color="${freqEntities[i].color}"></${freqEntities[i].type}>`;
+      freqEntitiesElmt = document.createElement(freqEntities[i].type);
+      freqEntitiesElmt.setAttribute("position", freqEntities[i].position);
+      freqEntitiesElmt.setAttribute("radius", freqEntities[i].radius);
+      freqEntitiesElmt.setAttribute("height", freqEntities[i].height);
+      freqEntitiesElmt.setAttribute("width", freqEntities[i].width);
+      freqEntitiesElmt.setAttribute("color", freqEntities[i].color);
+      freqEntitiesElmt.setAttribute("class", "freq-entity");
+      document.getElementById("scene").appendChild(freqEntitiesElmt);
     }
-    let timeEntitiesHTML = "";
+    let timeEntitiesElmt;
     for (let i = 0; i < timeEntities.length; i++) {
-      timeEntitiesHTML += `<${timeEntities[i].type} position="${timeEntities[i].position}" radius="${timeEntities[i].radius}" height="${timeEntities[i].height}" width="${timeEntities[i].width}" color="${timeEntities[i].color}" rotation="${timeEntities[i].rotation}"></${timeEntities[i].type}>`;
+      timeEntitiesElmt = document.createElement(timeEntities[i].type);
+      timeEntitiesElmt.setAttribute("position", timeEntities[i].position);
+      timeEntitiesElmt.setAttribute("radius", timeEntities[i].radius);
+      timeEntitiesElmt.setAttribute("height", timeEntities[i].height);
+      timeEntitiesElmt.setAttribute("width", timeEntities[i].width);
+      timeEntitiesElmt.setAttribute("color", timeEntities[i].color);
+      timeEntitiesElmt.setAttribute("rotation", timeEntities[i].rotation);
+      timeEntitiesElmt.setAttribute("class", "time-entity");
+      document.getElementById("scene").appendChild(timeEntitiesElmt);
     }
-    let planeColor = `<a-plane
-    position="0 0 -4"
-    rotation="-90 0 0"
-    width="4"
-    height="4"
-    [attr.color]="planeColor"
-  ></a-plane>
-  <a-sky color="skyblue"></a-sky>`;
-    let sceneElmt = document.getElementById("scene");
-    sceneElmt.innerHTML = freqEntitiesHTML + timeEntitiesHTML + planeColor;
+    // add a plane to cover the background
+    let planceColorElmt = document.createElement("a-plane");
+    planceColorElmt.setAttribute("position", "0 0 -4");
+    planceColorElmt.setAttribute("rotation", "-90 0 0");
+    planceColorElmt.setAttribute("width", "4");
+    planceColorElmt.setAttribute("height", "4");
+    document.getElementById("scene").appendChild(planceColorElmt);
+    // add sky color to plane
+    let skyElmt = document.getElementById("sky");
+    skyElmt.setAttribute("color", "#000");
+    document.getElementById("scene").appendChild(skyElmt);
   }
+
+  function removeEntities() {
+    const freqEntitiesElmt = document.getElementsByClassName("freq-entity");
+    while (freqEntitiesElmt[0]) {
+      freqEntitiesElmt[0].parentNode.removeChild(freqEntitiesElmt[0]);
+    }
+    const timeEntitiesElmt = document.getElementsByClassName("time-entity");
+    while (timeEntitiesElmt[0]) {
+      timeEntitiesElmt[0].parentNode.removeChild(timeEntitiesElmt[0]);
+    }
+  }
+
 
   function draw() {
     window.requestAnimationFrame(draw);
@@ -244,7 +272,8 @@
         100
       )}%)`;
     }
-
+    // remove previously rendered entities
+    removeEntities();
     // render entities
     renderEntities(freqEntities, timeEntities);
   }
