@@ -1,0 +1,6 @@
+a-scene {
+    position: relative;
+    width: 500px;
+    height: 600px;
+    z-index: 0;
+  }

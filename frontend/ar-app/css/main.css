@@ -14,3 +14,7 @@ body {
   display: flex;
   justify-content: center;
 }
+
+button {
+  z-index: 100;
+}

@@ -2,7 +2,9 @@ import session from "express-session";
 
 export const isAuthenticated = function (req, res, next) {
   req.user = req.session.user;
-  console.log(req.headers.host, process.env.AR_FRONTEND_URL);
+  if (req.headers.origin == process.env.AR_FRONTEND_URL) {
+    return next();
+  }
   if (!req.session.user)
     return res.status(401).json({ error: "Not Authenticated" });
   next();
