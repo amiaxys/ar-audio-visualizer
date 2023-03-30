@@ -198,20 +198,20 @@ export class NewVisualizationComponent implements OnInit {
 
   onSubmit() {
     if (this.newVisForm.value.type === 'upload') {
-        this.api
-          .newVisualization(
-            this.newVisForm.value.title,
-            this.newVisForm.value.audio,
-            this.metadataFromFile
-          )
-          .subscribe({
-            next: () => {
-              this.router.navigate(['/visualizations']);
-            },
-            error: (err) => {
-              console.log(`File error: ${err}`);
-            },
-          });
+      this.api
+        .newVisualization(
+          this.newVisForm.value.title,
+          this.newVisForm.value.audio,
+          this.metadataFromFile
+        )
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/visualizations']);
+          },
+          error: (err) => {
+            console.log(`File error: ${err}`);
+          },
+        });
     } else {
       let metadata: Metadata = {
         type: this.newVisForm.value.type,

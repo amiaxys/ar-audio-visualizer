@@ -13,7 +13,11 @@ import {
   FaIconLibrary,
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
-import { faPenToSquare, faTrash, faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPenToSquare,
+  faTrash,
+  faFileArrowDown,
+} from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Visualization } from 'src/app/classes/visualization';
 import { Metadata } from 'src/app/classes/metadata';

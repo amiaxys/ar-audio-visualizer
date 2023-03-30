@@ -64,19 +64,20 @@
       }
     }
 
-    input[type="radio"], input[type="checkbox"] {
+    input[type="radio"],
+    input[type="checkbox"] {
       margin-right: 10px;
     }
 
     input[type="color"] {
       margin-left: 10px;
     }
-  
+
     input[type="radio"] + label {
       border: 1px solid transparent;
       padding: 3px 5px;
     }
-  
+
     input[type="radio"]:checked + label {
       border: 1px solid black;
       border-radius: 3px;

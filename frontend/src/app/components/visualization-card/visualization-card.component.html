@@ -6,7 +6,9 @@
     <a
       #downloadLink
       appClickStopPropagation
-      download="{{ visualization.title.trim().split(' ').join('_') }}_metadata.json"
+      download="{{
+        visualization.title.trim().split(' ').join('_')
+      }}_metadata.json"
     >
       <fa-icon
         appClickStopPropagation
