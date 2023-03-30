@@ -182,7 +182,7 @@ export class VisualizationComponent {
           .slice(i * frac, (i + 1) * frac)
           .reduce((a, b) => a + b) / frac;
       if (this.freqEntities[i].type === 'a-sphere') {
-        this.freqEntities[i].radius = `${((freqAvg + 1)/ 255) * 1.5}`;
+        this.freqEntities[i].radius = `${((freqAvg + 1) / 255) * 1.5}`;
       } else {
         this.freqEntities[i].height = `${(freqAvg / 255) * 2}`;
       }

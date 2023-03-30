@@ -65,7 +65,7 @@ export class VisualizationDisplayComponent implements OnInit {
     if (apiEntityTypes) {
       this.entityTypes = apiEntityTypes;
     }
-    
+
     if (!this.visualization.metadata.freq) {
       this.visualization.metadata.freq = {
         color: null,
