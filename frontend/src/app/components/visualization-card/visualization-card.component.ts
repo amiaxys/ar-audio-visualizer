@@ -5,13 +5,15 @@ import {
   OnInit,
   Output,
   TemplateRef,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   FaIconLibrary,
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash, faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Visualization } from 'src/app/classes/visualization';
 import { Metadata } from 'src/app/classes/metadata';
@@ -32,13 +34,16 @@ export class VisualizationCardComponent implements OnInit {
     newMetadata: Metadata;
   }>();
   @Output() delete = new EventEmitter<string>();
+  @Output() download = new EventEmitter<string>();
+
+  @ViewChild('downloadLink') downloadLink!: ElementRef<HTMLAnchorElement>;
 
   constructor(
     private library: FaIconLibrary,
     private modalService: BsModalService,
     private fb: FormBuilder
   ) {
-    library.addIcons(faPenToSquare, faTrash);
+    library.addIcons(faPenToSquare, faTrash, faFileArrowDown);
     this.editForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
     });
@@ -69,5 +74,17 @@ export class VisualizationCardComponent implements OnInit {
   onDelete() {
     this.delete.emit(this.visualization.id);
     this.modalRef?.hide();
+  }
+
+  onDownload() {
+    const metaFile = new File(
+      [JSON.stringify(this.visualization.metadata)],
+      'metadata.json',
+      {
+        type: 'application/json',
+      }
+    );
+    this.downloadLink.nativeElement.href = URL.createObjectURL(metaFile);
+    this.downloadLink.nativeElement.click();
   }
 }
