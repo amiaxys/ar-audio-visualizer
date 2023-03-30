@@ -71,7 +71,9 @@ export class NewVisualizationComponent implements OnInit {
       freqColor: new FormControl({ value: '', disabled: true }),
       defaultFreqColor: [true],
       freqEntities: this.fb.array([]),
-      metadataFile: new FormControl({ value: '', disabled: true }, [Validators.required]),
+      metadataFile: new FormControl({ value: '', disabled: true }, [
+        Validators.required,
+      ]),
     });
   }
 
