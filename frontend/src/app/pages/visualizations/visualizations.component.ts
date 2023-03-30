@@ -15,10 +15,14 @@ export class VisualizationsComponent implements OnInit {
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    this.getUserVisualizations();
-
-    this.api.me().subscribe((res) => {
-      this.isAuth = res ? true : false;
+    this.api.me().subscribe({
+      next: (res) => {
+        this.isAuth = res ? true : false;
+        this.getUserVisualizations();
+      },
+      error: () => {
+        this.isAuth = false;
+      }
     });
   }
 

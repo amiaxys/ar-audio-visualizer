@@ -1,19 +1,18 @@
 <header>
   <a routerLink="/" id="title">AR Audio Visualizer</a>
-  <div id="header-btns">
-    <a routerLink="/sign-up" class="ar-btn" *ngIf="!isAuth">Sign Up</a>
-    <a routerLink="/sign-in" class="ar-btn" *ngIf="!isAuth">Sign In</a>
-    <a routerLink="/visualizations" class="ar-btn" *ngIf="isAuth"
-      >Visualizations</a
-    >
-    <a routerLink="/new-visualization" class="ar-btn" *ngIf="isAuth"
-      >Create Visualization</a
-    >
-    <a (click)="signOut(signOutTemplate)" class="ar-btn" *ngIf="isAuth"
-      >Sign Out</a
-    >
+  <div *ngIf="isAuth === true; else notAuthenticated" class="header-btns">
+    <a routerLink="/visualizations" class="ar-btn">Visualizations</a>
+    <a routerLink="/new-visualization" class="ar-btn">Create Visualization</a>
+    <a (click)="signOut(signOutTemplate)" class="ar-btn">Sign Out</a>
   </div>
 </header>
+
+<ng-template #notAuthenticated>
+  <div *ngIf="isAuth === false" class="header-btns">
+    <a routerLink="/sign-up" class="ar-btn">Sign Up</a>
+    <a routerLink="/sign-in" class="ar-btn">Sign In</a>
+  </div>
+</ng-template>
 
 <ng-template #signOutTemplate>
   <div class="styled-modal">

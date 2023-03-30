@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   modalRef?: BsModalRef;
 
   error: string = '';
-  isAuth: boolean = false;
+  isAuth!: boolean;
 
   constructor(
     private modalService: BsModalService,
