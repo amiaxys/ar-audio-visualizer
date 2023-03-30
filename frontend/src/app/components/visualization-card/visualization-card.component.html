@@ -3,6 +3,21 @@
     {{ visualization.title }}
   </h2>
   <div class="icons-container">
+    <a
+      #downloadLink
+      appClickStopPropagation
+      download="{{
+        visualization.title.trim().split(' ').join('_')
+      }}_metadata.json"
+    >
+      <fa-icon
+        appClickStopPropagation
+        class="download-icon icon"
+        icon="file-arrow-down"
+        size="2x"
+        (click)="onDownload()"
+      ></fa-icon
+    ></a>
     <fa-icon
       appClickStopPropagation
       class="edit-icon icon"

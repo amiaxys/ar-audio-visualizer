@@ -37,4 +37,51 @@
   #trash-icon:hover {
     color: red;
   }
+
+  select {
+    margin: 5px 0;
+    padding: 5px;
+  }
+
+  fieldset {
+    margin-bottom: 5px;
+
+    legend {
+      font-size: 1.2em;
+    }
+
+    .button-wrapper {
+      margin: 5px 0;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      column-gap: 20px;
+
+      input:disabled {
+        cursor: not-allowed;
+        filter: grayscale(100%);
+        opacity: 0.4;
+      }
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    input[type="color"] {
+      margin-left: 10px;
+    }
+
+    input[type="radio"] + label {
+      border: 1px solid transparent;
+      padding: 3px 5px;
+    }
+
+    input[type="radio"]:checked + label {
+      border: 1px solid black;
+      border-radius: 3px;
+      padding: 3px 5px;
+    }
+  }
 }
