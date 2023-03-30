@@ -1,7 +1,11 @@
 export interface Metadata {
   type: string;
-  options: {
-    timeEntities: string[];
-    freqEntities: string[];
+  time: {
+    color: string | null;
+    entities: string[];
+  };
+  freq: {
+    color: string | null;
+    entities: string[];
   };
 }
