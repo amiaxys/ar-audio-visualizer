@@ -1,9 +1,6 @@
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 import { Entity } from '../../classes/entity';
 import { Visualization } from '../../classes/visualization';
-import { ApiService } from 'src/app/services/api.service';
-import { MetatypeService } from 'src/app/services/metatype.service';
 import { environment } from '../../../environments/environment';
 //import { THREE } from 'aframe';
 
@@ -13,11 +10,8 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./visualization.component.scss'],
 })
 export class VisualizationComponent {
-  type: string = 'basic-shapes';
-  entityTypes!: string[];
-
-  visualization!: Visualization;
-  visualizationFetched: boolean = false;
+  @Input() visualization!: Visualization;
+  @Input() entityTypes!: string[];
 
   @ViewChild('audio') audioElmt!: ElementRef<HTMLAudioElement>;
   displayPlayBtn: boolean = true;
@@ -49,18 +43,9 @@ export class VisualizationComponent {
   //logTime: number = 0;
   //test: boolean = true;
 
-  constructor(
-    private api: ApiService,
-    private metaApi: MetatypeService,
-    private route: ActivatedRoute
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
-    const apiEntityTypes = this.metaApi.getEntityTypes(this.type);
-    if (apiEntityTypes) {
-      this.entityTypes = apiEntityTypes;
-    }
-
     if (!AFRAME.components['time-entity']) {
       AFRAME.registerComponent('time-entity', {
         init: function () {},
@@ -71,48 +56,27 @@ export class VisualizationComponent {
       });
     }
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      console.log('No Visualization Id Found');
-      return;
-    }
-    this.api.getVisualization(id).subscribe({
-      next: (visualization) => {
-        this.visualization = visualization;
-        this.visualizationFetched = true;
-        this.audioSource = `${environment.backendUrl}/api/visualizations/${visualization.id}/audio`;
-      },
-      error: (err) => {
-        console.log(`Get Visualization Error: ${err}`);
-      },
-    });
+    this.audioSource = `${environment.backendUrl}/api/visualizations/${this.visualization.id}/audio`;
   }
 
   ngAfterViewInit(): void {}
 
   initializeFreqEntities(): void {
-    let metaFreqTypes = [''];
-    if (this.visualization.metadata.freq) {
-      metaFreqTypes = this.visualization.metadata.freq.entities;
-    }
+    let metaFreqTypes = this.visualization.metadata.freq.entities;
 
     const freqTypes = JSON.parse(JSON.stringify(this.entityTypes));
     for (let i = 0; i < Math.min(3, metaFreqTypes.length); i++) {
-      for (let j = 0; j < this.entityTypes.length; j++) {
-        if (metaFreqTypes[i] === this.entityTypes[j]) {
-          freqTypes[i] = metaFreqTypes[i];
-        }
+      if (this.entityTypes.includes(metaFreqTypes[i])) {
+        freqTypes[i] = metaFreqTypes[i];
       }
     }
 
-    let nextX = -4;
+    let nextX = -3;
     const freqEntNum = 5;
-    let col = null;
-    if (this.visualization.metadata.freq) {
-      col = this.visualization.metadata.freq.color;
-    }
+    let col = this.visualization.metadata.freq.color;
+    const defaultCol = col ? false : true;
     for (let i = 0; i < freqEntNum; i++) {
-      if (!col) {
+      if (!col || defaultCol) {
         col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
       }
       const z = i * 0.5;
@@ -121,7 +85,9 @@ export class VisualizationComponent {
           this.freqEntities[i] = {
             type: `a-${freqTypes[0]}`,
             position: `${nextX} 0.75 ${z}`,
+            rotation: '0 45 0',
             radius: '0.5',
+            width: '1',
             height: '1',
             color: col,
           };
@@ -131,6 +97,7 @@ export class VisualizationComponent {
             type: `a-${freqTypes[1]}`,
             position: `${nextX} 0.75 ${z}`,
             rotation: '0 45 0',
+            radius: '0.5',
             width: '1',
             height: '1.25',
             color: col,
@@ -140,7 +107,10 @@ export class VisualizationComponent {
           this.freqEntities[i] = {
             type: `a-${freqTypes[2]}`,
             position: `${nextX} 1 ${z}`,
+            rotation: '0 45 0',
             radius: '1',
+            width: '1',
+            height: '1.25',
             color: col,
           };
           break;
@@ -150,16 +120,11 @@ export class VisualizationComponent {
   }
 
   initializeTimeEntities(): void {
-    let metaTimeTypes = [''];
-    if (this.visualization.metadata.time) {
-      metaTimeTypes = this.visualization.metadata.time.entities;
-    }
+    let metaTimeTypes = this.visualization.metadata.time.entities;
 
     let timeType = 'a-sphere';
-    for (let j = 0; j < this.entityTypes.length; j++) {
-      if (metaTimeTypes[0] === this.entityTypes[j]) {
-        timeType = 'a-' + metaTimeTypes[0];
-      }
+    if (this.entityTypes.includes(metaTimeTypes[0])) {
+      timeType = 'a-' + metaTimeTypes[0];
     }
 
     const width = 18;
@@ -167,21 +132,19 @@ export class VisualizationComponent {
     const timeSlice = Math.floor(this.timeBufferLength / 20);
     const sliceWidth = width / timeSlice;
     let x = -3.5;
-    let col = null;
-    if (this.visualization.metadata.time) {
-      col = this.visualization.metadata.time.color;
-    }
+    let col = this.visualization.metadata.time.color;
+    const defaultCol = col ? false : true;
     for (let i = 0; i < timeSlice; i++) {
       const v = this.timeDataArray[i * timeSlice] / 128.0;
       const y = v * (height / 2) + 1;
 
-      if (!col) {
+      if (!col || defaultCol) {
         col = `hsl(${i % 360}, 100%, ${Math.min(30 + i * 2, 100)}%)`;
       }
 
       this.timeEntities[i] = {
         type: timeType,
-        position: `${x} ${y} 0`,
+        position: `${x} ${y} -1`,
         radius: `${sliceWidth * 0.4}`,
         width: `${sliceWidth * 0.4 * 2}`,
         height: `${sliceWidth * 0.4 * 2}`,
@@ -219,7 +182,7 @@ export class VisualizationComponent {
           .slice(i * frac, (i + 1) * frac)
           .reduce((a, b) => a + b) / frac;
       if (this.freqEntities[i].type === 'a-sphere') {
-        this.freqEntities[i].radius = `${(freqAvg / 255) * 1.5}`;
+        this.freqEntities[i].radius = `${((freqAvg + 1)/ 255) * 1.5}`;
       } else {
         this.freqEntities[i].height = `${(freqAvg / 255) * 2}`;
       }
@@ -231,11 +194,6 @@ export class VisualizationComponent {
           30 + (freqAvg / 255) * 50
         )}%, 50%)`;
       }
-
-      // uncomment the block below for rainbow entities
-      /* this.freqEntities[i].color = `hsl(${Math.ceil((freqAvg / 255) * 360)}, 100%, ${Math.floor(
-        30 + (freqAvg / 255) * 70
-      )}%)`; */
     }
 
     const planeLight = Math.floor(
@@ -246,7 +204,7 @@ export class VisualizationComponent {
     // change time spheres (wave)
     const height = 4;
     // when maxDiff is too big, wave animation gets too jitty
-    // best is actually 0.01, but not enough change
+    // best is actually 0.01, but not enough change visually
     const maxDiff = 0.05;
     let y: number =
       (this.timeDataArray[this.timeDataArray.length / 2] / 128.0) *

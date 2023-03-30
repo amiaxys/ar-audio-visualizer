@@ -45,7 +45,6 @@ export class NewVisualizationComponent implements OnInit {
   types!: string[];
   metatype!: Metatype;
   metadataUpload: boolean = false;
-  metadataFromFile!: Metadata;
 
   @ViewChild('fileInput') fileInputVar!: ElementRef;
   @ViewChild('metadataInput') metadataInputVar!: ElementRef;
@@ -184,11 +183,12 @@ export class NewVisualizationComponent implements OnInit {
 
   metadataFileChanged(event: any) {
     const file = event.target.files[0];
-    this.newVisForm.patchValue({
-      metadataFile: file,
-    });
     file.text().then((res: string) => {
-      this.metadataFromFile = JSON.parse(res);
+      // to check if the file is valid Metadata
+      let metadataFromFile: Metadata = JSON.parse(res);
+      this.newVisForm.patchValue({
+        metadataFile: metadataFromFile,
+      });
     });
   }
 
@@ -211,7 +211,7 @@ export class NewVisualizationComponent implements OnInit {
         .newVisualization(
           this.newVisForm.value.title,
           this.newVisForm.value.audio,
-          this.metadataFromFile
+          this.newVisForm.value.metadataFile
         )
         .subscribe({
           next: () => {

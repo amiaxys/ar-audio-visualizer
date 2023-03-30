@@ -1,4 +1,4 @@
-<h2 *ngIf="visualizationFetched" id="title">{{ visualization.title }}</h2>
+<h2 id="title">{{ visualization.title }}</h2>
 <div id="visualization-container">
   <button id="play" class="ar-btn" *ngIf="displayPlayBtn">Play</button>
   <a-scene
@@ -68,11 +68,11 @@
     </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
-</div>
 
-<audio
-  #audio
-  controls
-  crossorigin="use-credentials"
-  [attr.src]="audioSource"
-></audio>
+  <audio
+    #audio
+    controls
+    crossorigin="use-credentials"
+    [attr.src]="audioSource"
+  ></audio>
+</div>

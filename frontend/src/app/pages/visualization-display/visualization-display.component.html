@@ -1,5 +1,9 @@
 <app-header></app-header>
-<app-visualization *ngIf="isAuth"></app-visualization>
+<app-visualization
+  *ngIf="isAuth && visualizationFetched"
+  [visualization]="visualization"
+  [entityTypes]="entityTypes"
+></app-visualization>
 <div class="error-component" *ngIf="!isAuth">
   <app-not-authenticated></app-not-authenticated>
 </div>
