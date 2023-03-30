@@ -89,6 +89,147 @@
     ></fa-icon>
   </div>
 
+  <div class="input-wrapper">
+    <label for="type-select">Visualization Style</label>
+    <select
+      name="type"
+      formControlName="type"
+      id="type-select"
+      (change)="updateForm()"
+    >
+      <option
+        *ngFor="let mtype of types; let i = index"
+        [value]="mtype"
+        [selected]="i === 0"
+      >
+        {{
+          mtype.split("-").join(" ").charAt(0).toUpperCase() +
+            mtype.split("-").join(" ").slice(1)
+        }}
+      </option>
+      <option value="upload">Upload</option>
+    </select>
+  </div>
+
+  <ng-container *ngIf="!metadataUpload">
+    <fieldset>
+      <legend>Waveform</legend>
+
+      <div class="button-wrapper">
+        <div>
+          <label for="timeColor">Color</label>
+          <input
+            type="color"
+            id="timeColor"
+            name="timeColor"
+            formControlName="timeColor"
+          />
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="defaultTimeColor"
+            name="defaultTimeColor"
+            formControlName="defaultTimeColor"
+            (change)="toggleTimeColor()"
+            checked
+          />
+          <label for="defaultTimeColor">Default</label>
+        </div>
+      </div>
+
+      <ng-container formArrayName="timeEntities">
+        <ng-container
+          *ngFor="let control of timeEntities.controls; let i = index"
+        >
+          <label>Shape {{ i + 1 }}</label>
+          <div class="button-wrapper">
+            <ng-container
+              *ngFor="let entity of metatype.entityTypes; let j = index"
+            >
+              <div>
+                <input
+                  type="radio"
+                  id="timeEntities{{ i }}{{ entity }}"
+                  name="timeEntities{{ i }}"
+                  [formControl]="timeEntities.controls[i]"
+                  [value]="entity"
+                />
+                <label for="timeEntities{{ i }}{{ entity }}">{{
+                  entity.charAt(0).toUpperCase() + entity.slice(1)
+                }}</label>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </ng-container>
+    </fieldset>
+
+    <fieldset>
+      <legend>Barform</legend>
+
+      <div class="button-wrapper">
+        <div>
+          <label for="freqColor">Color</label>
+          <input
+            type="color"
+            id="freqColor"
+            name="freqColor"
+            formControlName="freqColor"
+          />
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="defaultFreqColor"
+            name="defaultFreqColor"
+            formControlName="defaultFreqColor"
+            (change)="toggleFreqColor()"
+            checked
+          />
+          <label for="defaultFreqColor">Default</label>
+        </div>
+      </div>
+
+      <ng-container formArrayName="freqEntities">
+        <div
+          class="radio-wrapper"
+          *ngFor="let control of freqEntities.controls; let i = index"
+        >
+          <label>Shape {{ i + 1 }}</label>
+          <div class="button-wrapper">
+            <ng-container
+              *ngFor="let entity of metatype.entityTypes; let j = index"
+            >
+              <div>
+                <input
+                  type="radio"
+                  id="freqEntities{{ i }}{{ entity }}"
+                  name="freqEntities{{ i }}"
+                  [formControl]="freqEntities.controls[i]"
+                  [value]="entity"
+                />
+                <label for="freqEntities{{ i }}{{ entity }}">{{
+                  entity.charAt(0).toUpperCase() + entity.slice(1)
+                }}</label>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </fieldset>
+  </ng-container>
+
+  <input
+    #metadataInput
+    *ngIf="metadataUpload"
+    name="metadata"
+    type="file"
+    accept=".json"
+    (change)="metadataFileChanged($event)"
+    [required]="metadataUpload"
+  />
+
   <button type="submit" class="ar-btn" [disabled]="newVisForm.invalid">
     Submit
   </button>

@@ -5,7 +5,13 @@ import {
   ElementRef,
   ChangeDetectorRef,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
@@ -15,6 +21,9 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from 'src/app/services/api.service';
+import { MetatypeService } from 'src/app/services/metatype.service';
+import { Metadata } from 'src/app/classes/metadata';
+import { Metatype } from 'src/app/classes/metatype';
 
 declare var MediaRecorder: any;
 
@@ -33,7 +42,13 @@ export class NewVisualizationComponent implements OnInit {
   chunks: BlobPart[] = [];
   audioSrc: any;
 
+  types!: string[];
+  metatype!: Metatype;
+  metadataUpload: boolean = false;
+  metadataFromFile!: Metadata;
+
   @ViewChild('fileInput') fileInputVar!: ElementRef;
+  @ViewChild('metadataInput') metadataInputVar!: ElementRef;
 
   constructor(
     private library: FaIconLibrary,
@@ -41,13 +56,23 @@ export class NewVisualizationComponent implements OnInit {
     private router: Router,
     private api: ApiService,
     private domSanitizer: DomSanitizer,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private metaApi: MetatypeService
   ) {
     library.addIcons(faMicrophone, faCircleStop, faTrash);
 
     this.newVisForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       audio: ['', [Validators.required]], // TODO: add further validation for audio file
+      type: ['', [Validators.required]],
+      // disable timeColor and freqColor if defaultTimeColor and defaultFreqColor are true
+
+      timeColor: new FormControl({ value: '', disabled: true }),
+      defaultTimeColor: [true],
+      timeEntities: this.fb.array([]),
+      freqColor: new FormControl({ value: '', disabled: true }),
+      defaultFreqColor: [true],
+      freqEntities: this.fb.array([]),
     });
   }
 
@@ -55,6 +80,22 @@ export class NewVisualizationComponent implements OnInit {
     this.api.me().subscribe((res) => {
       this.isAuth = res ? true : false;
     });
+
+    this.types = this.metaApi.getTypes();
+    // for some reason it doesn't automatically set the default selected type
+    this.newVisForm.patchValue({
+      type: this.types[0],
+    });
+    const apiMetatype = this.metaApi.getMetatype(this.types[0]);
+    if (apiMetatype) {
+      this.metatype = apiMetatype;
+      for (let i = 0; i < this.metatype.timeEntityNum; i++) {
+        this.timeEntities.push(new FormControl(this.metatype.entityTypes[0]));
+      }
+      for (let i = 0; i < this.metatype.freqEntityNum; i++) {
+        this.freqEntities.push(new FormControl(this.metatype.entityTypes[0]));
+      }
+    }
 
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       this.mediaRecorder = new MediaRecorder(stream);
@@ -80,6 +121,7 @@ export class NewVisualizationComponent implements OnInit {
   startRecording() {
     this.mediaRecorder.start();
     this.isRecording = true;
+    console.log(this.newVisForm.value);
   }
 
   stopRecording() {
@@ -110,28 +152,98 @@ export class NewVisualizationComponent implements OnInit {
     );
   }
 
+  get timeEntities() {
+    return this.newVisForm.controls['timeEntities'] as FormArray<FormControl>;
+  }
+
+  get freqEntities() {
+    return this.newVisForm.controls['freqEntities'] as FormArray<FormControl>;
+  }
+
+  toggleTimeColor() {
+    if (this.newVisForm.value.defaultTimeColor) {
+      this.newVisForm.controls['timeColor'].disable();
+    } else {
+      this.newVisForm.controls['timeColor'].enable();
+    }
+  }
+
+  toggleFreqColor() {
+    if (this.newVisForm.value.defaultFreqColor) {
+      this.newVisForm.controls['freqColor'].disable();
+    } else {
+      this.newVisForm.controls['freqColor'].enable();
+    }
+  }
+
+  metadataFileChanged(event: any) {
+    const file = event.target.files[0];
+    file.text().then((res: string) => {
+      this.metadataFromFile = JSON.parse(res);
+    });
+  }
+
+  updateForm() {
+    if (this.newVisForm.value.type === 'upload') {
+      this.metadataUpload = true;
+      return;
+    } else {
+      this.metadataUpload = false;
+      const apiMetatype = this.metaApi.getMetatype(this.newVisForm.value.type);
+      if (apiMetatype) {
+        this.metatype = apiMetatype;
+      }
+    }
+  }
+
   onSubmit() {
-    this.api
-      .newVisualization(
-        this.newVisForm.value.title,
-        this.newVisForm.value.audio,
-        // default metadata visualization
-        // add choices to form later
-        {
-          type: 'basic-shapes',
-          options: {
-            timeEntities: ['sphere'],
-            freqEntities: ['cylinder', 'box', 'sphere'],
+    if (this.newVisForm.value.type === 'upload') {
+        this.api
+          .newVisualization(
+            this.newVisForm.value.title,
+            this.newVisForm.value.audio,
+            this.metadataFromFile
+          )
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/visualizations']);
+            },
+            error: (err) => {
+              console.log(`File error: ${err}`);
+            },
+          });
+    } else {
+      let metadata: Metadata = {
+        type: this.newVisForm.value.type,
+        time: {
+          color:
+            this.newVisForm.controls['timeColor'].status === 'VALID'
+              ? this.newVisForm.value.timeColor
+              : null,
+          entities: this.newVisForm.value.timeEntities,
+        },
+        freq: {
+          color:
+            this.newVisForm.controls['freqColor'].status === 'VALID'
+              ? this.newVisForm.value.freqColor
+              : null,
+          entities: this.newVisForm.value.freqEntities,
+        },
+      };
+      this.api
+        .newVisualization(
+          this.newVisForm.value.title,
+          this.newVisForm.value.audio,
+          metadata
+        )
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/visualizations']);
           },
-        }
-      )
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/visualizations']);
-        },
-        error: (err) => {
-          console.log(`File error: ${err}`);
-        },
-      });
+          error: (err) => {
+            console.log(`File error: ${err}`);
+          },
+        });
+    }
   }
 }

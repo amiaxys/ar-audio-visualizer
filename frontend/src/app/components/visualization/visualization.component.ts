@@ -3,6 +3,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Entity } from '../../classes/entity';
 import { Visualization } from '../../classes/visualization';
 import { ApiService } from 'src/app/services/api.service';
+import { MetatypeService } from 'src/app/services/metatype.service';
 import { environment } from '../../../environments/environment';
 //import { THREE } from 'aframe';
 
@@ -12,6 +13,9 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./visualization.component.scss'],
 })
 export class VisualizationComponent {
+  type: string = 'basic-shapes';
+  entityTypes!: string[];
+
   visualization!: Visualization;
   visualizationFetched: boolean = false;
 
@@ -45,9 +49,18 @@ export class VisualizationComponent {
   //logTime: number = 0;
   //test: boolean = true;
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {}
+  constructor(
+    private api: ApiService,
+    private metaApi: MetatypeService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    const apiEntityTypes = this.metaApi.getEntityTypes(this.type);
+    if (apiEntityTypes) {
+      this.entityTypes = apiEntityTypes;
+    }
+
     if (!AFRAME.components['time-entity']) {
       AFRAME.registerComponent('time-entity', {
         init: function () {},
@@ -57,6 +70,7 @@ export class VisualizationComponent {
         },
       });
     }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       console.log('No Visualization Id Found');
@@ -78,28 +92,32 @@ export class VisualizationComponent {
 
   initializeFreqEntities(): void {
     let metaFreqTypes = [''];
-    if (this.visualization.metadata.options) {
-      metaFreqTypes = this.visualization.metadata?.options?.freqEntities;
+    if (this.visualization.metadata.freq) {
+      metaFreqTypes = this.visualization.metadata.freq.entities;
     }
-    const freqTypes = ['cylinder', 'box', 'sphere'];
+
+    const freqTypes = JSON.parse(JSON.stringify(this.entityTypes));
     for (let i = 0; i < Math.min(3, metaFreqTypes.length); i++) {
-      if (
-        metaFreqTypes[i] === 'cylinder' ||
-        metaFreqTypes[i] === 'box' ||
-        metaFreqTypes[i] === 'sphere'
-      ) {
-        freqTypes[i] = metaFreqTypes[i];
+      for (let j = 0; j < this.entityTypes.length; j++) {
+        if (metaFreqTypes[i] === this.entityTypes[j]) {
+          freqTypes[i] = metaFreqTypes[i];
+        }
       }
     }
 
     let nextX = -4;
     const freqEntNum = 5;
+    let col = null;
+    if (this.visualization.metadata.freq) {
+      col = this.visualization.metadata.freq.color;
+    }
     for (let i = 0; i < freqEntNum; i++) {
-      const col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
+      if (!col) {
+        col = `hsl(${i * (360 / freqEntNum)}, 100%, 53%)`;
+      }
       const z = i * 0.5;
       switch (i % 3) {
         case 0:
-          metaFreqTypes[0];
           this.freqEntities[i] = {
             type: `a-${freqTypes[0]}`,
             position: `${nextX} 0.75 ${z}`,
@@ -133,21 +151,32 @@ export class VisualizationComponent {
 
   initializeTimeEntities(): void {
     let metaTimeTypes = [''];
-    if (this.visualization.metadata.options) {
-      metaTimeTypes = this.visualization.metadata?.options?.timeEntities;
+    if (this.visualization.metadata.time) {
+      metaTimeTypes = this.visualization.metadata.time.entities;
     }
+
+    let timeType = 'a-sphere';
+    for (let j = 0; j < this.entityTypes.length; j++) {
+      if (metaTimeTypes[0] === this.entityTypes[j]) {
+        timeType = 'a-' + metaTimeTypes[0];
+      }
+    }
+
     const width = 18;
     const height = 4;
     const timeSlice = Math.floor(this.timeBufferLength / 20);
     const sliceWidth = width / timeSlice;
     let x = -3.5;
+    let col = null;
+    if (this.visualization.metadata.time) {
+      col = this.visualization.metadata.time.color;
+    }
     for (let i = 0; i < timeSlice; i++) {
       const v = this.timeDataArray[i * timeSlice] / 128.0;
       const y = v * (height / 2) + 1;
 
-      let timeType = 'a-sphere';
-      if (metaTimeTypes[0] === 'cylinder' || metaTimeTypes[0] === 'box') {
-        timeType = 'a-' + metaTimeTypes[0];
+      if (!col) {
+        col = `hsl(${i % 360}, 100%, ${Math.min(30 + i * 2, 100)}%)`;
       }
 
       this.timeEntities[i] = {
@@ -156,7 +185,7 @@ export class VisualizationComponent {
         radius: `${sliceWidth * 0.4}`,
         width: `${sliceWidth * 0.4 * 2}`,
         height: `${sliceWidth * 0.4 * 2}`,
-        color: `hsl(${i % 360}, 100%, ${Math.min(30 + i * 2, 100)}%)`,
+        color: col,
       };
 
       x += sliceWidth;
@@ -196,10 +225,12 @@ export class VisualizationComponent {
       }
 
       // change frequency entity color
-      let freqHue = this.freqEntities[i].color.match(this.hueRegex)![0];
-      this.freqEntities[i].color = `hsl(${freqHue}, ${Math.floor(
-        30 + (freqAvg / 255) * 50
-      )}%, 50%)`;
+      if (!this.visualization.metadata.freq.color) {
+        let freqHue = this.freqEntities[i].color.match(this.hueRegex)![0];
+        this.freqEntities[i].color = `hsl(${freqHue}, ${Math.floor(
+          30 + (freqAvg / 255) * 50
+        )}%, 50%)`;
+      }
 
       // uncomment the block below for rainbow entities
       /* this.freqEntities[i].color = `hsl(${Math.ceil((freqAvg / 255) * 360)}, 100%, ${Math.floor(
@@ -207,14 +238,6 @@ export class VisualizationComponent {
       )}%)`; */
     }
 
-    // change plane color
-    /* const r = Math.floor(
-      (this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 150
-    );
-    const g = Math.floor(
-      (this.freqDataArray[this.freqDataArray.length / 2 - 1] / 255.0) * 150
-    );
-    const b = Math.floor((this.freqDataArray[0] / 255.0) * 150); */
     const planeLight = Math.floor(
       (this.freqDataArray[this.freqDataArray.length / 2] / 255.0) * 100
     );
@@ -250,20 +273,23 @@ export class VisualizationComponent {
       this.timeEntities[i].position = tempPos.join(' ');
 
       // change colour of time entity
-      let timeHue;
-      if (i === 0) {
-        timeHue =
-          parseInt(this.timeEntities[i].color.match(this.hueRegex)![0], 10) + 1;
-      } else {
-        timeHue = parseInt(
-          this.timeEntities[i - 1].color.match(this.hueRegex)![0],
-          10
-        );
+      if (!this.visualization.metadata.time.color) {
+        let timeHue;
+        if (i === 0) {
+          timeHue =
+            parseInt(this.timeEntities[i].color.match(this.hueRegex)![0], 10) +
+            1;
+        } else {
+          timeHue = parseInt(
+            this.timeEntities[i - 1].color.match(this.hueRegex)![0],
+            10
+          );
+        }
+        this.timeEntities[i].color = `hsl(${timeHue % 360}, 100%, ${Math.min(
+          30 + i * 2,
+          100
+        )}%)`;
       }
-      this.timeEntities[i].color = `hsl(${timeHue % 360}, 100%, ${Math.min(
-        30 + i * 2,
-        100
-      )}%)`;
     }
   }
 
