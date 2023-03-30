@@ -65,14 +65,13 @@ export class NewVisualizationComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3)]],
       audio: ['', [Validators.required]], // TODO: add further validation for audio file
       type: ['', [Validators.required]],
-      // disable timeColor and freqColor if defaultTimeColor and defaultFreqColor are true
-
       timeColor: new FormControl({ value: '', disabled: true }),
       defaultTimeColor: [true],
       timeEntities: this.fb.array([]),
       freqColor: new FormControl({ value: '', disabled: true }),
       defaultFreqColor: [true],
       freqEntities: this.fb.array([]),
+      metadataFile: new FormControl({ value: '', disabled: true }, [Validators.required]),
     });
   }
 
@@ -82,20 +81,11 @@ export class NewVisualizationComponent implements OnInit {
     });
 
     this.types = this.metaApi.getTypes();
-    // for some reason it doesn't automatically set the default selected type
     this.newVisForm.patchValue({
       type: this.types[0],
     });
-    const apiMetatype = this.metaApi.getMetatype(this.types[0]);
-    if (apiMetatype) {
-      this.metatype = apiMetatype;
-      for (let i = 0; i < this.metatype.timeEntityNum; i++) {
-        this.timeEntities.push(new FormControl(this.metatype.entityTypes[0]));
-      }
-      for (let i = 0; i < this.metatype.freqEntityNum; i++) {
-        this.freqEntities.push(new FormControl(this.metatype.entityTypes[0]));
-      }
-    }
+
+    this.updateFormArray(this.types[0]);
 
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       this.mediaRecorder = new MediaRecorder(stream);
@@ -121,7 +111,6 @@ export class NewVisualizationComponent implements OnInit {
   startRecording() {
     this.mediaRecorder.start();
     this.isRecording = true;
-    console.log(this.newVisForm.value);
   }
 
   stopRecording() {
@@ -160,6 +149,21 @@ export class NewVisualizationComponent implements OnInit {
     return this.newVisForm.controls['freqEntities'] as FormArray<FormControl>;
   }
 
+  updateFormArray(type: string) {
+    const apiMetatype = this.metaApi.getMetatype(type);
+    if (apiMetatype) {
+      this.metatype = apiMetatype;
+      this.timeEntities.clear();
+      for (let i = 0; i < apiMetatype.timeEntityNum; i++) {
+        this.timeEntities.push(new FormControl(apiMetatype.entityTypes[0]));
+      }
+      this.freqEntities.clear();
+      for (let i = 0; i < apiMetatype.freqEntityNum; i++) {
+        this.freqEntities.push(new FormControl(apiMetatype.entityTypes[0]));
+      }
+    }
+  }
+
   toggleTimeColor() {
     if (this.newVisForm.value.defaultTimeColor) {
       this.newVisForm.controls['timeColor'].disable();
@@ -178,6 +182,9 @@ export class NewVisualizationComponent implements OnInit {
 
   metadataFileChanged(event: any) {
     const file = event.target.files[0];
+    this.newVisForm.patchValue({
+      metadataFile: file,
+    });
     file.text().then((res: string) => {
       this.metadataFromFile = JSON.parse(res);
     });
@@ -186,13 +193,13 @@ export class NewVisualizationComponent implements OnInit {
   updateForm() {
     if (this.newVisForm.value.type === 'upload') {
       this.metadataUpload = true;
+      this.newVisForm.controls['metadataFile'].enable();
       return;
     } else {
       this.metadataUpload = false;
-      const apiMetatype = this.metaApi.getMetatype(this.newVisForm.value.type);
-      if (apiMetatype) {
-        this.metatype = apiMetatype;
-      }
+      this.newVisForm.controls['metadataFile'].setValue('');
+      this.newVisForm.controls['metadataFile'].disable();
+      this.updateFormArray(this.newVisForm.value.type);
     }
   }
 
