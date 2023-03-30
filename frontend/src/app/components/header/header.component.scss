@@ -2,7 +2,8 @@ header {
   display: flex;
   background-color: black;
   justify-content: space-between;
-  height: 64px;
+  height: fit-content;
+  padding: 10px 0;
   width: 100vw;
   align-items: center;
 
@@ -16,12 +17,44 @@ header {
 
   .header-btns {
     margin-right: 10px;
+    justify-content: flex-end;
     .ar-btn {
       display: inline-block;
       line-height: 1.2;
       margin: 0 10px;
       background-color: white;
       color: black;
+      align-self: flex-start;
+      min-width: fit-content;
+      max-width: fit-content;
+    }
+  }
+}
+
+.row {
+  margin: 0;
+}
+
+@media (max-width: 576px) {
+  header {
+    justify-content: center;
+
+    #title {
+      font-size: x-large;
+      display: inline-flex;
+      margin: 0;
+      justify-content: center;
+    }
+
+    .header-btns {
+      flex-direction: column;
+      align-content: center;
+      margin: 0;
+
+      .ar-btn {
+        margin: 10px 0;
+        align-self: center;
+      }
     }
   }
 }

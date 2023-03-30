@@ -4,5 +4,14 @@
 
   #sign-up-btn {
     margin: 10px 0;
+    width: fit-content;
+  }
+}
+
+@media (max-width: 576px) {
+  #sign-up-form {
+    width: 80%;
+    align-items: center;
+    text-align: center;
   }
 }

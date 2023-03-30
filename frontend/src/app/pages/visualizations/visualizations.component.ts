@@ -22,7 +22,7 @@ export class VisualizationsComponent implements OnInit {
       },
       error: () => {
         this.isAuth = false;
-      }
+      },
     });
   }
 
