@@ -71,7 +71,7 @@ export class ApiService {
   editVisualization(
     visualizationId: string,
     newTitle: string,
-    newMetadata: Object
+    newMetadata: Metadata
   ): Observable<Visualization> {
     return this.http.patch<Visualization>(
       `${this.url}/api/visualizations/${visualizationId}`,
