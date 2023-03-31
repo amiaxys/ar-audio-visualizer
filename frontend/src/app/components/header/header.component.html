@@ -1,6 +1,13 @@
 <header>
   <a routerLink="/" id="title">AR Audio Visualizer</a>
   <div id="header-btns">
+    <a
+      href="../../../assets/pattern-music-solid.png"
+      download="ar-marker.png"
+      title="Download AR Marker"
+      class="ar-btn"
+      >Download AR Marker</a
+    >
     <a routerLink="/sign-up" class="ar-btn" *ngIf="!isAuth">Sign Up</a>
     <a routerLink="/sign-in" class="ar-btn" *ngIf="!isAuth">Sign In</a>
     <a routerLink="/visualizations" class="ar-btn" *ngIf="isAuth"
