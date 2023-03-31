@@ -69,142 +69,142 @@
     <a-entity camera></a-entity>
   </a-scene>
 
-  <div #formContainer id="form-container" class="hide-form">
-    <div id="drag-tab" (click)="toggleForm()">
-      <fa-icon
-        *ngIf="formHidden"
-        class="icon"
-        icon="caret-left"
-        size="2x"
-      ></fa-icon>
-      <fa-icon
-        *ngIf="!formHidden"
-        class="icon"
-        icon="caret-right"
-        size="2x"
-      ></fa-icon>
-    </div>
-    <form
-      class="styled-form"
-      id="edit-visualization-form"
-      [formGroup]="editVisForm"
-      (submit)="onSubmit()"
-    >
-      <fieldset>
-        <legend>Waveform</legend>
-
-        <div class="button-wrapper">
-          <div>
-            <label for="timeColor">Color</label>
-            <input
-              type="color"
-              id="timeColor"
-              name="timeColor"
-              formControlName="timeColor"
-            />
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="defaultTimeColor"
-              name="defaultTimeColor"
-              formControlName="defaultTimeColor"
-              (change)="toggleTimeColor()"
-              checked
-            />
-            <label for="defaultTimeColor">Default</label>
-          </div>
-        </div>
-
-        <ng-container formArrayName="newTimeEntities">
-          <div
-            class="radio-wrapper"
-            *ngFor="let control of newTimeEntities.controls; let i = index"
-          >
-            <label>Shape {{ i + 1 }}</label>
-            <div class="button-wrapper">
-              <ng-container *ngFor="let entity of entityTypes; let j = index">
-                <div>
-                  <input
-                    type="radio"
-                    id="timeEntities{{ i }}{{ entity }}"
-                    name="timeEntities{{ i }}"
-                    [formControl]="newTimeEntities.controls[i]"
-                    [value]="entity"
-                  />
-                  <label for="timeEntities{{ i }}{{ entity }}">{{
-                    entity.charAt(0).toUpperCase() + entity.slice(1)
-                  }}</label>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </ng-container>
-      </fieldset>
-
-      <div class="line"></div>
-
-      <fieldset>
-        <legend>Barform</legend>
-
-        <div class="button-wrapper">
-          <div>
-            <label for="freqColor">Color</label>
-            <input
-              type="color"
-              id="freqColor"
-              name="freqColor"
-              formControlName="freqColor"
-            />
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="defaultFreqColor"
-              name="defaultFreqColor"
-              formControlName="defaultFreqColor"
-              (change)="toggleFreqColor()"
-              checked
-            />
-            <label for="defaultFreqColor">Default</label>
-          </div>
-        </div>
-
-        <ng-container formArrayName="newFreqEntities">
-          <div
-            class="radio-wrapper"
-            *ngFor="let control of newFreqEntities.controls; let i = index"
-          >
-            <label>Shape {{ i + 1 }}</label>
-            <div class="button-wrapper">
-              <ng-container *ngFor="let entity of entityTypes; let j = index">
-                <div>
-                  <input
-                    type="radio"
-                    id="freqEntities{{ i }}{{ entity }}"
-                    name="freqEntities{{ i }}"
-                    [formControl]="newFreqEntities.controls[i]"
-                    [value]="entity"
-                  />
-                  <label for="freqEntities{{ i }}{{ entity }}">{{
-                    entity.charAt(0).toUpperCase() + entity.slice(1)
-                  }}</label>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </ng-container>
-      </fieldset>
-      <button type="submit" class="ar-btn" [disabled]="editVisForm.invalid">
-        Update Permanently
-      </button>
-    </form>
-  </div>
-
   <audio
     #audio
     controls
     crossorigin="use-credentials"
     [attr.src]="audioSource"
   ></audio>
+</div>
+
+<div #formContainer id="form-container" class="hide-form">
+  <div id="drag-tab" (click)="toggleForm()">
+    <fa-icon
+      *ngIf="formHidden"
+      class="icon"
+      icon="caret-left"
+      size="2x"
+    ></fa-icon>
+    <fa-icon
+      *ngIf="!formHidden"
+      class="icon"
+      icon="caret-right"
+      size="2x"
+    ></fa-icon>
+  </div>
+  <form
+    class="styled-form"
+    id="edit-visualization-form"
+    [formGroup]="editVisForm"
+    (submit)="onSubmit()"
+  >
+    <fieldset>
+      <legend>Waveform</legend>
+
+      <div class="button-wrapper">
+        <div>
+          <label for="timeColor">Color</label>
+          <input
+            type="color"
+            id="timeColor"
+            name="timeColor"
+            formControlName="timeColor"
+          />
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="defaultTimeColor"
+            name="defaultTimeColor"
+            formControlName="defaultTimeColor"
+            (change)="toggleTimeColor()"
+            checked
+          />
+          <label for="defaultTimeColor">Default</label>
+        </div>
+      </div>
+
+      <ng-container formArrayName="newTimeEntities">
+        <div
+          class="radio-wrapper"
+          *ngFor="let control of newTimeEntities.controls; let i = index"
+        >
+          <label>Shape {{ i + 1 }}</label>
+          <div class="button-wrapper">
+            <ng-container *ngFor="let entity of entityTypes; let j = index">
+              <div>
+                <input
+                  type="radio"
+                  id="timeEntities{{ i }}{{ entity }}"
+                  name="timeEntities{{ i }}"
+                  [formControl]="newTimeEntities.controls[i]"
+                  [value]="entity"
+                />
+                <label for="timeEntities{{ i }}{{ entity }}">{{
+                  entity.charAt(0).toUpperCase() + entity.slice(1)
+                }}</label>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </fieldset>
+
+    <div class="line"></div>
+
+    <fieldset>
+      <legend>Barform</legend>
+
+      <div class="button-wrapper">
+        <div>
+          <label for="freqColor">Color</label>
+          <input
+            type="color"
+            id="freqColor"
+            name="freqColor"
+            formControlName="freqColor"
+          />
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="defaultFreqColor"
+            name="defaultFreqColor"
+            formControlName="defaultFreqColor"
+            (change)="toggleFreqColor()"
+            checked
+          />
+          <label for="defaultFreqColor">Default</label>
+        </div>
+      </div>
+
+      <ng-container formArrayName="newFreqEntities">
+        <div
+          class="radio-wrapper"
+          *ngFor="let control of newFreqEntities.controls; let i = index"
+        >
+          <label>Shape {{ i + 1 }}</label>
+          <div class="button-wrapper">
+            <ng-container *ngFor="let entity of entityTypes; let j = index">
+              <div>
+                <input
+                  type="radio"
+                  id="freqEntities{{ i }}{{ entity }}"
+                  name="freqEntities{{ i }}"
+                  [formControl]="newFreqEntities.controls[i]"
+                  [value]="entity"
+                />
+                <label for="freqEntities{{ i }}{{ entity }}">{{
+                  entity.charAt(0).toUpperCase() + entity.slice(1)
+                }}</label>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </fieldset>
+    <button type="submit" class="ar-btn" [disabled]="editVisForm.invalid">
+      Update Permanently
+    </button>
+  </form>
 </div>
