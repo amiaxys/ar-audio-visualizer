@@ -12,6 +12,15 @@
       ></app-visualization-card>
     </div>
   </div>
+  <div id="pagination-wrapper">
+    <pagination
+      [boundaryLinks]="false"
+      [directionLinks]="true"
+      [totalItems]="totalCount"
+      [itemsPerPage]="limit"
+      (pageChanged)="onPageChange($event)"
+    ></pagination>
+  </div>
 </div>
 
 <ng-template #error>

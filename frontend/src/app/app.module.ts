@@ -12,6 +12,7 @@ import {
 } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule, BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { PaginationModule, PaginationConfig } from 'ngx-bootstrap/pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -71,6 +72,7 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
     BsDatepickerModule,
     BsDropdownModule,
     ModalModule,
+    PaginationModule
   ],
   providers: [
     AlertConfig,
@@ -82,6 +84,7 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
       useClass: ApiInterceptor,
       multi: true,
     },
+    PaginationConfig,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
