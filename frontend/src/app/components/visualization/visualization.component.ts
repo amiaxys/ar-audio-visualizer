@@ -202,6 +202,7 @@ export class VisualizationComponent {
   }
 
   onSubmit() {
+    this.toggleForm();
     this.updateEntities();
     this.update.emit(this.visualization);
   }

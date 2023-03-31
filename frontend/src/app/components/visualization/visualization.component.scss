@@ -59,6 +59,7 @@
     transform: translate(0, -50%);
     bottom: 0;
     right: 0;
+    height: -moz-fit-content;
     height: fit-content;
     display: flex;
     flex-flow: row nowrap;
@@ -90,6 +91,5 @@
 
   .hide-form {
     left: calc(100% - 32px);
-    max-height: calc(100% - 64px);
   }
 }
