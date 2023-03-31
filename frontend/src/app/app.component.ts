@@ -11,6 +11,7 @@ export class AppComponent {
 
   reloadNextPage: boolean = false;
   displayHeader: boolean = true;
+  displayFooter: boolean = true;
 
   constructor(private router: Router) {
     // detect route change
@@ -20,6 +21,7 @@ export class AppComponent {
         if (event.url === '/visualizations/' + event.url.split('/')[2]) {
           this.reloadNextPage = true;
           this.displayHeader = false;
+          this.displayFooter = false;
         } else if (this.reloadNextPage) {
           // due to the way ar.js keeps track of and changes the body, the next
           // page must be reloaded if the previous page had ar.js enabled
@@ -27,6 +29,7 @@ export class AppComponent {
           // TODO: find a way to fix the ar.js library without reloading the page
           this.reloadNextPage = false;
           this.displayHeader = true;
+          this.displayFooter = true;
           window.location.reload();
         }
       }
