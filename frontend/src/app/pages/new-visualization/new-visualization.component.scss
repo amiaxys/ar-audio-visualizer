@@ -1,14 +1,19 @@
 #new-visualization-form {
   margin: 20px auto;
-  width: 40%;
+  width: 60%;
 
   .ar-btn {
     margin-top: 20px;
+    max-width: fit-content;
   }
 
   #audio-inputs {
     display: flex;
     align-items: center;
+  }
+
+  #audio-wrapper {
+    margin: 10px 0;
   }
 
   #audio-inputs > *,
@@ -83,5 +88,17 @@
       border-radius: 3px;
       padding: 3px 5px;
     }
+  }
+}
+
+@media (max-width: 576px) {
+  #new-visualization-form {
+    width: 80%;
+    align-items: center;
+    text-align: center;
+
+    #audio-inputs {
+      justify-content: center;
+    }    
   }
 }

@@ -10,6 +10,7 @@ export class AppComponent {
   title = 'arAudioVisualizer';
 
   reloadNextPage: boolean = false;
+  displayHeader: boolean = true;
 
   constructor(private router: Router) {
     // detect route change
@@ -18,12 +19,14 @@ export class AppComponent {
         // check if route is visualizations/:id
         if (event.url === '/visualizations/' + event.url.split('/')[2]) {
           this.reloadNextPage = true;
+          this.displayHeader = false;
         } else if (this.reloadNextPage) {
           // due to the way ar.js keeps track of and changes the body, the next
           // page must be reloaded if the previous page had ar.js enabled
           // Angular Contributer also said it was the best way
           // TODO: find a way to fix the ar.js library without reloading the page
           this.reloadNextPage = false;
+          this.displayHeader = true;
           window.location.reload();
         }
       }
