@@ -139,7 +139,8 @@
       </div>
 
       <ng-container formArrayName="timeEntities">
-        <ng-container
+        <div
+          class="radio-wrapper"
           *ngFor="let control of timeEntities.controls; let i = index"
         >
           <label>Shape {{ i + 1 }}</label>
@@ -161,9 +162,11 @@
               </div>
             </ng-container>
           </div>
-        </ng-container>
+        </div>
       </ng-container>
     </fieldset>
+
+    <div class="line"></div>
 
     <fieldset>
       <legend>Barform</legend>
