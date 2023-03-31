@@ -114,4 +114,18 @@ export class VisualizationDisplayComponent implements OnInit {
         });
     }
   }
+
+  updateVisualization(visualization: Visualization) {
+    this.api
+      .editVisualization(
+        visualization.id,
+        visualization.title,
+        visualization.metadata
+      )
+      .subscribe({
+        error: (err) => {
+          console.log(`Update Visualization Error: ${err}`);
+        },
+      });
+  }
 }

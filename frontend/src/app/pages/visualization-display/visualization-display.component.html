@@ -3,6 +3,7 @@
   *ngIf="isAuth && visualizationFetched"
   [visualization]="visualization"
   [entityTypes]="entityTypes"
+  (update)="updateVisualization($event)"
 ></app-visualization>
 <div class="error-component" *ngIf="!isAuth">
   <app-not-authenticated></app-not-authenticated>
