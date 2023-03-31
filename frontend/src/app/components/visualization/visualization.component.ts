@@ -48,10 +48,43 @@ export class VisualizationComponent {
   ngOnInit(): void {
     if (!AFRAME.components['time-entity']) {
       AFRAME.registerComponent('time-entity', {
-        init: function () {},
+        init: function () {
+          /* let scale = 1.1;
+          const el = this.el;
+          this.el.addEventListener('mousedown', function (e) {
+            el.object3D.scale.set(scale, scale, scale);
+            //el.setAttribute('scale', {x: scale, y: scale, z: scale});
+            scale += 0.1;
+            //el.object3D.position.set(e.detail.intersection.point.x, e.detail.intersection.point.y, e.detail.intersection.point.z + 1);
+          }); */
+        },
         tick: function () {
           // I'm not actually sure if this smooths the movement
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
+        },
+      });
+    }
+
+    if (!AFRAME.components['marker']) {
+      AFRAME.registerComponent('marker', {
+        init: function () {
+          const clickableEntities = document.querySelectorAll('.clickable');
+          this.el.addEventListener('click', function (event: any) {
+            const intersectedElement =
+              event && event.detail && event.detail.intersectEl;
+            for (let i = 0; i < clickableEntities.length; i++) {
+              if (
+                clickableEntities[i] &&
+                intersectedElement === clickableEntities[i]
+              ) {
+                const scale = clickableEntities[i].getAttribute('scale');
+                Object.keys(scale).forEach(
+                  (key) => (scale[key] = scale[key] + 1)
+                );
+                clickableEntities[i].setAttribute('scale', scale);
+              }
+            }
+          });
         },
       });
     }
@@ -280,9 +313,12 @@ export class VisualizationComponent {
     this.timeDataArray = new Uint8Array(this.timeBufferLength);
 
     this.draw();
-    this.audioElmt.nativeElement.paused
+    /* this.audioElmt.nativeElement.paused
       ? this.audioElmt.nativeElement.play()
-      : this.audioElmt.nativeElement.pause();
+      : this.audioElmt.nativeElement.pause(); */
+    if (this.audioElmt.nativeElement.paused) {
+      this.audioElmt.nativeElement.play();
+    }
     this.displayPlayBtn = this.audioElmt.nativeElement.paused;
   }
 }
