@@ -7,7 +7,7 @@
     arjs="sourceType: webcam; debugUIEnabled: false;"
     (click)="startVisualization()"
   >
-    <a-marker type="pattern" url="../../../assets/pattern-music-solid.patt">
+    <a-marker preset="hiro">
       <ng-container *ngFor="let entity of freqEntities">
         <a-cylinder
           *ngIf="entity.type === 'a-cylinder'"
