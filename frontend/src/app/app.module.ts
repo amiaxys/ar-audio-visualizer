@@ -72,7 +72,7 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
     BsDatepickerModule,
     BsDropdownModule,
     ModalModule,
-    PaginationModule
+    PaginationModule,
   ],
   providers: [
     AlertConfig,
