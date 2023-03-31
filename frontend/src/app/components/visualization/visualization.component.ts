@@ -149,7 +149,8 @@ export class VisualizationComponent {
 
   toggleForm() {
     this.formContainer.nativeElement.classList.toggle('hide-form');
-    this.formHidden = this.formContainer.nativeElement.classList.contains('hide-form');
+    this.formHidden =
+      this.formContainer.nativeElement.classList.contains('hide-form');
   }
 
   updateEntities() {

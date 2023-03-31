@@ -71,8 +71,18 @@
 
   <div #formContainer id="form-container" class="hide-form">
     <div id="drag-tab" (click)="toggleForm()">
-      <fa-icon *ngIf="formHidden" class="icon" icon="caret-left" size="2x"></fa-icon>
-      <fa-icon *ngIf="!formHidden" class="icon" icon="caret-right" size="2x"></fa-icon>
+      <fa-icon
+        *ngIf="formHidden"
+        class="icon"
+        icon="caret-left"
+        size="2x"
+      ></fa-icon>
+      <fa-icon
+        *ngIf="!formHidden"
+        class="icon"
+        icon="caret-right"
+        size="2x"
+      ></fa-icon>
     </div>
     <form
       class="styled-form"
