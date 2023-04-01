@@ -24,8 +24,13 @@ export class VisualizationDisplayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.api.me().subscribe((res) => {
-      this.isAuth = res ? true : false;
+    this.api.me().subscribe({
+      next: (res) => {
+        this.isAuth = res ? true : false;
+      },
+      error: () => {
+        this.isAuth = false;
+      },
     });
 
     const id = this.route.snapshot.paramMap.get('id');

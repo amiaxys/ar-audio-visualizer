@@ -30,6 +30,7 @@ export class SignInComponent implements OnInit {
       .signIn(this.signInForm.value.username, this.signInForm.value.password)
       .subscribe({
         next: () => {
+          this.api.updateAuthStatus(true);
           this.router.navigate(['visualizations']);
           this.error = '';
         },

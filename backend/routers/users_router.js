@@ -56,7 +56,7 @@ usersRouter.post("/signin", async (req, res) => {
   const passwordCorrect = bcrypt.compareSync(password, user.passwordHash);
   // incorrect password
   if (!passwordCorrect) {
-    return res.status(401).json({ error: "Password incorrect." });
+    return res.status(401).json({ error: "Password is incorrect." });
   }
   // remove passwordHash from response
   user.passwordHash = undefined;
@@ -75,7 +75,7 @@ usersRouter.get("/:UserId/avatar", isAuthenticated, async (req, res) => {
   let { UserId } = req.params;
   const user = await User.findByPk(UserId);
   if (!user) {
-    return res.status(404).json({ error: "User not found" });
+    return res.status(404).json({ error: "User not found." });
   }
 
   if (!user.avatar) {

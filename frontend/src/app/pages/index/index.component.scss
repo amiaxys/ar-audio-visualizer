@@ -1,11 +1,11 @@
+:host {
+  margin-top: auto;
+}
+
 #index-body {
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  align-content: center;
-  min-height: 80%;
+  margin: 20px auto;
+  padding: 0 20px;
 
   #title {
     font-weight: bolder;

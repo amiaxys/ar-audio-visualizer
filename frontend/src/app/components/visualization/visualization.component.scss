@@ -1,3 +1,18 @@
+// Header does not span the entire page when page shrinks due to issues w/ ar.js
+// TODO: fix header not spanning entire width when page shrinks
+
+:host {
+  max-width: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
+#header {
+  max-width: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
 #title {
   position: absolute;
   top: 84px;
