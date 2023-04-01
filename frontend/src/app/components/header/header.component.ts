@@ -2,6 +2,8 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/services/api.service';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faMusic } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
@@ -17,8 +19,11 @@ export class HeaderComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     private api: ApiService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private library: FaIconLibrary
+  ) {
+    this.library.addIcons(faMusic);
+  }
 
   ngOnInit(): void {
     this.checkAuth();
