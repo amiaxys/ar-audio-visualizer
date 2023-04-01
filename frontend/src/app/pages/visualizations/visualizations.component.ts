@@ -20,7 +20,7 @@ export class VisualizationsComponent implements OnInit {
     this.api.me().subscribe({
       next: (res) => {
         this.isAuth = res ? true : false;
-        this.getUserVisualizations(0);
+        this.getUserVisualizations(1);
       },
       error: () => {
         this.isAuth = false;
@@ -54,7 +54,7 @@ export class VisualizationsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.getUserVisualizations(0);
+          this.getUserVisualizations(1);
         },
         error: (err) => {
           console.log(`Edit error: ${err}`);
@@ -65,7 +65,7 @@ export class VisualizationsComponent implements OnInit {
   deleteVisualizations(visualizationId: string) {
     this.api.deleteVisualization(visualizationId).subscribe({
       next: () => {
-        this.getUserVisualizations(0);
+        this.getUserVisualizations(1);
       },
       error: (err) => {
         console.log(`Deletion error: ${err}`);
