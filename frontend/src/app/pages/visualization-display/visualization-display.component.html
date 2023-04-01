@@ -2,6 +2,7 @@
   *ngIf="isAuth === true && visualizationFetched; else error"
   [visualization]="visualization"
   [entityTypes]="entityTypes"
+  (update)="updateVisualization($event)"
 ></app-visualization>
 
 <ng-template #error>
