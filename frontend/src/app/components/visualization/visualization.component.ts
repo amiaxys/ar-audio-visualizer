@@ -154,7 +154,6 @@ export class VisualizationComponent {
   }
 
   updateEntities() {
-    console.log(this.editVisForm.value);
     this.visualization.metadata.time.color = this.editVisForm.value
       .defaultTimeColor
       ? null
