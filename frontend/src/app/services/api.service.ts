@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../classes/user';
@@ -12,7 +12,14 @@ import { Metadata } from '../classes/metadata';
 export class ApiService {
   url = environment.backendUrl;
 
+  private auth = new BehaviorSubject(false);
+  authStatus = this.auth.asObservable();
+
   constructor(private http: HttpClient) {}
+
+  updateAuthStatus(status: boolean) {
+    this.auth.next(status);
+  }
 
   signIn(username: string, password: string): Observable<User> {
     return this.http.post<User>(`${this.url}/api/users/signin`, {
