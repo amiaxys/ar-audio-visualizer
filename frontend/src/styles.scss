@@ -11,7 +11,6 @@
 body {
   margin: 0;
   padding: 0;
-  display: flex;
   min-height: 100%;
   max-width: 100%;
   overflow-x: hidden;
@@ -111,6 +110,7 @@ body {
 
   .form-title {
     margin: 20px 0;
+    padding: 0;
   }
 
   input {
@@ -128,10 +128,13 @@ body {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+    padding: 0;
+    width: fit-content;
   }
 
   .error {
     color: red;
+    padding: 0;
 
     * {
       margin-bottom: 10px;
@@ -202,9 +205,32 @@ body {
   transition: 0.3s;
 }
 
+/*********************************************************************/
+
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+/*********************************************************************/
+
 // Columns
 
 /* The following code was taken from CSCC09 - Professor Cho Yin Yong */
+
+*,
+::after,
+::before {
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing */
+  box-sizing: border-box;
+}
+
+.row {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
 
 /* 12 grid bootstrap layout */
 .col-1 {
@@ -288,12 +314,7 @@ body {
   .col-sm-auto {
     flex: 1;
   }
+  ::placeholder {
+    text-align: center;
+  }
 }
-
-/*********************************************************************/
-
-/* Importing Bootstrap SCSS file. */
-@import "./node_modules/bootstrap/scss/bootstrap";
-
-/* Importing Datepicker SCSS file. */
-@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";

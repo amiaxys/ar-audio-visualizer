@@ -1,12 +1,11 @@
-<app-header></app-header>
 <form
-  class="styled-form"
+  class="styled-form row"
   id="sign-in-form"
   (submit)="signIn()"
   [formGroup]="signInForm"
 >
-  <h2 class="form-title">Sign In</h2>
-  <div class="input-wrapper">
+  <h2 class="form-title col-12">Sign In</h2>
+  <div class="input-wrapper col-12">
     <label>Username</label>
     <input
       type="text"
@@ -16,7 +15,7 @@
       required
     />
   </div>
-  <div class="input-wrapper">
+  <div class="input-wrapper col-12">
     <label>Password</label>
     <input
       type="password"
@@ -27,13 +26,13 @@
     />
   </div>
 
-  <div class="error" *ngIf="error">{{ error }}</div>
+  <div class="error col-12" *ngIf="error">{{ error }}</div>
 
   <button
     [disabled]="signInForm.invalid"
     type="submit"
     id="sign-in-btn"
-    class="ar-btn"
+    class="ar-btn col-12"
   >
     Sign In
   </button>

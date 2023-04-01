@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   modalRef?: BsModalRef;
 
   error: string = '';
-  isAuth: boolean = false;
+  isAuth!: boolean;
 
   constructor(
     private modalService: BsModalService,
@@ -25,15 +25,23 @@ export class HeaderComponent implements OnInit {
   }
 
   checkAuth() {
-    this.api.me().subscribe((res) => {
-      this.isAuth = res ? true : false;
+    // TODO: fix this
+    this.api.authStatus.subscribe((isAuth) => {
+      this.api.me().subscribe({
+        next: (res) => {
+          this.isAuth = true;
+        },
+        error: () => {
+          this.isAuth = isAuth;
+        },
+      });
     });
   }
 
   signOut(template: TemplateRef<any>) {
     this.api.signOut().subscribe({
       next: () => {
-        this.isAuth = false;
+        this.api.updateAuthStatus(false);
         this.modalRef = this.modalService.show(template);
         this.router.navigate(['/']);
       },

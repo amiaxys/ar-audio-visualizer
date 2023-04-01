@@ -11,21 +11,32 @@ import { ApiService } from 'src/app/services/api.service';
 export class VisualizationsComponent implements OnInit {
   visualizations: Visualization[] = [];
   isAuth!: boolean;
+  totalCount!: number;
+  limit: number = 6;
 
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    this.getUserVisualizations();
-
-    this.api.me().subscribe((res) => {
-      this.isAuth = res ? true : false;
+    this.api.me().subscribe({
+      next: (res) => {
+        this.isAuth = res ? true : false;
+        this.getUserVisualizations(0);
+      },
+      error: () => {
+        this.isAuth = false;
+      },
     });
   }
 
-  getUserVisualizations() {
-    this.api.getVisualizations(1, 10).subscribe({
+  onPageChange(event: any) {
+    this.getUserVisualizations(event.page);
+  }
+
+  getUserVisualizations(page: number) {
+    this.api.getVisualizations(page, this.limit).subscribe({
       next: (res) => {
         this.visualizations = res.rows;
+        this.totalCount = res.count;
       },
     });
   }
@@ -43,7 +54,7 @@ export class VisualizationsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.getUserVisualizations();
+          this.getUserVisualizations(0);
         },
         error: (err) => {
           console.log(`Edit error: ${err}`);
@@ -54,7 +65,7 @@ export class VisualizationsComponent implements OnInit {
   deleteVisualizations(visualizationId: string) {
     this.api.deleteVisualization(visualizationId).subscribe({
       next: () => {
-        this.getUserVisualizations();
+        this.getUserVisualizations(0);
       },
       error: (err) => {
         console.log(`Deletion error: ${err}`);

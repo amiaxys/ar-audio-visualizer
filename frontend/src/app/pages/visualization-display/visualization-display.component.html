@@ -1,10 +1,12 @@
-<app-header></app-header>
 <app-visualization
-  *ngIf="isAuth && visualizationFetched"
+  *ngIf="isAuth === true && visualizationFetched; else error"
   [visualization]="visualization"
   [entityTypes]="entityTypes"
   (update)="updateVisualization($event)"
 ></app-visualization>
-<div class="error-component" *ngIf="!isAuth">
-  <app-not-authenticated></app-not-authenticated>
-</div>
+
+<ng-template #error>
+  <div class="error-component" *ngIf="isAuth === false">
+    <app-not-authenticated></app-not-authenticated>
+  </div>
+</ng-template>
