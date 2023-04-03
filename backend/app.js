@@ -12,7 +12,7 @@ export const app = express();
 app.use(bodyParser.json());
 
 const corsOptions = {
-  origin: "http://localhost:4200",
+  origin: "https://api.audiovisualizer.live",
   credentials: true,
 };
 app.use(cors(corsOptions));
