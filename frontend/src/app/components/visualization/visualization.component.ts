@@ -136,10 +136,7 @@ export class VisualizationComponent {
                 intersectedElement === clickableEntities[i]
               ) {
                 const scale = clickableEntities[i].getAttribute('scale');
-                Object.keys(scale).forEach(
-                  (key) => (scale[key] = scale[key] + 1)
-                );
-                clickableEntities[i].setAttribute('scale', scale);
+                clickableEntities[i].setAttribute('scale', "5 5 5");
               }
             }
           });
