@@ -8,6 +8,7 @@ on:
     # Only run this workflow if the commit has modified files from backend
     paths:
       - backend/**
+  workflow_dispatch:
 
 
 env:
