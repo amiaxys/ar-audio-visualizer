@@ -5,6 +5,7 @@ on:
     # Only run this workflow if it is a commit to main.
     branches:
       - main
+      - amy-deployment
     # Only run this workflow if the commit has modified files from frontend
     paths:
       - frontend/**
