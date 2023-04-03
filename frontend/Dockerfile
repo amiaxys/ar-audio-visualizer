@@ -1,5 +1,6 @@
 # Build the Angular App
 # basically, this compiles the Angular project to static HTML and js files.
+#
 FROM node:14-alpine3.14 as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
