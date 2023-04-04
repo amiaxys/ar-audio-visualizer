@@ -10,7 +10,6 @@ on:
       - frontend/**
   workflow_dispatch:
 
-
 env:
   IMAGE_NAME: frontend-av
 
