@@ -50,7 +50,7 @@ app.use(
 
 // Routers
 app.use("/api/users", usersRouter);
-app.use("/api/visualizations", cors(corsOptions), visualizationsRouter);
+app.use("/api/visualizations", visualizationsRouter);
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);
