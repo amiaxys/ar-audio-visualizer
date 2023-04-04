@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   nginx-proxy:
@@ -9,8 +9,8 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./certs:/etc/nginx/certs 
-      - ./vhost:/etc/nginx/vhost.d 
+      - ./certs:/etc/nginx/certs
+      - ./vhost:/etc/nginx/vhost.d
       - ./html:/usr/share/nginx/html
   nginx-proxy-acme:
     image: nginxproxy/acme-companion
@@ -22,7 +22,7 @@ services:
       - ./html:/usr/share/nginx/html
       - ./acme:/etc/acme.sh
     environment:
-        - DEFAULT_EMAIL=amyuqiliang@gmail.com
+      - DEFAULT_EMAIL=amyuqiliang@gmail.com
   frontend:
     image: ghcr.io/uoft-utsc-cs-sandbox/frontend-av
     container_name: frontend

@@ -10,7 +10,6 @@ on:
       - backend/**
   workflow_dispatch:
 
-
 env:
   IMAGE_NAME: backend-av
 
