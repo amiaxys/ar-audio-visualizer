@@ -29,7 +29,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Additional CORS middleware
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", () => {
     if (whitelist.indexOf(req.headers.origin) !== -1) {
       return req.headers.origin;
@@ -47,7 +47,7 @@ app.use((req, res, next) => {
   );
   res.setHeader("Access-Control-Allow-Credentials", true);
   next();
-});
+}); */
 
 app.use(sessionMiddleware);
 
