@@ -37,6 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationDisplayComponent } from './pages/visualization-display/visualization-display.component';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
 import { NotAuthenticatedComponent } from './components/not-authenticated/not-authenticated.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
       multi: true,
     },
     PaginationConfig,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

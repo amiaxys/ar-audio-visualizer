@@ -11,8 +11,19 @@ const PORT = 3000;
 export const app = express();
 app.use(bodyParser.json());
 
+const whitelist = [
+  "https://audiovisualizer.live",
+  "https://www.audiovisualizer.live",
+];
+
 const corsOptions = {
-  origin: "http://localhost:4200",
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 };
 app.use(cors(corsOptions));
