@@ -55,7 +55,7 @@ export class ApiService {
     formData.append('metadata', JSON.stringify(metadata));
 
     return this.http.post<Visualization>(
-      `${this.url}/api/visualizations`,
+      `${this.url}/api/visualizations/`,
       formData
     );
   }
@@ -65,7 +65,7 @@ export class ApiService {
     limit: number
   ): Observable<{ count: number; rows: Visualization[] }> {
     return this.http.get<{ count: number; rows: Visualization[] }>(
-      `${this.url}/api/visualizations?page=${page}&limit=${limit}`
+      `${this.url}/api/visualizations/?page=${page}&limit=${limit}`
     );
   }
 
