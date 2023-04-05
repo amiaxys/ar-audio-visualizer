@@ -123,7 +123,7 @@ export class VisualizationComponent {
 
     const visualization = this.visualization;
 
-    // Note: when AFRAME.THREE appears, it's actually just Three.js, 
+    // Note: when AFRAME.THREE appears, it's actually just Three.js,
     // since A-Frame is built on top of Three.js
     if (!AFRAME.components['freq-entity']) {
       AFRAME.registerComponent('freq-entity', {
@@ -235,14 +235,16 @@ export class VisualizationComponent {
       .defaultTimeColor
       ? null
       : this.editVisForm.value.timeColor;
-    this.visualization.metadata.time.opacity = this.editVisForm.value.timeOpacity;
+    this.visualization.metadata.time.opacity =
+      this.editVisForm.value.timeOpacity;
     this.visualization.metadata.time.entities =
       this.editVisForm.value.newTimeEntities;
     this.visualization.metadata.freq.color = this.editVisForm.value
       .defaultFreqColor
       ? null
       : this.editVisForm.value.freqColor;
-    this.visualization.metadata.freq.opacity = this.editVisForm.value.freqOpacity;
+    this.visualization.metadata.freq.opacity =
+      this.editVisForm.value.freqOpacity;
     this.visualization.metadata.freq.entities =
       this.editVisForm.value.newFreqEntities;
 
