@@ -9,6 +9,23 @@
     device-orientation-permission-ui="enabled: false"
     (click)="startVisualization()"
   >
+    <a-entity light="type: ambient; color: #BBB"></a-entity>
+    <a-entity
+      light="type: directional; color: #FFF; intensity: 0.1"
+      position="-0.5 1 1"
+    ></a-entity>
+    <a-entity
+      light="type: point; color: #ff0000; intensity: 0.9; distance: 500; decay: 2"
+      position="0 10 10"
+    ></a-entity>
+    <a-entity
+      light="type: point; color: #00ff00; intensity: 0.9; distance: 500; decay: 2"
+      position="10 10 0"
+    ></a-entity>
+    <a-entity
+      light="type: point; color: #0000ff; intensity: 0.9; distance: 500; decay: 2"
+      position="10 0 10"
+    ></a-entity>
     <a-marker type="pattern" url="../../../assets/pattern-music-solid.patt">
       <ng-container *ngFor="let entity of freqEntities">
         <a-cylinder
@@ -63,6 +80,7 @@
         ></a-sphere>
       </ng-container>
       <a-plane
+        plane-entity
         position="0 0 0"
         rotation="-90 0 0"
         width="4"

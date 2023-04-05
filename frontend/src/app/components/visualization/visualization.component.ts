@@ -162,6 +162,27 @@ export class VisualizationComponent {
       });
     }
 
+    if (!AFRAME.components['plane-entity']) {
+      AFRAME.registerComponent('plane-entity', {
+        init: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshStandardMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            roughness: 0.5,
+            metalness: 0.8,
+          });
+        },
+        tick: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshStandardMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            roughness: 0.5,
+            metalness: 0.8,
+          });
+        },
+      });
+    }
+
     this.audioSource = `${environment.backendUrl}/api/visualizations/${this.visualization.id}/audio`;
   }
 
