@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Visualization } from 'src/app/classes/visualization';
 import { Metadata } from 'src/app/classes/metadata';
 import { ApiService } from 'src/app/services/api.service';
@@ -13,6 +13,7 @@ export class VisualizationsComponent implements OnInit {
   isAuth!: boolean;
   totalCount!: number;
   limit: number = 6;
+  page: number = 1;
 
   constructor(private api: ApiService) {}
 
@@ -29,6 +30,7 @@ export class VisualizationsComponent implements OnInit {
   }
 
   onPageChange(event: any) {
+    this.page = event.page;
     this.getUserVisualizations(event.page);
   }
 
@@ -54,7 +56,7 @@ export class VisualizationsComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.getUserVisualizations(1);
+          this.getUserVisualizations(this.page);
         },
         error: (err) => {
           console.log(`Edit error: ${err}`);
@@ -65,7 +67,18 @@ export class VisualizationsComponent implements OnInit {
   deleteVisualizations(visualizationId: string) {
     this.api.deleteVisualization(visualizationId).subscribe({
       next: () => {
-        this.getUserVisualizations(1);
+        if (this.totalCount - 1 === 0) {
+          this.page = 1;
+          this.getUserVisualizations(1);
+          return;
+        }
+
+        const pageRemoved = (this.totalCount - 1) % this.limit === 0;
+        const onFinalPage =
+          this.page === Math.ceil(this.totalCount / this.limit);
+        const newPage = onFinalPage && pageRemoved ? this.page - 1 : this.page;
+        this.page = newPage;
+        this.getUserVisualizations(newPage);
       },
       error: (err) => {
         console.log(`Deletion error: ${err}`);

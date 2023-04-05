@@ -228,7 +228,11 @@
     (change)="metadataFileChanged($event)"
   />
 
-  <button type="submit" class="ar-btn" [disabled]="newVisForm.invalid">
+  <button
+    type="submit"
+    class="ar-btn"
+    [disabled]="newVisForm.invalid || sending"
+  >
     Submit
   </button>
 </form>

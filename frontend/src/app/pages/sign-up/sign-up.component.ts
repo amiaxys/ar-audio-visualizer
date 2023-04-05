@@ -17,6 +17,7 @@ import { ApiService } from '../../services/api.service';
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   error: string = '';
+  sending: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +52,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {}
 
   signUp() {
+    this.sending = true;
     this.api
       .signUp(this.signUpForm.value.username, this.signUpForm.value.password)
       .subscribe({
@@ -62,6 +64,7 @@ export class SignUpComponent implements OnInit {
             )
             .subscribe({
               next: () => {
+                this.sending = false;
                 this.router.navigate(['/visualizations']);
               },
               error: (err) => {

@@ -12,7 +12,7 @@
       ></app-visualization-card>
     </div>
   </div>
-  <div id="pagination-wrapper">
+  <div *ngIf="visualizations.length > 0" id="pagination-wrapper">
     <pagination
       [boundaryLinks]="false"
       [directionLinks]="true"

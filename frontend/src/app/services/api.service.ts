@@ -22,6 +22,7 @@ export class ApiService {
   }
 
   signIn(username: string, password: string): Observable<User> {
+    this.updateAuthStatus(true);
     return this.http.post<User>(`${this.url}/api/users/signin`, {
       username,
       password,
