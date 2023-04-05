@@ -4,6 +4,10 @@
 
 **Team Name:** C01 Dropouts
 
+### Video Demonstration
+
+[![Audio Visualizer Demo](https://img.youtube.com/vi/NE4l6bfglJc/0.jpg)](https://www.youtube.com/watch?v=NE4l6bfglJc "Audio Visualizer Demo")
+
 ### Team Members:
 
 - Arianne Franchesca Lavada (1006078904)
