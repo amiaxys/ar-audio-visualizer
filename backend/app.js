@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 const whitelist = [
   "https://audiovisualizer.live",
   "https://www.audiovisualizer.live",
+  "http://localhost:4200",
 ];
 
 const corsOptions = {
