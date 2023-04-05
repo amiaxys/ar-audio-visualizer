@@ -77,8 +77,13 @@ export class NewVisualizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.me().subscribe((res) => {
-      this.isAuth = res ? true : false;
+    this.api.me().subscribe({
+      next: (res) => {
+        this.isAuth = res ? true : false;
+      },
+      error: () => {
+        this.isAuth = false;
+      },
     });
 
     this.types = this.metaApi.getTypes();

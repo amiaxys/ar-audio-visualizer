@@ -1,3 +1,13 @@
+:host {
+  margin-top: auto;
+}
+
+#pagination-wrapper {
+  justify-content: center;
+  display: flex;
+  margin: 20px 0;
+}
+
 #title {
   text-align: center;
   margin: 20px 0;
@@ -9,5 +19,11 @@
 
   .vis-card {
     margin: 20px 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  #cards-container {
+    justify-content: center;
   }
 }

@@ -24,8 +24,13 @@ export class VisualizationDisplayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.api.me().subscribe((res) => {
-      this.isAuth = res ? true : false;
+    this.api.me().subscribe({
+      next: (res) => {
+        this.isAuth = res ? true : false;
+      },
+      error: () => {
+        this.isAuth = false;
+      },
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -113,5 +118,19 @@ export class VisualizationDisplayComponent implements OnInit {
           },
         });
     }
+  }
+
+  updateVisualization(visualization: Visualization) {
+    this.api
+      .editVisualization(
+        visualization.id,
+        visualization.title,
+        visualization.metadata
+      )
+      .subscribe({
+        error: (err) => {
+          console.log(`Update Visualization Error: ${err}`);
+        },
+      });
   }
 }

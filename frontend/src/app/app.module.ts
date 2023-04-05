@@ -12,6 +12,7 @@ import {
 } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule, BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { PaginationModule, PaginationConfig } from 'ngx-bootstrap/pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +27,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { EqualPasswordsDirective } from './directives/equal-passwords.directive';
-import { UniqueUsernameDirective } from './directives/unique-username.directive';
 import { ApiInterceptor } from './api.interceptor';
 import { VisualizationsComponent } from './pages/visualizations/visualizations.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -37,6 +37,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationDisplayComponent } from './pages/visualization-display/visualization-display.component';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
 import { NotAuthenticatedComponent } from './components/not-authenticated/not-authenticated.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,6 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
     NewVisualizationComponent,
     SignUpComponent,
     EqualPasswordsDirective,
-    UniqueUsernameDirective,
     VisualizationsComponent,
     FooterComponent,
     VisualizationCardComponent,
@@ -73,6 +73,7 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
     BsDatepickerModule,
     BsDropdownModule,
     ModalModule,
+    PaginationModule,
   ],
   providers: [
     AlertConfig,
@@ -84,6 +85,8 @@ import { NotAuthenticatedComponent } from './components/not-authenticated/not-au
       useClass: ApiInterceptor,
       multi: true,
     },
+    PaginationConfig,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

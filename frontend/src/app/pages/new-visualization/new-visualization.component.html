@@ -1,13 +1,9 @@
-<app-header></app-header>
-<div class="error-component" *ngIf="!isAuth">
-  <app-not-authenticated></app-not-authenticated>
-</div>
 <form
-  class="styled-form"
+  class="styled-form row"
   id="new-visualization-form"
   (submit)="onSubmit()"
   [formGroup]="newVisForm"
-  *ngIf="isAuth"
+  *ngIf="isAuth === true; else error"
 >
   <h2 class="form-title">New Visualization</h2>
   <div class="input-wrapper">
@@ -139,7 +135,8 @@
       </div>
 
       <ng-container formArrayName="timeEntities">
-        <ng-container
+        <div
+          class="radio-wrapper"
           *ngFor="let control of timeEntities.controls; let i = index"
         >
           <label>Shape {{ i + 1 }}</label>
@@ -161,9 +158,11 @@
               </div>
             </ng-container>
           </div>
-        </ng-container>
+        </div>
       </ng-container>
     </fieldset>
+
+    <div class="line"></div>
 
     <fieldset>
       <legend>Barform</legend>
@@ -233,3 +232,9 @@
     Submit
   </button>
 </form>
+
+<ng-template #error>
+  <div *ngIf="isAuth === false" class="error-component">
+    <app-not-authenticated></app-not-authenticated>
+  </div>
+</ng-template>

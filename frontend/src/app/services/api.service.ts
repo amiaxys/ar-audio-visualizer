@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../classes/user';
@@ -12,7 +12,14 @@ import { Metadata } from '../classes/metadata';
 export class ApiService {
   url = environment.backendUrl;
 
+  private auth = new BehaviorSubject(false);
+  authStatus = this.auth.asObservable();
+
   constructor(private http: HttpClient) {}
+
+  updateAuthStatus(status: boolean) {
+    this.auth.next(status);
+  }
 
   signIn(username: string, password: string): Observable<User> {
     return this.http.post<User>(`${this.url}/api/users/signin`, {
@@ -48,7 +55,7 @@ export class ApiService {
     formData.append('metadata', JSON.stringify(metadata));
 
     return this.http.post<Visualization>(
-      `${this.url}/api/visualizations`,
+      `${this.url}/api/visualizations/`,
       formData
     );
   }
@@ -58,7 +65,7 @@ export class ApiService {
     limit: number
   ): Observable<{ count: number; rows: Visualization[] }> {
     return this.http.get<{ count: number; rows: Visualization[] }>(
-      `${this.url}/api/visualizations?page=${page}&limit=${limit}`
+      `${this.url}/api/visualizations/?page=${page}&limit=${limit}`
     );
   }
 

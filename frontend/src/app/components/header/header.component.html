@@ -1,19 +1,43 @@
-<header>
-  <a routerLink="/" id="title">AR Audio Visualizer</a>
-  <div id="header-btns">
-    <a routerLink="/sign-up" class="ar-btn" *ngIf="!isAuth">Sign Up</a>
-    <a routerLink="/sign-in" class="ar-btn" *ngIf="!isAuth">Sign In</a>
-    <a routerLink="/visualizations" class="ar-btn" *ngIf="isAuth"
+<header class="row">
+  <a routerLink="/" id="title" class="col-auto col-sm-12"
+    >AR Audio Visualizer <fa-icon class="icon" icon="music" size="sm"></fa-icon
+  ></a>
+  <div
+    *ngIf="isAuth === true; else notAuthenticated"
+    class="header-btns col-8 col-sm-12 row"
+  >
+    <a
+      href="../../../assets/pattern-music-solid.png"
+      download="ar-marker.png"
+      title="Download AR Marker"
+      class="ar-btn col-2"
+      >Download AR Marker</a
+    >
+    <a routerLink="/visualizations" class="ar-btn col-2 col-sm-12"
       >Visualizations</a
     >
-    <a routerLink="/new-visualization" class="ar-btn" *ngIf="isAuth"
+    <a routerLink="/new-visualization" class="ar-btn col-2 col-sm-12"
       >Create Visualization</a
     >
-    <a (click)="signOut(signOutTemplate)" class="ar-btn" *ngIf="isAuth"
+    <a (click)="signOut(signOutTemplate)" class="ar-btn col-2 col-sm-12"
       >Sign Out</a
     >
   </div>
 </header>
+
+<ng-template #notAuthenticated>
+  <div *ngIf="isAuth === false" class="header-btns col-9 col-sm-12 row">
+    <a
+      href="../../../assets/pattern-music-solid.png"
+      download="ar-marker.png"
+      title="Download AR Marker"
+      class="ar-btn col-3 col-sm-12"
+      >Download AR Marker</a
+    >
+    <a routerLink="/sign-up" class="ar-btn col-3 col-sm-12">Sign Up</a>
+    <a routerLink="/sign-in" class="ar-btn col-3 col-sm-12">Sign In</a>
+  </div>
+</ng-template>
 
 <ng-template #signOutTemplate>
   <div class="styled-modal">
