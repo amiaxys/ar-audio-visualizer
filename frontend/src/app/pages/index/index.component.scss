@@ -9,10 +9,18 @@
 
   #title {
     font-weight: bolder;
-    font-size: 32px;
+    font-size: clamp(32px, 5vw, 46px);
   }
 
   #subtitle {
-    font-size: 24px;
+    font-size: clamp(20px, 3vw, 26px);
   }
+}
+
+#background {
+  position: fixed;
+  top: 0;
+  height: 500px;
+  width: 100%;
+  z-index: -1;
 }
