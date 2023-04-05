@@ -6,10 +6,8 @@ import {
   HostListener,
 } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { THREE } from 'aframe';
 import { NoiseFunction4D, createNoise4D } from 'simplex-noise';
-import { WebGLRenderer } from 'three';
-import { Scene } from 'three';
+
 
 @Component({
   selector: 'app-index',
@@ -30,19 +28,19 @@ export class IndexComponent implements OnInit {
     xyCoef: 50,
     zCoef: 10,
     lightIntensity: 0.9,
-    light1Color: 0xf05f51, 
-    light2Color: 0xf73181, 
+    light1Color: 0xf05f51,
+    light2Color: 0xf73181,
     light3Color: 0x00a1d6,
     light4Color: 0x00b5ac,
   };
 
-  mouse: THREE.Vector2 = new THREE.Vector2();
-  mousePlane: THREE.Plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-  mousePosition: THREE.Vector3 = new THREE.Vector3();
-  raycaster: THREE.Raycaster = new THREE.Raycaster();
+  mouse: THREE.Vector2 = new AFRAME.THREE.Vector2();
+  mousePlane: THREE.Plane = new AFRAME.THREE.Plane(new AFRAME.THREE.Vector3(0, 0, 1), 0);
+  mousePosition: THREE.Vector3 = new AFRAME.THREE.Vector3();
+  raycaster: THREE.Raycaster = new AFRAME.THREE.Raycaster();
 
-  renderer!: WebGLRenderer;
-  scene!: Scene;
+  renderer!: THREE.WebGLRenderer;
+  scene!: THREE.Scene;
   camera!: THREE.PerspectiveCamera;
   width!: number;
   height!: number;
@@ -87,7 +85,7 @@ export class IndexComponent implements OnInit {
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(e: MouseEvent) {
-    const v = new THREE.Vector3();
+    const v = new AFRAME.THREE.Vector3();
     this.camera.getWorldDirection(v);
     v.normalize();
     this.mousePlane.normal = v;
@@ -98,12 +96,12 @@ export class IndexComponent implements OnInit {
   }
 
   initAnimation(): void {
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new AFRAME.THREE.WebGLRenderer({
       canvas: this.background.nativeElement,
       antialias: true,
       alpha: true,
     });
-    this.camera = new THREE.PerspectiveCamera(this.conf.fov);
+    this.camera = new AFRAME.THREE.PerspectiveCamera(this.conf.fov);
     this.camera.position.z = this.conf.cameraZ;
 
     this.updateSize();
@@ -113,22 +111,22 @@ export class IndexComponent implements OnInit {
   }
 
   initScene() {
-    this.scene = new THREE.Scene();
+    this.scene = new AFRAME.THREE.Scene();
     this.initLights();
 
-    let mat = new THREE.MeshPhongMaterial({
+    let mat = new AFRAME.THREE.MeshPhongMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.7,
     });
 
-    let geo = new THREE.PlaneGeometry(
+    let geo = new AFRAME.THREE.PlaneGeometry(
       this.wWidth,
       this.wHeight,
       this.wWidth / 2,
       this.wHeight / 2
     );
-    this.plane = new THREE.Mesh(geo, mat);
+    this.plane = new AFRAME.THREE.Mesh(geo, mat);
     this.scene.add(this.plane);
 
     this.plane.rotation.x = -Math.PI / 2 - 0.2;
@@ -141,28 +139,28 @@ export class IndexComponent implements OnInit {
     const y = 10;
     const lightDistance = 500;
 
-    this.light1 = new THREE.PointLight(
+    this.light1 = new AFRAME.THREE.PointLight(
       this.conf.light1Color,
       this.conf.lightIntensity,
       lightDistance
     );
     this.light1.position.set(0, y, r);
     this.scene.add(this.light1);
-    this.light2 = new THREE.PointLight(
+    this.light2 = new AFRAME.THREE.PointLight(
       this.conf.light2Color,
       this.conf.lightIntensity,
       lightDistance
     );
     this.light2.position.set(0, -y, -r);
     this.scene.add(this.light2);
-    this.light3 = new THREE.PointLight(
+    this.light3 = new AFRAME.THREE.PointLight(
       this.conf.light3Color,
       this.conf.lightIntensity,
       lightDistance
     );
     this.light3.position.set(r, y, 0);
     this.scene.add(this.light3);
-    this.light4 = new THREE.PointLight(
+    this.light4 = new AFRAME.THREE.PointLight(
       this.conf.light4Color,
       this.conf.lightIntensity,
       lightDistance
@@ -181,30 +179,19 @@ export class IndexComponent implements OnInit {
   }
 
   animatePlane() {
-    const gArray = new Float32Array(
-      this.plane.geometry.getAttribute('position').count * 3
-    );
-    const bufferAttr = this.plane.geometry.getAttribute(
-      'position'
-    ) as THREE.BufferAttribute;
-    const readOnlyArray = bufferAttr.array as Float32Array;
+    const position = this.plane.geometry as any;
+    const gArray = position.vertices;
     const time = Date.now() * 0.0002;
-    for (let i = 0; i < gArray.length; i += 3) {
-      gArray[i] = readOnlyArray[i];
-      gArray[i + 1] = readOnlyArray[i + 1];
-      gArray[i + 2] =
+    for (let i = 0; i < gArray.length; i++) {
+      gArray[i].z =
         this.noise4D(
-          readOnlyArray[i] / this.conf.xyCoef,
-          readOnlyArray[i + 1] / this.conf.xyCoef,
+          gArray[i].x / this.conf.xyCoef,
+          gArray[i].y / this.conf.xyCoef,
           time,
           this.mouse.x + this.mouse.y
         ) * this.conf.zCoef;
     }
-    this.plane.geometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(gArray, 3)
-    );
-    this.plane.geometry.getAttribute('position').needsUpdate = true;
+    position.verticesNeedUpdate = true;
   }
 
   animateLights() {
@@ -221,7 +208,7 @@ export class IndexComponent implements OnInit {
   }
 
   getRendererSize() {
-    const cam = new THREE.PerspectiveCamera(
+    const cam = new AFRAME.THREE.PerspectiveCamera(
       this.camera.fov,
       this.camera.aspect
     );

@@ -6,11 +6,13 @@
     embedded
     vr-mode-ui="enabled: false"
     arjs="sourceType: webcam; debugUIEnabled: false;"
+    device-orientation-permission-ui="enabled: false"
     (click)="startVisualization()"
   >
     <a-marker type="pattern" url="../../../assets/pattern-music-solid.patt">
       <ng-container *ngFor="let entity of freqEntities">
         <a-cylinder
+          freq-entity
           *ngIf="entity.type === 'a-cylinder'"
           [attr.position]="entity.position"
           [attr.radius]="entity.radius"
@@ -18,6 +20,7 @@
           [attr.color]="entity.color"
         ></a-cylinder>
         <a-box
+          freq-entity
           *ngIf="entity.type === 'a-box'"
           [attr.position]="entity.position"
           [attr.rotation]="entity.rotation"
@@ -26,6 +29,7 @@
           [attr.color]="entity.color"
         ></a-box>
         <a-sphere
+          freq-entity
           *ngIf="entity.type === 'a-sphere'"
           [attr.position]="entity.position"
           [attr.radius]="entity.radius"
@@ -65,7 +69,6 @@
         height="4"
         [attr.color]="planeColor"
       ></a-plane>
-      <a-sky color="blue"></a-sky>
     </a-marker>
     <a-entity camera></a-entity>
   </a-scene>

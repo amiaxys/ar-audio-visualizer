@@ -12,7 +12,6 @@ import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { Entity } from '../../classes/entity';
 import { Visualization } from '../../classes/visualization';
 import { environment } from '../../../environments/environment';
-//import { THREE } from 'aframe';
 
 @Component({
   selector: 'app-visualization',
@@ -104,12 +103,61 @@ export class VisualizationComponent {
       );
     }
 
+    const hslToHex = (hslString: string) => {
+      const hsl = hslString.replace('hsl(', '').replace(')', '');
+      let [h, s, l] = hsl.split(',').map((n) => parseInt(n, 10));
+      l /= 100;
+      const a = (s * Math.min(l, 1 - l)) / 100;
+      const f = (n: number) => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color)
+          .toString(16)
+          .padStart(2, '0');
+      };
+      return `${f(0)}${f(8)}${f(4)}`;
+    };
+
+    if (!AFRAME.components['freq-entity']) {
+      AFRAME.registerComponent('freq-entity', {
+        init: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: 1,
+          });
+        },
+        tick: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: 1,
+          });
+        },
+      });
+    }
+
     if (!AFRAME.components['time-entity']) {
       AFRAME.registerComponent('time-entity', {
-        init: function () {},
+        init: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: 1,
+          });
+        },
         tick: function () {
           // to smooth the movement
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: 1,
+          });
         },
       });
     }
@@ -303,7 +351,7 @@ export class VisualizationComponent {
           .slice(i * frac, (i + 1) * frac)
           .reduce((a, b) => a + b) / frac;
       if (this.freqEntities[i].type === 'a-sphere') {
-        this.freqEntities[i].radius = `${((freqAvg + 1) / 255) * 1.5}`;
+        this.freqEntities[i].radius = `${((freqAvg + 5) / 255) * 1.5}`;
       } else {
         this.freqEntities[i].height = `${(freqAvg / 255) * 2}`;
       }
