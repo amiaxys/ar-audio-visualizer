@@ -36,6 +36,7 @@ export class NewVisualizationComponent implements OnInit {
   newVisForm: FormGroup;
 
   isAuth!: boolean;
+  sending: boolean = false;
 
   mediaRecorder!: MediaRecorder;
   isRecording: boolean = false;
@@ -212,6 +213,7 @@ export class NewVisualizationComponent implements OnInit {
 
   onSubmit() {
     if (this.newVisForm.value.type === 'upload') {
+      this.sending = true;
       this.api
         .newVisualization(
           this.newVisForm.value.title,
@@ -220,6 +222,7 @@ export class NewVisualizationComponent implements OnInit {
         )
         .subscribe({
           next: () => {
+            this.sending = false;
             this.router.navigate(['/visualizations']);
           },
           error: (err) => {
@@ -244,6 +247,7 @@ export class NewVisualizationComponent implements OnInit {
           entities: this.newVisForm.value.freqEntities,
         },
       };
+      this.sending = true;
       this.api
         .newVisualization(
           this.newVisForm.value.title,
@@ -252,6 +256,7 @@ export class NewVisualizationComponent implements OnInit {
         )
         .subscribe({
           next: () => {
+            this.sending = false;
             this.router.navigate(['/visualizations']);
           },
           error: (err) => {
