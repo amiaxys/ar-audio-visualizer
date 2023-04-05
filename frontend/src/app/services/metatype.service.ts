@@ -12,12 +12,6 @@ export class MetatypeService {
       timeEntityNum: 1,
       freqEntityNum: 3,
     },
-    {
-      type: 'blob',
-      entityTypes: ['box', 'cylinder', 'sphere'],
-      timeEntityNum: 1,
-      freqEntityNum: 3,
-    }
   ];
 
   constructor() {}

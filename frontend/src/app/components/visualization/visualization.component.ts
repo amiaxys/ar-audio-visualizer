@@ -119,14 +119,6 @@ export class VisualizationComponent {
 
   ngAfterViewInit(): void {}
 
-  avg(arr: Uint8Array): number{
-    var total = arr.reduce(function(sum, b) { return sum + b; });
-    return (total / arr.length);
-}
-
-max(arr: Uint8Array): number{
-    return arr.reduce(function(a, b){ return Math.max(a, b); })
-}
   get newTimeEntities() {
     return this.editVisForm.controls[
       'newTimeEntities'
@@ -282,33 +274,7 @@ max(arr: Uint8Array): number{
     }
   }
 
-  drawBlob(): void {
-    window.requestAnimationFrame(this.drawBlob.bind(this));
-    this.freqAnalyser.getByteFrequencyData(this.freqDataArray);
-
-    let lowerHalfArray = this.freqDataArray.slice(0, (this.freqDataArray.length/2) - 1);
-    let upperHalfArray = this.freqDataArray.slice((this.freqDataArray.length/2) - 1, this.freqDataArray.length - 1);
-
-    let overallAvg = this.avg(this.freqDataArray);
-    let lowerMax = this.max(lowerHalfArray);
-    let lowerAvg = this.avg(lowerHalfArray);
-    let upperMax = this.max(upperHalfArray);
-    let upperAvg = this.avg(upperHalfArray);
-
-    let lowerMaxFr = lowerMax / lowerHalfArray.length;
-    let lowerAvgFr = lowerAvg / lowerHalfArray.length;
-    let upperMaxFr = upperMax / upperHalfArray.length;
-    let upperAvgFr = upperAvg / upperHalfArray.length;
-    
-  }
-
   draw(): void {
-    // if visualization metadata type is blob, draw blob animation instead
-    if (this.visualization.metadata.type === 'blob') {
-      this.drawBlob();
-      return;
-    }
-
     window.requestAnimationFrame(this.draw.bind(this));
     // update entities based on form
     this.updateEntities();

@@ -9,65 +9,54 @@
     (click)="startVisualization()"
   >
     <a-marker type="pattern" url="../../../assets/pattern-music-solid.patt">
-      <!--render only if visualization metadata type in basic--->
-      <ng-container *ngIf="visualization.metadata.type === 'basic-shapes'">
-        <ng-container *ngFor="let entity of freqEntities">
-          <a-cylinder
-            *ngIf="entity.type === 'a-cylinder'"
-            [attr.position]="entity.position"
-            [attr.radius]="entity.radius"
-            [attr.height]="entity.height"
-            [attr.color]="entity.color"
-          ></a-cylinder>
-          <a-box
-            *ngIf="entity.type === 'a-box'"
-            [attr.position]="entity.position"
-            [attr.rotation]="entity.rotation"
-            [attr.width]="entity.width"
-            [attr.height]="entity.height"
-            [attr.color]="entity.color"
-          ></a-box>
-          <a-sphere
-            *ngIf="entity.type === 'a-sphere'"
-            [attr.position]="entity.position"
-            [attr.radius]="entity.radius"
-            [attr.color]="entity.color"
-          ></a-sphere>
-        </ng-container>
-        <!-- add a icasohedron entity, also have lambert material with color grey and wireframe true -->
-        <ng-container *ngFor="let entity of timeEntities">
-          <a-cylinder
-            time-entity
-            *ngIf="entity.type === 'a-cylinder'"
-            [attr.position]="entity.position"
-            [attr.radius]="entity.radius"
-            [attr.height]="entity.height"
-            [attr.color]="entity.color"
-          ></a-cylinder>
-          <a-box
-            time-entity
-            *ngIf="entity.type === 'a-box'"
-            [attr.position]="entity.position"
-            [attr.rotation]="entity.rotation"
-            [attr.width]="entity.width"
-            [attr.height]="entity.height"
-            [attr.color]="entity.color"
-          ></a-box>
-          <a-sphere
-            time-entity
-            *ngIf="entity.type === 'a-sphere'"
-            [attr.position]="entity.position"
-            [attr.radius]="entity.radius"
-            [attr.color]="entity.color"
-          ></a-sphere>
-        </ng-container>
+      <ng-container *ngFor="let entity of freqEntities">
+        <a-cylinder
+          *ngIf="entity.type === 'a-cylinder'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-cylinder>
+        <a-box
+          *ngIf="entity.type === 'a-box'"
+          [attr.position]="entity.position"
+          [attr.rotation]="entity.rotation"
+          [attr.width]="entity.width"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-box>
+        <a-sphere
+          *ngIf="entity.type === 'a-sphere'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.color]="entity.color"
+        ></a-sphere>
       </ng-container>
-      <!--render only if visualization metadata type in blob--->
-      <ng-container *ngIf="visualization.metadata.type === 'blob'">
-        <a-entity
-          geometry="primitive: icosahedron; radius: 0.5; detail: 4"
-          material="color: grey; wireframe: true"
-        ></a-entity>
+      <ng-container *ngFor="let entity of timeEntities">
+        <a-cylinder
+          time-entity
+          *ngIf="entity.type === 'a-cylinder'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-cylinder>
+        <a-box
+          time-entity
+          *ngIf="entity.type === 'a-box'"
+          [attr.position]="entity.position"
+          [attr.rotation]="entity.rotation"
+          [attr.width]="entity.width"
+          [attr.height]="entity.height"
+          [attr.color]="entity.color"
+        ></a-box>
+        <a-sphere
+          time-entity
+          *ngIf="entity.type === 'a-sphere'"
+          [attr.position]="entity.position"
+          [attr.radius]="entity.radius"
+          [attr.color]="entity.color"
+        ></a-sphere>
       </ng-container>
       <a-plane
         position="0 0 0"
