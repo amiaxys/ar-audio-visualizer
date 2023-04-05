@@ -134,6 +134,19 @@
         </div>
       </div>
 
+      <div class="button-wrapper">
+        <label for="timeOpacity">Opacity</label>
+        <input
+          type="range"
+          id="timeOpacity"
+          name="timeOpacity"
+          formControlName="timeOpacity"
+          min="0"
+          max="1"
+          step="0.1"
+        />
+      </div>
+
       <ng-container formArrayName="timeEntities">
         <div
           class="radio-wrapper"
@@ -188,6 +201,19 @@
           />
           <label for="defaultFreqColor">Default</label>
         </div>
+      </div>
+
+      <div class="button-wrapper">
+        <label for="freqOpacity">Opacity</label>
+        <input
+          type="range"
+          id="freqOpacity"
+          name="freqOpacity"
+          formControlName="freqOpacity"
+          min="0"
+          max="1"
+          step="0.1"
+        />
       </div>
 
       <ng-container formArrayName="freqEntities">
