@@ -44,7 +44,6 @@ export class VisualizationComponent {
   timeEntities: Entity[] = [];
 
   hueRegex: RegExp = /(?<=hsl\()\d+(?=,)/g;
-  //lightRegex: RegExp = /(?<=,\s?)\d+(?=%\))/g;
 
   planeColor: string = 'hsl(0, 0%, 0%)';
 
@@ -118,6 +117,8 @@ export class VisualizationComponent {
       return `${f(0)}${f(8)}${f(4)}`;
     };
 
+    // Note: when AFRAME.THREE appears, it's actually just Three.js, 
+    // since A-Frame is built on top of Three.js
     if (!AFRAME.components['freq-entity']) {
       AFRAME.registerComponent('freq-entity', {
         init: function () {
