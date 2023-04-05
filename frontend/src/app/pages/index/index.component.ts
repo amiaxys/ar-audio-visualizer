@@ -8,7 +8,6 @@ import {
 import { ApiService } from 'src/app/services/api.service';
 import { NoiseFunction4D, createNoise4D } from 'simplex-noise';
 
-
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -35,7 +34,10 @@ export class IndexComponent implements OnInit {
   };
 
   mouse: THREE.Vector2 = new AFRAME.THREE.Vector2();
-  mousePlane: THREE.Plane = new AFRAME.THREE.Plane(new AFRAME.THREE.Vector3(0, 0, 1), 0);
+  mousePlane: THREE.Plane = new AFRAME.THREE.Plane(
+    new AFRAME.THREE.Vector3(0, 0, 1),
+    0
+  );
   mousePosition: THREE.Vector3 = new AFRAME.THREE.Vector3();
   raycaster: THREE.Raycaster = new AFRAME.THREE.Raycaster();
 
