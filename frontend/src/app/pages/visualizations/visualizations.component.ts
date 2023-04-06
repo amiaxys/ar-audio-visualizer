@@ -21,6 +21,7 @@ export class VisualizationsComponent implements OnInit {
     this.api.me().subscribe({
       next: (res) => {
         this.isAuth = res ? true : false;
+        this.getUserVisualizations(1);
       },
       error: () => {
         this.isAuth = false;
