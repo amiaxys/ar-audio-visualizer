@@ -74,6 +74,7 @@ export class VisualizationDisplayComponent implements OnInit {
     if (!this.visualization.metadata.freq) {
       this.visualization.metadata.freq = {
         color: null,
+        opacity: 1,
         entities: this.entityTypes,
       };
       changed = true;
@@ -91,6 +92,7 @@ export class VisualizationDisplayComponent implements OnInit {
     if (!this.visualization.metadata.time) {
       this.visualization.metadata.time = {
         color: null,
+        opacity: 1,
         entities: this.entityTypes,
       };
       changed = true;

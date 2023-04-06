@@ -12,7 +12,6 @@ import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { Entity } from '../../classes/entity';
 import { Visualization } from '../../classes/visualization';
 import { environment } from '../../../environments/environment';
-//import { THREE } from 'aframe';
 
 @Component({
   selector: 'app-visualization',
@@ -45,7 +44,6 @@ export class VisualizationComponent {
   timeEntities: Entity[] = [];
 
   hueRegex: RegExp = /(?<=hsl\()\d+(?=,)/g;
-  //lightRegex: RegExp = /(?<=,\s?)\d+(?=%\))/g;
 
   planeColor: string = 'hsl(0, 0%, 0%)';
 
@@ -63,12 +61,14 @@ export class VisualizationComponent {
         disabled: true,
       }),
       defaultTimeColor: [true],
+      timeOpacity: [1.0],
       newTimeEntities: this.fb.array([]),
       freqColor: new FormControl({
         value: '',
         disabled: true,
       }),
       defaultFreqColor: [true],
+      freqOpacity: [1.0],
       newFreqEntities: this.fb.array([]),
     });
     this.library.addIcons(faCaretLeft, faCaretRight);
@@ -80,10 +80,12 @@ export class VisualizationComponent {
         ? this.visualization.metadata.time.color
         : '',
       defaultTimeColor: this.visualization.metadata.time.color ? false : true,
+      timeOpacity: this.visualization.metadata.time.opacity,
       freqColor: this.visualization.metadata.freq.color
         ? this.visualization.metadata.freq.color
         : '',
       defaultFreqColor: this.visualization.metadata.freq.color ? false : true,
+      freqOpacity: this.visualization.metadata.freq.opacity,
     });
 
     // enable form controls if color exists
@@ -104,12 +106,86 @@ export class VisualizationComponent {
       );
     }
 
+    const hslToHex = (hslString: string) => {
+      const hsl = hslString.replace('hsl(', '').replace(')', '');
+      let [h, s, l] = hsl.split(',').map((n) => parseInt(n, 10));
+      l /= 100;
+      const a = (s * Math.min(l, 1 - l)) / 100;
+      const f = (n: number) => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color)
+          .toString(16)
+          .padStart(2, '0');
+      };
+      return `${f(0)}${f(8)}${f(4)}`;
+    };
+
+    const visualization = this.visualization;
+
+    // Note: when AFRAME.THREE appears, it's actually just Three.js,
+    // since A-Frame is built on top of Three.js
+    if (!AFRAME.components['freq-entity']) {
+      AFRAME.registerComponent('freq-entity', {
+        init: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: visualization.metadata.freq.opacity,
+          });
+        },
+        tick: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: visualization.metadata.freq.opacity,
+          });
+        },
+      });
+    }
+
     if (!AFRAME.components['time-entity']) {
       AFRAME.registerComponent('time-entity', {
-        init: function () {},
+        init: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: visualization.metadata.time.opacity,
+          });
+        },
         tick: function () {
           // to smooth the movement
           this.el.object3D.position.lerp(this.el.object3D.position, 0.1);
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshPhongMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            transparent: true,
+            opacity: visualization.metadata.time.opacity,
+          });
+        },
+      });
+    }
+
+    if (!AFRAME.components['plane-entity']) {
+      AFRAME.registerComponent('plane-entity', {
+        init: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshStandardMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            roughness: 0.5,
+            metalness: 0.8,
+          });
+        },
+        tick: function () {
+          const mesh = this.el.getObject3D('mesh') as THREE.Mesh;
+          mesh.material = new AFRAME.THREE.MeshStandardMaterial({
+            color: parseInt(hslToHex(this.el.getAttribute('color')), 16),
+            roughness: 0.5,
+            metalness: 0.8,
+          });
         },
       });
     }
@@ -159,12 +235,16 @@ export class VisualizationComponent {
       .defaultTimeColor
       ? null
       : this.editVisForm.value.timeColor;
+    this.visualization.metadata.time.opacity =
+      this.editVisForm.value.timeOpacity;
     this.visualization.metadata.time.entities =
       this.editVisForm.value.newTimeEntities;
     this.visualization.metadata.freq.color = this.editVisForm.value
       .defaultFreqColor
       ? null
       : this.editVisForm.value.freqColor;
+    this.visualization.metadata.freq.opacity =
+      this.editVisForm.value.freqOpacity;
     this.visualization.metadata.freq.entities =
       this.editVisForm.value.newFreqEntities;
 
@@ -303,7 +383,7 @@ export class VisualizationComponent {
           .slice(i * frac, (i + 1) * frac)
           .reduce((a, b) => a + b) / frac;
       if (this.freqEntities[i].type === 'a-sphere') {
-        this.freqEntities[i].radius = `${((freqAvg + 1) / 255) * 1.5}`;
+        this.freqEntities[i].radius = `${((freqAvg + 5) / 255) * 1.5}`;
       } else {
         this.freqEntities[i].height = `${(freqAvg / 255) * 2}`;
       }

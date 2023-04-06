@@ -23,3 +23,11 @@
     justify-content: center;
   }
 }
+
+.instruction {
+  margin: auto;
+  padding: 20px;
+  max-width: 900px;
+  font-size: clamp(18px, 2vw, 22px);
+  text-align: center;
+}

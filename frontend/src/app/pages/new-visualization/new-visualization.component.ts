@@ -67,9 +67,11 @@ export class NewVisualizationComponent implements OnInit {
       type: ['', [Validators.required]],
       timeColor: new FormControl({ value: '', disabled: true }),
       defaultTimeColor: [true],
+      timeOpacity: [1.0],
       timeEntities: this.fb.array([]),
       freqColor: new FormControl({ value: '', disabled: true }),
       defaultFreqColor: [true],
+      freqOpacity: [1.0],
       freqEntities: this.fb.array([]),
       metadataFile: new FormControl({ value: '', disabled: true }, [
         Validators.required,
@@ -237,6 +239,7 @@ export class NewVisualizationComponent implements OnInit {
             this.newVisForm.controls['timeColor'].status === 'VALID'
               ? this.newVisForm.value.timeColor
               : null,
+          opacity: this.newVisForm.value.timeOpacity,
           entities: this.newVisForm.value.timeEntities,
         },
         freq: {
@@ -244,6 +247,7 @@ export class NewVisualizationComponent implements OnInit {
             this.newVisForm.controls['freqColor'].status === 'VALID'
               ? this.newVisForm.value.freqColor
               : null,
+          opacity: this.newVisForm.value.freqOpacity,
           entities: this.newVisForm.value.freqEntities,
         },
       };

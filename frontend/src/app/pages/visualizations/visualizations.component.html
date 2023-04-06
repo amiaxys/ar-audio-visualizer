@@ -12,6 +12,10 @@
       ></app-visualization-card>
     </div>
   </div>
+  <div class="instruction" *ngIf="visualizations.length === 0">
+    Download the AR Marker from the navigation bar, create a visualization and
+    show the marker to the camera!
+  </div>
   <div *ngIf="visualizations.length > 0" id="pagination-wrapper">
     <pagination
       [boundaryLinks]="false"
