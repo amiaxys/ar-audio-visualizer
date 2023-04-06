@@ -23,6 +23,8 @@ services:
       - ./acme:/etc/acme.sh
     environment:
       - DEFAULT_EMAIL=amyuqiliang@gmail.com
+    depends_on:
+      - nginx-proxy
   frontend:
     image: ghcr.io/uoft-utsc-cs-sandbox/frontend-av
     container_name: frontend
@@ -42,11 +44,11 @@ services:
       - VIRTUAL_HOST=api.audiovisualizer.live
       - LETSENCRYPT_HOST=api.audiovisualizer.live
       - POSTGRES_DB_USER=postgres
-      - POSTGRES_DB_PASSWORD=admin
+      - POSTGRES_DB_PASSWORD=<password>
       - POSTGRES_DB_NAME=postgres
       - POSTGRES_DB_HOST=postgres
       - POSTGRES_DB_PORT=5432
-      - SESSION_SECRET=somethingsecret
+      - SESSION_SECRET=<secret>
     depends_on:
       - postgres
   postgres:
@@ -54,7 +56,7 @@ services:
     container_name: postgres
     restart: always
     environment:
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_PASSWORD=<password>
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
     volumes:
