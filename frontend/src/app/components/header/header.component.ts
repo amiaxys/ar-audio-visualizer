@@ -30,14 +30,13 @@ export class HeaderComponent implements OnInit {
   }
 
   checkAuth() {
-    // TODO: fix this
     this.api.authStatus.subscribe((isAuth) => {
       this.api.me().subscribe({
         next: (res) => {
-          this.isAuth = true;
+          this.isAuth = res ? true : false;
         },
         error: () => {
-          this.isAuth = isAuth;
+          this.isAuth = false;
         },
       });
     });
